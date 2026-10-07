@@ -1,0 +1,2473 @@
+CAMPUS GUIDE - website and Editor source files, kept together in one file.
+build.js reads this file and writes the real files into dist/ (website) and dist-editor/ (Editor).
+Each file sits between a marker line and an END FILE line. Edit the text between them; keep the marker lines exactly as they are.
+
+##### FILE: src/index.html #####
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Campus Guide — Your campus. Any answer.</title>
+<meta name="description" content="__DESC__">
+<meta name="theme-color" content="#070816">
+<meta property="og:title" content="Campus Guide">
+<meta property="og:description" content="__DESC__">
+<meta property="og:type" content="website">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/css/app.css?v=__BUILD__">
+</head>
+<body>
+<header class="top"><a class="brand" href="/" id="brand">CAMPUS <b>GUIDE</b></a></header>
+<main id="app">
+  <div id="search-view">
+    <section class="hero" id="hero">
+      <h1>Your campus.<br><span>Any answer.</span></h1>
+    </section>
+    <form id="sform" role="search" autocomplete="off">
+      <label for="q" class="sr">Search your campus</label>
+      <input id="q" name="q" type="search" placeholder="Search your campus..." autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="search">
+      <button type="button" id="clear" class="clear" aria-label="Clear search" hidden>&times;</button>
+    </form>
+    <nav class="filters" id="filters" aria-label="Filter search results">
+      <button type="button" data-f="all" aria-pressed="true">All</button>
+      <button type="button" data-f="offices" aria-pressed="false">Offices</button>
+      <button type="button" data-f="lecturers" aria-pressed="false">Lecturers</button>
+      <button type="button" data-f="courses" aria-pressed="false">Courses</button>
+      <button type="button" data-f="departments" aria-pressed="false">Departments</button>
+      <button type="button" data-f="faculties" aria-pressed="false">Faculties</button>
+      <button type="button" data-f="services" aria-pressed="false">Services</button>
+      <button type="button" data-f="buildings" aria-pressed="false">Buildings</button>
+      <button type="button" data-f="information" aria-pressed="false">Information</button>
+    </nav>
+    <p id="status" class="status" role="status" aria-live="polite"></p>
+    <ul id="results" class="results"></ul>
+    <button type="button" id="more" class="more" hidden>Show more results</button>
+    <div id="home" class="home">
+      <div id="live"></div>
+      <section id="sec-events" hidden><h2>Events</h2><ul class="rows"></ul></section>
+      <section id="sec-campaigns" hidden><h2>Campaigns</h2><ul class="rows"></ul></section>
+      <section id="sec-announcements" hidden><h2>Announcements</h2><ul class="rows"></ul></section>
+      <section id="sec-updates" hidden><h2>Latest Updates</h2><ul class="rows"></ul></section>
+      <div id="home-features" class="hf"></div>
+    </div>
+  </div>
+  <article id="detail" class="detail" hidden></article>
+  <noscript><p class="status">Campus Guide needs JavaScript to search. Please enable it and reload.</p></noscript>
+</main>
+<footer class="foot"><p>Campus Guide · Information is checked by campus staff where marked as verified.</p></footer>
+<script src="/js/search.js?v=__BUILD__"></script>
+<script src="/js/app.js?v=__BUILD__"></script>
+</body>
+</html>
+##### END FILE #####
+
+##### FILE: src/css/app.css #####
+/* Campus Guide public site. Dark only, no animations, mobile-first. */
+:root{
+  --bg:#070816; --s1:#0e1030; --s2:#14174a; --line:#262a5e; --tx:#eceeff; --mu:#a3a8d6;
+  --pu:#8b5cf6; --pu2:#6d3fe0; --pu3:#b79cff; --red:#ff5d7a; --ok:#9be7c4;
+  --r:12px;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;cursor:pointer}
+img{max-width:100%;display:block}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+:focus-visible{outline:2px solid var(--pu3);outline-offset:2px}
+
+.top{padding:14px 16px;max-width:760px;width:100%;margin:0 auto}
+.brand{font-weight:700;letter-spacing:.04em;font-size:17px}
+.brand b{color:var(--pu3);font-weight:700}
+main{flex:1;width:100%;max-width:760px;margin:0 auto;padding:0 16px 32px}
+
+.hero{padding:28px 0 18px;text-align:center}
+.hero h1{margin:0;font-size:clamp(34px,10vw,56px);line-height:1.08;letter-spacing:-.02em;font-weight:750}
+.hero h1 span{color:var(--pu3)}
+.searching .hero{display:none}
+
+#sform{position:relative;margin:0 0 10px}
+#q{width:100%;height:54px;border-radius:999px;border:1.5px solid var(--pu2);background:var(--s1);color:var(--tx);font:inherit;font-size:17px;padding:0 48px 0 20px;-webkit-appearance:none;appearance:none}
+#q::placeholder{color:#7d82b8}
+#q:focus{outline:none;border-color:var(--pu3);box-shadow:0 0 0 3px rgba(139,92,246,.28)}
+#q::-webkit-search-cancel-button{display:none}
+.clear{position:absolute;right:6px;top:7px;width:40px;height:40px;border-radius:50%;border:0;background:transparent;color:var(--mu);font-size:26px;line-height:1}
+
+.filters{display:flex;gap:8px;overflow-x:auto;padding:4px 0 10px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.filters::-webkit-scrollbar{display:none}
+.filters button{flex:none;height:36px;padding:0 14px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--mu);font-size:14px}
+.filters button[aria-pressed="true"]{background:var(--pu2);border-color:var(--pu2);color:#fff}
+
+.status{color:var(--mu);font-size:14px;margin:6px 2px 10px;min-height:1px}
+
+.results,.rows{list-style:none;margin:0;padding:0}
+.results li{margin:0 0 8px}
+.r{display:block;padding:12px 14px;border:1px solid var(--line);border-radius:var(--r);background:var(--s1)}
+.r:hover,.r:focus-visible{border-color:var(--pu)}
+.l1{display:flex;justify-content:space-between;gap:12px;align-items:baseline}
+.l1 b{font-weight:650;font-size:16px;overflow-wrap:anywhere}
+.l1 i{font-style:normal;color:var(--pu3);font-size:13px;flex:none}
+.l2{color:var(--mu);font-size:14px;margin-top:2px;overflow-wrap:anywhere}
+.l2 u{text-decoration:none;color:var(--ok);margin-right:8px;font-size:13px}
+.more{display:block;width:100%;height:44px;margin:6px 0 12px;border-radius:var(--r);border:1px solid var(--line);background:transparent;color:var(--pu3)}
+
+.home h2{font-size:15px;margin:22px 0 8px;font-weight:650;color:var(--tx)}
+.live{display:flex;gap:10px;align-items:center;margin:14px 0 4px;padding:11px 14px;border-radius:var(--r);border:1px solid #5a2440;background:#2a1020}
+.live b{flex:none;background:var(--red);color:#1a0610;border-radius:6px;padding:1px 7px;font-size:12px}
+.live span{flex:1;font-size:15px}
+.live small{flex:none;color:#e9a8ba;font-size:12px}
+.row{display:flex;gap:12px;align-items:center;padding:11px 12px;border:1px solid var(--line);border-radius:var(--r);background:var(--s1);margin-bottom:8px}
+.row:hover{border-color:var(--pu)}
+.row .tx{flex:1;min-width:0}
+.row b{display:block;font-weight:600;font-size:15px;overflow-wrap:anywhere}
+.row small{display:block;color:var(--mu);font-size:13px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.row .dt{color:var(--pu3);font-size:12px}
+.th{flex:none;width:56px;height:56px;border-radius:10px;background:var(--s2);overflow:hidden;position:relative}
+.th img{width:100%;height:100%;object-fit:cover}
+.th.broken img{display:none}
+
+.foot{max-width:760px;width:100%;margin:0 auto;padding:16px;color:#7d82b8;font-size:13px}
+.foot p{margin:0}
+
+/* detail */
+.detail{padding-top:6px}
+.back{display:inline-flex;align-items:center;height:40px;color:var(--pu3);font-size:15px}
+.dh{display:flex;gap:14px;align-items:center;margin:6px 0 8px}
+.av{flex:none;width:84px;height:84px;border-radius:50%;border:2px solid var(--pu);background:var(--s2);overflow:hidden;position:relative;display:flex;align-items:center;justify-content:center;font-size:30px;color:var(--pu3)}
+.av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.av.broken img{display:none}
+.kind{display:inline-block;color:var(--pu3);font-size:13px;border:1px solid var(--line);border-radius:999px;padding:1px 10px}
+.detail h1{margin:6px 0 2px;font-size:clamp(26px,7vw,36px);line-height:1.15;letter-spacing:-.01em;overflow-wrap:anywhere}
+.sub{margin:0;color:var(--mu)}
+.ver{margin:8px 0 0;font-size:14px;color:var(--ok)}
+.ver.weak{color:var(--mu)}
+.fig{margin:14px 0;border-radius:var(--r);overflow:hidden;background:var(--s2);aspect-ratio:16/9}
+.fig img{width:100%;height:100%;object-fit:cover}
+.fig.broken{display:none}
+.desc p{margin:10px 0}
+.facts{display:grid;grid-template-columns:1fr;gap:8px;margin:16px 0}
+.facts div{padding:10px 12px;border:1px solid var(--line);border-radius:var(--r);background:var(--s1)}
+.facts dt{color:var(--mu);font-size:13px}
+.facts dd{margin:2px 0 0;font-weight:550;overflow-wrap:anywhere}
+.facts dd a{color:var(--pu3)}
+.acts{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:0 18px;border-radius:var(--r);border:1px solid var(--line);background:transparent;font-weight:600}
+.btn.p{background:var(--pu2);border-color:var(--pu2);color:#fff}
+.dirtxt{color:var(--mu);font-size:15px;margin:4px 0 0}
+.detail h2{font-size:17px;margin:24px 0 8px}
+.detail ul.ls{margin:0;padding-left:20px}
+.detail ul.ls li{margin:4px 0}
+.tw{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r)}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{padding:9px 12px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap}
+th{background:var(--s2);color:var(--pu3);font-weight:600}
+tr:last-child td{border-bottom:0}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips a{display:block;padding:8px 12px;border:1px solid var(--line);border-radius:var(--r);background:var(--s1);font-size:15px}
+.chips a:hover{border-color:var(--pu)}
+.chips small{display:block;color:var(--mu);font-size:12px}
+.note{margin:16px 0;padding:10px 12px;border-radius:var(--r);border:1px solid var(--line);color:var(--mu);font-size:14px}
+.err{padding:18px;border:1px solid var(--line);border-radius:var(--r);margin-top:12px}
+
+@media (min-width:600px){
+  .filters{flex-wrap:wrap;overflow:visible}
+  .facts{grid-template-columns:1fr 1fr}
+  .hero{padding:56px 0 26px}
+  .home{display:grid;grid-template-columns:1fr 1fr;column-gap:20px}
+  .home #live{grid-column:1/-1}
+}
+
+/* documents, extra figures, custom features */
+.docs{list-style:none;margin:0;padding:0}
+.doc{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding:12px;border:1px solid var(--line);border-radius:var(--r);background:var(--s1);margin-bottom:8px}
+.doc .tx{flex:1;min-width:150px}
+.doc b{display:block;overflow-wrap:anywhere;font-weight:600}
+.doc small{color:var(--mu);font-size:13px}
+.doc .vo{display:inline-block;margin-left:8px;font-size:12px;color:var(--mu);border:1px solid var(--line);border-radius:999px;padding:0 8px}
+.da{display:flex;gap:8px;flex-wrap:wrap}
+.live em{font-style:normal;color:var(--ok);font-size:12px;margin-left:6px}
+.hf{display:contents}
+.fig+.fig{margin-top:10px}
+##### END FILE #####
+
+##### FILE: src/js/app.js #####
+/*
+ * Campus Guide public app: live search, filters, detail pages, lazy images, documents, device cache.
+ * Vanilla JS, no dependencies, no third-party requests. Record types and their labels come from the data
+ * (manifest.types), so Custom Features created in the Editor appear here without code changes.
+ *
+ * Device cache (the phone is a CACHE, never the master database):
+ *   - Service Worker (sw.js): app shell, versioned data files, viewed images.
+ *   - IndexedDB: last manifest, the search indexes that were actually used, the home page, recently opened records.
+ *   - Every cached item is tied to the data version (manifest.v). A new version is detected on open, on return to the
+ *     tab and every 5 minutes; changed indexes and the open page are refreshed in place.
+ */
+(function () {
+  'use strict';
+  var S = window.CGSearch;
+  var PAGE = 30, RECENT_MAX = 40;
+  var LABEL = { office: 'Office', lecturer: 'Lecturer', course: 'Course', department: 'Department', faculty: 'Faculty', service: 'Service', building: 'Building', location: 'Location', admission: 'Admissions', fee: 'School Fees', timetable: 'Timetable', calendar: 'Academic Calendar', announcement: 'Announcement', event: 'Event', campaign: 'Campaign', notice: 'Important Notice', live: 'Live Update', document: 'Document' };
+  var VER = { verified: 'Verified Information', verified_staff: 'Verified Staff', official_staff: 'Official Staff', pending: 'Pending Verification', unverified: 'Unverified' };
+  var FILTERS = ['all', 'offices', 'lecturers', 'courses', 'departments', 'faculties', 'services', 'buildings', 'information'];
+  var BUILTIN_HOME = ['events', 'campaigns', 'announcements', 'updates'];
+
+  var $ = function (id) { return document.getElementById(id); };
+  var M = null, manifestP = null, indexes = {}, pending = {}, indexVer = {};
+  var cur = { q: '', f: 'all' }, shown = PAGE, last = [], liveList = [], urlTimer = 0, record = null, curPath = '';
+
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; });
+  }
+  function fetchJSON(url, opt) {
+    return fetch(url, opt).then(function (r) {
+      if (!r.ok) { var e = new Error('HTTP ' + r.status); e.status = r.status; throw e; }
+      return r.json();
+    });
+  }
+  function labelOf(t) { return (M && M.types && M.types[t]) || LABEL[t] || t; }
+
+  /* ---------- IndexedDB key/value (best effort: the site works if it is unavailable) ---------- */
+  var dbP = null;
+  function idb() {
+    if (!dbP) dbP = new Promise(function (res) {
+      try {
+        var rq = indexedDB.open('campus-guide', 1);
+        rq.onupgradeneeded = function () { rq.result.createObjectStore('kv'); };
+        rq.onsuccess = function () { res(rq.result); };
+        rq.onerror = function () { res(null); };
+      } catch (e) { res(null); }
+    });
+    return dbP;
+  }
+  function kvGet(k) {
+    return idb().then(function (d) {
+      if (!d) return null;
+      return new Promise(function (res) {
+        try { var r = d.transaction('kv').objectStore('kv').get(k); r.onsuccess = function () { res(r.result || null); }; r.onerror = function () { res(null); }; } catch (e) { res(null); }
+      });
+    });
+  }
+  function kvSet(k, v) {
+    return idb().then(function (d) { if (d) try { d.transaction('kv', 'readwrite').objectStore('kv').put(v, k); } catch (e) { /* quota: ignore */ } });
+  }
+  function kvDel(k) {
+    return idb().then(function (d) { if (d) try { d.transaction('kv', 'readwrite').objectStore('kv').delete(k); } catch (e) { /* ignore */ } });
+  }
+
+  /* ---------- images and files: ONE place to change where media comes from ---------- */
+  // ref is either an uploaded media key ("img/202610/ab12.webp") or a legacy external URL.
+  function mediaUrl(ref, size) {
+    if (!ref) return '';
+    if (/^https?:\/\//i.test(ref)) return ref;
+    var base = (M && M.media && M.media.base) || '';
+    var k = size === 't' ? ref.replace(/\.(webp|jpe?g|png|gif)$/i, '.t.$1') : ref;
+    return base + '/' + k;
+  }
+  // size 't' = small thumbnail (lists, avatars); anything else = full-size
+  function imgTag(ref, alt, size) {
+    var full = mediaUrl(ref, 'f');
+    return '<img src="' + esc(mediaUrl(ref, size)) + '" data-full="' + (size === 't' ? esc(full) : '') + '" alt="' + esc(alt || '') + '" loading="lazy" decoding="async" referrerpolicy="no-referrer">';
+  }
+  // A missing thumbnail falls back to the full image once; a broken image never breaks the page.
+  document.addEventListener('error', function (e) {
+    var t = e.target;
+    if (!t || t.tagName !== 'IMG' || !t.parentNode) return;
+    var full = t.getAttribute('data-full');
+    if (full && !t.getAttribute('data-tried')) { t.setAttribute('data-tried', '1'); t.src = full; return; }
+    t.parentNode.className += ' broken';
+  }, true);
+
+  /* ---------- data ---------- */
+  function applyManifest(m) { M = m; return m; }
+  function manifest() {
+    if (!manifestP) {
+      manifestP = fetchJSON('/data/index.json', { cache: 'no-cache' }).then(function (m) { kvSet('manifest', m); return applyManifest(m); }, function (err) {
+        return kvGet('manifest').then(function (m) { if (m) return applyManifest(m); throw err; });
+      });
+    }
+    return manifestP;
+  }
+  function vq(u) { return '/' + u + '?v=' + M.v; }
+  function groupTypes(id) {
+    for (var i = 0; i < M.groups.length; i++) if (M.groups[i].id === id) return M.groups[i].types;
+    return [];
+  }
+  function fetchRaw(urls) {
+    return Promise.all(urls.map(function (u) { return fetchJSON(vq(u)); })).then(function (parts) { return [].concat.apply([], parts); });
+  }
+  function urlsFor(f) {
+    if (f === 'all') return M.all || [].concat.apply([], Object.keys(M.chunks).map(function (k) { return M.chunks[k]; }));
+    return M.chunks[f] || [];
+  }
+  function fetchIndex(f) {
+    return manifest().then(function () { return fetchRaw(urlsFor(f)); }).then(function (raw) {
+      kvSet('idx:' + f, { v: M.v, e: raw }); // store the raw entries before prepare() adds search fields
+      indexVer[f] = M.v;
+      return S.prepare(raw);
+    });
+  }
+  // Returns instantly from the device cache when this index was used before, then checks the version in the background.
+  function loadIndex(f) {
+    if (indexes[f]) return Promise.resolve(indexes[f]);
+    if (pending[f]) return pending[f];
+    var p;
+    if (f !== 'all' && indexes.all) {
+      var ts = groupTypes(f);
+      p = Promise.resolve(indexes.all.filter(function (e) { return ts.indexOf(e.t) >= 0; }));
+    } else {
+      p = kvGet('idx:' + f).then(function (c) {
+        if (c && c.e) {
+          indexVer[f] = c.v;
+          manifest().then(function () { if (c.v !== M.v) refreshIndex(f); }, function () { /* offline: keep cached */ });
+          return S.prepare(c.e);
+        }
+        return fetchIndex(f);
+      });
+    }
+    pending[f] = p.then(function (list) { indexes[f] = list; delete pending[f]; return list; }, function (e) { delete pending[f]; throw e; });
+    return pending[f];
+  }
+  function refreshIndex(f) {
+    return fetchIndex(f).then(function (list) {
+      indexes[f] = list;
+      if (cur.f === f || f === 'all') run(true);
+    }, function () { /* keep the cached copy */ });
+  }
+
+  /* ---------- helpers ---------- */
+  function slugOf(id, type) { return id.slice(type.length + 1); }
+  function pathOf(type, id) { return '/' + type + '/' + slugOf(id, type); }
+  function fmtDate(d) {
+    var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(d || '');
+    if (!m) return '';
+    return new Date(+m[1], +m[2] - 1, +m[3]).toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' });
+  }
+  function left(e) {
+    var s = Math.max(0, Math.round((e * 1000 - Date.now()) / 1000));
+    if (s < 3600) return Math.max(1, Math.ceil(s / 60)) + ' min left';
+    if (s < 86400) return Math.floor(s / 3600) + 'h ' + Math.floor((s % 3600) / 60) + 'm left';
+    return Math.floor(s / 86400) + ' days left';
+  }
+  function paras(t) {
+    return String(t || '').split(/\n+/).filter(Boolean).map(function (p) { return '<p>' + esc(p) + '</p>'; }).join('');
+  }
+  function fmtSize(n) { return !n ? '' : n < 1024 ? n + ' B' : n < 1048576 ? Math.round(n / 1024) + ' KB' : (n / 1048576).toFixed(1) + ' MB'; }
+
+  /* ---------- search view ---------- */
+  function resultHTML(e) {
+    var v = e.v ? '<u>' + esc(VER[e.v] || 'Verified') + '</u>' : '';
+    return '<li><a class="r" href="' + pathOf(e.t, e.i) + '"><div class="l1"><b>' + esc(e.n) + '</b><i>' + esc(labelOf(e.t)) + '</i></div>' +
+      (v || e.s ? '<div class="l2">' + v + esc(e.s || '') + '</div>' : '') + '</a></li>';
+  }
+  function paint(msg) {
+    var n = last.length, q = cur.q.trim();
+    $('status').textContent = msg || (n ? n + (n === 1 ? ' result' : ' results') : 'No results for “' + q + '”. Try different words or choose All.');
+    var html = '';
+    for (var i = 0; i < Math.min(n, shown); i++) html += resultHTML(last[i]);
+    $('results').innerHTML = html;
+    $('more').hidden = n <= shown;
+  }
+  function run(keepShown) {
+    var q = cur.q, f = cur.f, has = !!q.trim();
+    $('search-view').className = has ? 'searching' : '';
+    $('clear').hidden = !q;
+    $('home').hidden = has || f !== 'all';
+    if (!has && f === 'all') { last = []; $('results').innerHTML = ''; $('more').hidden = true; $('status').textContent = ''; return; }
+    if (!indexes[f] && !(f !== 'all' && indexes.all)) $('status').textContent = 'Loading search…';
+    loadIndex(f).then(function (list) {
+      if (cur.q !== q || cur.f !== f) return; // user kept typing; a newer run is already in charge
+      var types = groupTypes(f);
+      var keep = keepShown ? shown : PAGE;
+      if (has) {
+        last = S.search(list, q, { types: types, now: Date.now() });
+        shown = keep;
+        paint();
+      } else {
+        last = S.browse(list, types, Date.now());
+        shown = keep;
+        paint(last.length ? 'Showing ' + last.length + ' · type to search within this category' : 'Nothing published here yet.');
+      }
+    }).catch(function () {
+      if (cur.q === q && cur.f === f) $('status').textContent = 'Search could not load. Check your connection and try again.';
+    });
+  }
+  function searchUrl() {
+    var p = [];
+    if (cur.q.trim()) p.push('q=' + encodeURIComponent(cur.q));
+    if (cur.f !== 'all') p.push('f=' + cur.f);
+    return '/' + (p.length ? '?' + p.join('&') : '');
+  }
+  function syncUrl() {
+    clearTimeout(urlTimer);
+    urlTimer = setTimeout(function () { if (!$('search-view').hidden) history.replaceState(history.state, '', searchUrl()); }, 250);
+  }
+  function setFilterUI() {
+    Array.prototype.forEach.call($('filters').children, function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-f') === cur.f ? 'true' : 'false'); });
+  }
+
+  /* ---------- home ---------- */
+  function rowHTML(it) {
+    var th = it.m ? '<span class="th">' + imgTag(it.m, '', 't') + '</span>' : '';
+    var meta = [labelOf(it.t), fmtDate(it.d)].filter(Boolean).join(' · ');
+    return '<li><a class="row" href="' + pathOf(it.t, it.i) + '">' + th + '<span class="tx"><span class="dt">' + esc(meta) + '</span><b>' + esc(it.n) + '</b>' + (it.x ? '<small>' + esc(it.x) + '</small>' : '') + '</span></a></li>';
+  }
+  function renderHome(h) {
+    var now = Date.now() / 1000;
+    var live = function (x) { return !x.e || x.e > now; };
+    BUILTIN_HOME.forEach(function (k) {
+      var sec = $('sec-' + k), items = (h[k] || []).filter(live);
+      sec.hidden = !items.length;
+      sec.querySelector('ul').innerHTML = items.map(rowHTML).join('');
+    });
+    // Custom Features that the Editor chose to show on the homepage (configuration-driven)
+    $('home-features').innerHTML = (h.features || []).map(function (ft) {
+      var items = ft.items.filter(live);
+      if (!items.length) return '';
+      return '<section><h2>' + esc(ft.n) + '</h2><ul class="rows">' + items.map(rowHTML).join('') + '</ul></section>';
+    }).join('');
+  }
+  function renderLive() {
+    var now = Date.now() / 1000;
+    var items = liveList.filter(function (x) { return (!x.s || x.s <= now) && (!x.e || x.e > now); }).slice(0, 2);
+    $('live').innerHTML = items.map(function (x) {
+      return '<a class="live" href="' + pathOf('live', x.i) + '"><b>LIVE</b><span>' + esc(x.n) + (x.v ? ' <em>✓ ' + esc(VER[x.v] || 'Verified') + '</em>' : '') + '</span>' + (x.e ? '<small>' + left(x.e) + '</small>' : '') + '</a>';
+    }).join('');
+  }
+  function pollLive() {
+    if (document.hidden || $('search-view').hidden) return;
+    fetchJSON('/data/live.json?t=' + Math.floor(Date.now() / 60000), { cache: 'no-cache' }).then(function (l) { liveList = l; kvSet('live', l); renderLive(); }, function () { renderLive(); });
+  }
+  function loadHome() {
+    kvGet('home').then(function (h) { if (h) renderHome(h); }); // instant paint from the device cache
+    kvGet('live').then(function (l) { if (l && !liveList.length) { liveList = l; renderLive(); } });
+    manifest().then(function () { return fetchJSON('/data/home.json', { cache: 'no-cache' }); }).then(function (h) { kvSet('home', h); renderHome(h); }, function () { /* optional */ });
+    pollLive();
+  }
+
+  /* ---------- detail view ---------- */
+  function extHref(h) { return /^\//.test(h) ? '<a href="' + esc(h) + '">' : '<a href="' + esc(h) + '"' + (/^(tel|mailto):/.test(h) ? '' : ' target="_blank" rel="noopener"') + '>'; }
+  function factHTML(f) {
+    return '<div><dt>' + esc(f[0]) + '</dt><dd>' + (f[2] ? extHref(f[2]) + esc(f[1]) + '</a>' : esc(f[1])) + '</dd></div>';
+  }
+  // Download permission: a file is downloadable ONLY when the Editor marked it "Download allowed" (dl = 1).
+  // Otherwise: no download button and no save action from Campus Guide. PDFs can still be viewed; other types cannot be
+  // displayed in a browser, so a view-only Word/Excel file simply shows no action.
+  function filesHTML(files) {
+    if (!files || !files.length) return '';
+    return '<h2>Documents</h2><ul class="docs">' + files.map(function (f, i) {
+      var url = mediaUrl(f.k, 'f');
+      var meta = [String(f.t || '').toUpperCase(), fmtSize(f.s)].filter(Boolean).join(' · ');
+      var acts = '';
+      if (f.t === 'pdf') acts += '<a class="btn" href="' + esc(url) + '#toolbar=0&navpanes=0" target="_blank" rel="noopener" data-view="' + i + '">View</a>';
+      if (f.dl) acts += '<button type="button" class="btn p" data-dl="' + i + '">Download</button>';
+      var tag = f.dl ? '' : '<span class="vo">View only</span>';
+      return '<li class="doc"><div class="tx"><b>' + esc(f.l ? f.l + ': ' + f.n : f.n) + '</b><small>' + esc(meta) + '</small>' + tag + '</div><div class="da">' + acts + '</div></li>';
+    }).join('') + '</ul>';
+  }
+  function detailHTML(r) {
+    var h = '<a class="back" href="/" id="back">← Back to search</a>';
+    var initial = esc((r.title || '?').replace(/^(Dr|Prof|Mr|Mrs|Ms)\.?\s+/i, '').charAt(0));
+    var ver = r.ver || {}, vtxt = VER[ver.s] || '';
+    var isV = ver.s === 'verified' || ver.s === 'verified_staff' || ver.s === 'official_staff';
+    var verLine = vtxt ? '<p class="ver' + (isV ? '' : ' weak') + '">' + (isV ? '✓ ' : '') + esc(vtxt) + (ver.d ? ' · ' + esc(fmtDate(ver.d) || ver.d) : '') + (ver.by ? ' · by ' + esc(ver.by) : '') + '</p>' : '';
+    var avatar = r.type === 'lecturer' ? '<span class="av">' + initial + (r.img ? imgTag(r.img, r.title, 't') : '') + '</span>' : '';
+    h += '<header class="dh">' + avatar + '<div><span class="kind">' + esc(labelOf(r.type)) + '</span><h1>' + esc(r.title) + '</h1>' + (r.subtitle ? '<p class="sub">' + esc(r.subtitle) + '</p>' : '') + verLine + '</div></header>';
+    if (r.exp && r.exp * 1000 <= Date.now()) h += '<p class="note">This information has expired and may no longer be current.</p>';
+    if (r.img && r.type !== 'lecturer') h += '<figure class="fig">' + imgTag(r.img, r.title, 'f') + '</figure>';
+    if (r.desc) h += '<div class="desc">' + paras(r.desc) + '</div>';
+    if (r.bio) h += '<h2>About</h2><div class="desc">' + paras(r.bio) + '</div>';
+    if (r.facts) h += '<dl class="facts">' + r.facts.map(factHTML).join('') + '</dl>';
+    (r.blocks || []).forEach(function (b) { h += '<h2>' + esc(b[0]) + '</h2><div class="desc">' + paras(b[1]) + '</div>'; });
+    var acts = '';
+    if (r.dir) acts += '<a class="btn p" href="' + esc(r.dir.u) + '" target="_blank" rel="noopener">Get Directions</a>';
+    if (r.contact) {
+      if (r.contact.phone) acts += '<a class="btn" href="tel:' + esc(r.contact.phone.replace(/[^\d+]/g, '')) + '">Call</a>';
+      if (r.contact.email) acts += '<a class="btn" href="mailto:' + esc(r.contact.email) + '">Email</a>';
+      if (r.contact.link) acts += '<a class="btn' + (r.dir ? '' : ' p') + '" href="' + esc(r.contact.link) + '" target="_blank" rel="noopener">' + esc(r.contact.ll || 'Open link') + '</a>';
+    }
+    if (acts) h += '<div class="acts">' + acts + '</div>';
+    if (r.dir && r.dir.t) h += '<p class="dirtxt">' + esc(r.dir.t) + '</p>';
+    h += filesHTML(r.files);
+    (r.imgs || []).forEach(function (im) { h += '<figure class="fig">' + imgTag(im.k, im.l, 'f') + '</figure>'; });
+    (r.lists || []).forEach(function (l) { h += '<h2>' + esc(l[0]) + '</h2><ul class="ls">' + l[1].map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>'; });
+    if (r.table) {
+      h += '<h2>' + (r.type === 'timetable' ? 'Timetable' : 'Dates') + '</h2><div class="tw"><table><thead><tr>' + r.table.h.map(function (c) { return '<th scope="col">' + esc(c) + '</th>'; }).join('') + '</tr></thead><tbody>' +
+        r.table.r.map(function (row) { return '<tr>' + row.map(function (c) { return '<td>' + esc(c) + '</td>'; }).join('') + '</tr>'; }).join('') + '</tbody></table></div>';
+    }
+    (r.links || []).forEach(function (g) {
+      h += '<h2>' + esc(g.l) + '</h2><div class="chips">' + g.items.map(function (i) {
+        return '<a href="' + pathOf(i.t, i.id) + '">' + esc(i.n) + (i.s ? '<small>' + esc(i.s) + '</small>' : '') + '</a>';
+      }).join('') + '</div>';
+    });
+    return h;
+  }
+  // Download only what the Editor allowed. Cross-origin storage needs CORS for a real "save"; if unavailable the
+  // file simply opens in a new tab (never for view-only files: those have no download button at all).
+  function downloadFile(f, btn) {
+    if (!f || !f.dl) return;
+    var url = mediaUrl(f.k, 'f');
+    var old = btn.textContent; btn.textContent = 'Downloading…'; btn.disabled = true;
+    fetch(url, { mode: 'cors', credentials: 'omit' }).then(function (r) { if (!r.ok) throw new Error('x'); return r.blob(); }).then(function (b) {
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(b); a.download = f.n || 'document'; document.body.appendChild(a); a.click();
+      setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+    }).catch(function () { window.open(url, '_blank', 'noopener'); }).then(function () { btn.textContent = old; btn.disabled = false; });
+  }
+  function showSearchView() {
+    $('detail').hidden = true;
+    $('search-view').hidden = false;
+    document.title = 'Campus Guide — Your campus. Any answer.';
+    record = null; curPath = '';
+  }
+  function paintRecord(r) {
+    var d = $('detail');
+    record = r;
+    d.innerHTML = detailHTML(r);
+    document.title = r.title + ' — Campus Guide';
+    var md = document.querySelector('meta[name=description]');
+    if (md && r.desc) md.setAttribute('content', r.desc.slice(0, 155));
+  }
+  function recentTouch(path) {
+    kvGet('recent').then(function (list) {
+      list = (list || []).filter(function (p) { return p !== path; });
+      list.unshift(path);
+      while (list.length > RECENT_MAX) kvDel('rec:' + list.pop());
+      kvSet('recent', list);
+    });
+  }
+  function showRecord(type, slug, quiet) {
+    var path = '/' + type + '/' + slug, d = $('detail');
+    $('search-view').hidden = true;
+    d.hidden = false;
+    curPath = path;
+    var painted = !!quiet; // quiet refresh: keep what is on screen and the scroll position
+    if (!quiet) {
+      window.scrollTo(0, 0);
+      d.innerHTML = '<a class="back" href="/" id="back">← Back to search</a><p class="status">Loading…</p>';
+    }
+    kvGet('rec:' + path).then(function (c) { if (c && c.r && !painted && curPath === path) { painted = true; paintRecord(c.r); } }); // instant, may be one version old
+    manifest().then(function () { return fetchJSON('/data/pub/' + type + '/' + slug + '.json?v=' + M.v); }).then(function (r) {
+      if (curPath !== path) return;
+      var same = record && JSON.stringify(record) === JSON.stringify(r);
+      if (!same) paintRecord(r);
+      painted = true;
+      kvSet('rec:' + path, { v: M.v, r: r }); recentTouch(path);
+    }).catch(function (err) {
+      if (curPath !== path) return;
+      if (err && err.status === 404) { kvDel('rec:' + path); painted = false; }
+      if (painted) return; // offline or flaky: keep the cached copy that is already on screen
+      d.innerHTML = '<a class="back" href="/" id="back">← Back to search</a><div class="err"><b>' + (err && err.status === 404 ? 'This information is no longer available.' : 'This page could not load.') + '</b><p class="sub">' + (err && err.status === 404 ? 'It may have expired or been removed. Try searching again.' : 'Check your connection and try again.') + '</p></div>';
+    });
+  }
+
+  /* ---------- version check: new campus data replaces stale device data ---------- */
+  var checking = false;
+  function checkUpdate() {
+    if (checking || document.hidden || !M) return;
+    checking = true;
+    fetchJSON('/data/index.json', { cache: 'no-cache' }).then(function (m) {
+      checking = false;
+      if (m.v === M.v) return;
+      M = m; manifestP = Promise.resolve(m); kvSet('manifest', m);
+      Object.keys(indexes).forEach(function (f) { if (f !== 'all' || indexes.all) refreshIndex(f); });
+      loadHome();
+      if (curPath) { var p = curPath.split('/'); showRecord(p[1], p[2], true); }
+    }, function () { checking = false; });
+  }
+
+  /* ---------- routing ---------- */
+  function route(restore) {
+    var m = location.pathname.match(/^\/([a-z0-9-]+)\/([a-z0-9-]+)\/?$/);
+    if (m) { showRecord(m[1], m[2]); return; }
+    var p = new URLSearchParams(location.search);
+    cur.q = p.get('q') || '';
+    cur.f = FILTERS.indexOf(p.get('f')) >= 0 ? p.get('f') : 'all';
+    $('q').value = cur.q;
+    setFilterUI();
+    showSearchView();
+    run();
+    if (restore && history.state && history.state.scroll) setTimeout(function () { window.scrollTo(0, history.state.scroll); }, 0);
+  }
+  function go(href) {
+    if (!$('search-view').hidden) history.replaceState({ scroll: window.scrollY }, '', searchUrl());
+    history.pushState(null, '', href);
+    route(false);
+  }
+
+  /* ---------- events ---------- */
+  $('q').addEventListener('input', function () { cur.q = this.value; run(); syncUrl(); });
+  $('sform').addEventListener('submit', function (e) { e.preventDefault(); $('q').blur(); });
+  $('clear').addEventListener('click', function () { $('q').value = ''; cur.q = ''; run(); syncUrl(); $('q').focus(); });
+  $('filters').addEventListener('click', function (e) {
+    var b = e.target.closest('button');
+    if (!b) return;
+    cur.f = b.getAttribute('data-f');
+    setFilterUI();
+    run();
+    syncUrl();
+  });
+  $('more').addEventListener('click', function () { shown += PAGE; paint($('status').textContent); });
+  document.addEventListener('click', function (e) {
+    var dl = e.target.closest('[data-dl]');
+    if (dl && record) { e.preventDefault(); downloadFile((record.files || [])[+dl.getAttribute('data-dl')], dl); return; }
+    if (e.defaultPrevented || e.button || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    var a = e.target.closest('a');
+    if (!a || a.target === '_blank' || a.hasAttribute('download') || !/^https?:$/.test(a.protocol) || a.origin !== location.origin) return;
+    e.preventDefault();
+    var href = a.getAttribute('href');
+    if (a.id === 'back') {
+      if (window.__navd) { history.back(); return; }
+      history.pushState(null, '', '/'); route(false); return;
+    }
+    if (a.id === 'brand') { cur.q = ''; cur.f = 'all'; history.pushState(null, '', '/'); route(false); window.scrollTo(0, 0); return; }
+    window.__navd = true;
+    go(href);
+  });
+  window.addEventListener('popstate', function () { route(true); });
+  document.addEventListener('visibilitychange', function () { if (!document.hidden) { pollLive(); checkUpdate(); } });
+  setInterval(pollLive, 60000);
+  setInterval(renderLive, 30000);       // keeps the "time left" text and start/expiry current
+  setInterval(checkUpdate, 300000);
+
+  /* ---------- start ---------- */
+  window.__cg = { version: function () { return M && M.v; }, check: checkUpdate };
+  route(false);
+  loadHome();
+  // Warm the "All" index shortly after first paint so the first keystroke is instant.
+  (window.requestIdleCallback || function (f) { setTimeout(f, 600); })(function () { loadIndex('all').catch(function () {}); });
+  if ('serviceWorker' in navigator) window.addEventListener('load', function () { navigator.serviceWorker.register('/sw.js').catch(function () {}); });
+})();
+##### END FILE #####
+
+##### FILE: src/js/search.js #####
+/*
+ * Campus Guide search engine — no AI, just normalisation + weighted matching.
+ * Index entry keys: i id, t type, n title, s subtitle, k keywords ('|' separated),
+ * a aliases ('|' separated), x related-record text, d short description, e expiry (epoch seconds, 0 = never),
+ * v verification status (only when verified).
+ */
+(function (root, factory) {
+  if (typeof module === 'object' && module.exports) module.exports = factory();
+  else root.CGSearch = factory();
+})(typeof self !== 'undefined' ? self : this, function () {
+  'use strict';
+
+  // Words that add little meaning in natural questions. Never removed if nothing else would be left.
+  var FILLER = {};
+  ('where is the who teaches teach taught what are can i find please of for to me show do does in at which belong belongs own owns located').split(' ')
+    .forEach(function (w) { FILLER[w] = 1; });
+
+  // Words that name a record type: used to boost that type rather than to match text.
+  // [type, isPlural]. A plural ("which courses...") means the person wants a list of that type, so it outranks a
+  // title match of another type; a singular ("computer science department") only nudges that type up.
+  var TYPEWORD = {
+    office: ['office', 0], offices: ['office', 1], lecturer: ['lecturer', 0], lecturers: ['lecturer', 1], course: ['course', 0], courses: ['course', 1],
+    department: ['department', 0], departments: ['department', 1], dept: ['department', 0], faculty: ['faculty', 0], faculties: ['faculty', 1],
+    service: ['service', 0], services: ['service', 1], building: ['building', 0], buildings: ['building', 1],
+    timetable: ['timetable', 0], timetables: ['timetable', 1], announcement: ['announcement', 0], announcements: ['announcement', 1],
+    event: ['event', 0], events: ['event', 1], campaign: ['campaign', 0], campaigns: ['campaign', 1], notice: ['notice', 0], notices: ['notice', 1]
+  };
+
+  function norm(s) {
+    return String(s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^a-z0-9]+/g, ' ').trim();
+  }
+  function words(s) { return s ? s.split(' ') : []; }
+  function list(s) {
+    if (!s) return [];
+    return s.split('|').map(norm).filter(Boolean);
+  }
+  function flat(arr) {
+    var o = [];
+    arr.forEach(function (p) { words(p).forEach(function (w) { o.push(w); }); });
+    return o;
+  }
+
+  // Precompute normalised fields once after the index is downloaded.
+  function prepare(entries) {
+    for (var i = 0; i < entries.length; i++) {
+      var e = entries[i];
+      if (e._n !== undefined) continue;
+      e._n = norm(e.n);
+      e._nw = words(e._n);
+      e._nc = e._n.replace(/ /g, '');
+      e._al = list(e.a);
+      e._aw = flat(e._al);
+      e._kl = list(e.k);
+      e._kw = flat(e._kl);
+      e._sw = words(norm(e.s));
+      e._xw = words(norm(e.x));
+      e._dw = words(norm(e.d));
+    }
+    return entries;
+  }
+
+  function parse(raw) {
+    var all = words(norm(raw));
+    var tokens = all.filter(function (t) { return !FILLER[t]; });
+    if (!tokens.length) tokens = all; // all fillers: keep them rather than search nothing
+    var boost = {};
+    var rest = tokens.filter(function (t) {
+      if (TYPEWORD[t]) { var tw = TYPEWORD[t]; boost[tw[0]] = Math.max(boost[tw[0]] || 0, tw[1] ? 1100 : 200); return false; }
+      return true;
+    });
+    if (rest.length) tokens = rest; else { if (Object.keys(boost).length) tokens = []; }
+    var lower = String(raw || '').toLowerCase();
+    if (/\bwho\b.*\b(teach|lectur)|\btaught by\b/.test(lower)) boost.lecturer = Math.max(boost.lecturer || 0, 1200);
+    return { tokens: tokens, phrase: tokens.join(' '), boost: boost, where: /^\s*where\b/.test(lower) };
+  }
+
+  function best(t, wordsArr, exact, prefix) {
+    var b = 0;
+    for (var i = 0; i < wordsArr.length; i++) {
+      var w = wordsArr[i];
+      if (w === t) return exact;
+      if (b < prefix && w.indexOf(t) === 0) b = prefix;
+    }
+    return b;
+  }
+
+  function scoreEntry(e, q) {
+    var tokens = q.tokens, n = tokens.length, matched = 0, score = 0, i, j;
+    var need = n <= 3 ? n : Math.ceil(n * 0.6);
+    for (i = 0; i < n; i++) {
+      var t = tokens[i];
+      var b = best(t, e._nw, 100, 80);
+      if (b < 30 && t.length >= 3 && e._n.indexOf(t) >= 0) b = 30;
+      if (b < 100) b = Math.max(b, best(t, e._kw, 60, 50));
+      if (b < 100) b = Math.max(b, best(t, e._aw, 70, 60));
+      if (b < 60) b = Math.max(b, best(t, e._sw, 35, 30));
+      if (b < 30) b = Math.max(b, best(t, e._xw, 18, 14));
+      if (b < 14) b = Math.max(b, best(t, e._dw, 6, 5));
+      if (b > 0) { matched++; score += b; }
+    }
+    if (matched < need) return 0;
+    var p = q.phrase, bonus = 0;
+    if (e._n === p) bonus = 1000;
+    else if (e._n.indexOf(p) === 0) bonus = 800;
+    else if (p.length >= 2 && e._nc.indexOf(p.replace(/ /g, '')) === 0) bonus = 700;
+    else if ((' ' + e._n).indexOf(' ' + p) >= 0) bonus = 500;
+    for (j = 0; j < e._al.length && bonus < 750; j++) {
+      if (e._al[j] === p) bonus = Math.max(bonus, 750);
+      else if (e._al[j].indexOf(p) === 0) bonus = Math.max(bonus, 550);
+    }
+    if (bonus < 400) for (j = 0; j < e._kl.length; j++) { if (e._kl[j] === p) { bonus = 400; break; } }
+    score += bonus;
+    if (e.v) score += 3;
+    return score;
+  }
+
+  // entries: prepared index entries. opts: { types: [..]|null, now: ms, limit }
+  function search(entries, raw, opts) {
+    opts = opts || {};
+    var q = parse(raw);
+    var now = opts.now || Date.now();
+    var allowed = null;
+    if (opts.types) { allowed = {}; opts.types.forEach(function (t) { allowed[t] = 1; }); }
+    var out = [];
+    var boost = q.boost, hasBoost = Object.keys(boost).length > 0;
+    for (var i = 0; i < entries.length; i++) {
+      var e = entries[i];
+      if (allowed && !allowed[e.t]) continue;
+      if (e.e && e.e * 1000 <= now) continue;
+      if (e.b && e.b * 1000 > now) continue; // live update that has not started yet
+      var s;
+      if (!q.tokens.length) s = boost[e.t] ? 100 : 0; // only a type word was typed, e.g. "offices"
+      else s = scoreEntry(e, q);
+      if (!s) continue;
+      if (boost[e.t]) s += boost[e.t];
+      if (q.where && (e.t === 'office' || e.t === 'building' || e.t === 'location' || e.t === 'lecturer')) s += 20;
+      out.push({ s: s, e: e });
+    }
+    out.sort(function (a, b) { return b.s - a.s || (a.e.n < b.e.n ? -1 : a.e.n > b.e.n ? 1 : 0); });
+    var res = out.map(function (o) { return o.e; });
+    return opts.limit ? res.slice(0, opts.limit) : res;
+  }
+
+  // Alphabetical listing of a category when nothing has been typed.
+  function browse(entries, types, now) {
+    var allowed = {};
+    (types || []).forEach(function (t) { allowed[t] = 1; });
+    now = now || Date.now();
+    return entries.filter(function (e) { return allowed[e.t] && !(e.e && e.e * 1000 <= now) && !(e.b && e.b * 1000 > now); })
+      .sort(function (a, b) { return a._n < b._n ? -1 : a._n > b._n ? 1 : 0; });
+  }
+
+  return { norm: norm, prepare: prepare, search: search, browse: browse, parse: parse };
+});
+##### END FILE #####
+
+##### FILE: src/sw.js #####
+/*
+ * Campus Guide service worker.
+ *  - App shell + build-versioned data files: cached per build (cache name changes with every build).
+ *  - Unversioned data (manifest, home, live): network first, cache only as an offline fallback.
+ *  - Viewed images: cached in a small separate cache (max MEDIA_MAX) so opened images load instantly next time.
+ *  - Documents (/doc/) are never cached automatically.
+ * Nothing here can hold new campus information back: manifest.v changes on every publish and all versioned URLs include it.
+ */
+var V = 'cg-__BUILD__';
+var MEDIA = 'cg-media';
+var MEDIA_MAX = 150;
+var SHELL = ['/', '/css/app.css?v=__BUILD__', '/js/search.js?v=__BUILD__', '/js/app.js?v=__BUILD__', '/favicon.svg'];
+var IMG_RE = /\/img\/[A-Za-z0-9_\/.-]+\.(webp|jpe?g|png|gif)$/;
+
+self.addEventListener('install', function (e) {
+  e.waitUntil(caches.open(V).then(function (c) { return c.addAll(SHELL); }).then(function () { return self.skipWaiting(); }));
+});
+self.addEventListener('activate', function (e) {
+  e.waitUntil(caches.keys().then(function (keys) {
+    return Promise.all(keys.filter(function (k) { return k.indexOf('cg-') === 0 && k !== V && k !== MEDIA; }).map(function (k) { return caches.delete(k); }));
+  }).then(function () { return self.clients.claim(); }));
+});
+
+function net(req) {
+  return new Promise(function (resolve, reject) {
+    var t = setTimeout(reject, 5000);
+    fetch(req).then(function (r) { clearTimeout(t); resolve(r); }, function (err) { clearTimeout(t); reject(err); });
+  });
+}
+function trim(cache) {
+  return cache.keys().then(function (keys) {
+    if (keys.length <= MEDIA_MAX) return;
+    return Promise.all(keys.slice(0, keys.length - MEDIA_MAX).map(function (k) { return cache.delete(k); }));
+  });
+}
+// Image request from the page (no-cors). Retry as CORS so the response is a normal, cacheable one.
+function image(req) {
+  return caches.open(MEDIA).then(function (c) {
+    return c.match(req.url).then(function (hit) {
+      if (hit) return hit;
+      return fetch(req.url, { mode: 'cors', credentials: 'omit' }).then(function (r) {
+        if (r.ok) { c.put(req.url, r.clone()).then(function () { return trim(c); }); }
+        return r;
+      }).catch(function () { return fetch(req); });
+    });
+  });
+}
+
+self.addEventListener('fetch', function (e) {
+  var req = e.request;
+  if (req.method !== 'GET') return;
+  var url = new URL(req.url);
+  if (req.destination === 'image' && IMG_RE.test(url.pathname)) { e.respondWith(image(req)); return; }
+  if (url.origin !== location.origin) return;
+  var versioned = url.pathname.indexOf('/data/') === 0 && url.search.indexOf('v=') >= 0 && url.pathname.indexOf('/data/live') !== 0;
+  if (versioned) { // content-addressed by build id: cache first
+    e.respondWith(caches.open(V).then(function (c) {
+      return c.match(req).then(function (hit) {
+        return hit || fetch(req).then(function (r) { if (r.ok) c.put(req, r.clone()); return r; });
+      });
+    }));
+    return;
+  }
+  e.respondWith(net(req).then(function (r) {
+    if (r.ok) { var copy = r.clone(); caches.open(V).then(function (c) { c.put(req, copy); }); }
+    return r;
+  }).catch(function () {
+    return caches.match(req).then(function (hit) {
+      return hit || (req.mode === 'navigate' ? caches.match('/') : Response.error());
+    });
+  }));
+});
+##### END FILE #####
+
+##### FILE: src/_headers #####
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Content-Security-Policy: default-src 'self'; img-src * data:; style-src 'self'; script-src 'self'; connect-src 'self' https:; base-uri 'self'; form-action 'self'; frame-ancestors 'none'
+/data/index.json
+  Cache-Control: public, max-age=0, must-revalidate
+/data/home.json
+  Cache-Control: public, max-age=0, must-revalidate
+/data/live.json
+  Cache-Control: public, max-age=0, must-revalidate
+/data/idx/*
+  Cache-Control: public, max-age=31536000, immutable
+/data/pub/*
+  Cache-Control: public, max-age=31536000, immutable
+/sw.js
+  Cache-Control: public, max-age=0, must-revalidate
+##### END FILE #####
+
+##### FILE: src/_redirects #####
+/*    /index.html   200
+##### END FILE #####
+
+##### FILE: src/robots.txt #####
+User-agent: *
+Allow: /
+##### END FILE #####
+
+##### FILE: src/favicon.svg #####
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#0b0d26"/><path d="M32 14 8 26l24 12 24-12z" fill="#8b5cf6"/><path d="M18 33v10c0 4 6 8 14 8s14-4 14-8V33l-14 7z" fill="#a78bfa"/></svg>
+##### END FILE #####
+
+##### FILE: editor/index.html #####
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#0b0d26">
+<title>Campus Guide Editor</title>
+<link rel="stylesheet" href="editor.css">
+</head>
+<body>
+<div id="root"></div>
+<div id="overlay" hidden></div>
+<div id="toast" role="status" aria-live="polite" hidden></div>
+<script src="config.js"></script>
+<script src="schema.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
+##### END FILE #####
+
+##### FILE: editor/app.js #####
+/*
+ * Campus Guide Editor — mobile-first CMS. Talks only to the publishing Worker; holds no GitHub or storage credentials.
+ *
+ * Source files it manages (all committed through the Worker):
+ *   data/source/<type>.json   built-in record types       data/source/features.json  Custom Features + custom fields
+ *   data/source/custom.json   records of Custom Features  data/source/settings.json  site settings
+ * Images and documents are uploaded to the Worker's media storage (never into GitHub); records keep only a reference.
+ */
+(function () {
+  'use strict';
+  const S = window.CGSchema, CFG = window.CG_CONFIG || {};
+  const $ = (s, r) => (r || document).querySelector(s);
+  const root = $('#root'), overlay = $('#overlay');
+  const CUSTOM_FILE = 'data/source/custom.json', FEATURES_FILE = 'data/source/features.json', SETTINGS_FILE = 'data/source/settings.json';
+  const LC = { draft: 'Draft', active: 'Published', expiring: 'Expiring', expired: 'Expired', archived: 'Archived' };
+  const TAB = { live: 'Live Updates', notice: 'Important Notices', calendar: 'Academic Calendar', fee: 'School Fees', admission: 'Admissions' };
+  const SYS = [['images', 'Images & files'], ['verification', 'Verification'], ['archive', 'Archive'], ['publish', 'Publish'], ['settings', 'Settings']];
+
+  const st = {
+    ok: false, api: localStorage.getItem('cg-api') || CFG.API || '', key: sessionStorage.getItem('cg-key') || '',
+    data: {}, orphans: [], cfg: { features: [], extend: {} }, settings: {}, orig: {},
+    grp: 'content', typ: 'all', sys: 'publish', q: '', fs: '', fv: '', verifier: localStorage.getItem('cg-verifier') || '',
+    imgStatus: {}, report: null, pubMsg: null, busy: false, connectMsg: '', lastBase: '', media: null
+  };
+
+  /* ---------- helpers ---------- */
+  const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const clone = (o) => JSON.parse(JSON.stringify(o));
+  const norm = (s) => String(s || '').toLowerCase();
+  const today = () => new Date().toISOString().slice(0, 10);
+  const lcOf = (r) => S.lifecycle(r, Date.now());
+  const isCustomType = (t) => S.TYPES[t] && S.TYPES[t].group === 'custom';
+  const fileOf = (t) => (isCustomType(t) ? CUSTOM_FILE : 'data/source/' + S.TYPES[t].plural + '.json');
+  const typesOf = (grp) => (grp === 'custom' ? S.FEATURES.map((f) => f.id) : S.BASE_TYPE_IDS().filter((t) => S.TYPES[t].group === grp));
+  const allRecs = () => [].concat(...S.TYPE_IDS.map((t) => st.data[t] || []));
+  const find = (id) => allRecs().find((r) => r.id === id) || null;
+  const lines = (s) => String(s || '').split(/\r?\n/).map((x) => x.trim()).filter(Boolean);
+  const csv = (s) => String(s || '').split(/[,\n]/).map((x) => x.trim()).filter(Boolean);
+  const tabLabel = (t) => (S.TYPES[t].pluralLabel || TAB[t] || S.TYPES[t].plural.charAt(0).toUpperCase() + S.TYPES[t].plural.slice(1));
+  const isEmpty = (v) => v == null || v === '' || (Array.isArray(v) && !v.length);
+  let toastT = 0;
+  function toast(m) {
+    const t = $('#toast'); t.textContent = m; t.hidden = false;
+    clearTimeout(toastT); toastT = setTimeout(() => { t.hidden = true; }, 3500);
+  }
+  function fmtExp(r) {
+    if (!r.expires) return 'Never expires';
+    const d = new Date(r.expires);
+    return (isNaN(d) ? 'Invalid date' : d.toLocaleString()) + (lcOf(r) === 'expired' ? ' (expired)' : '');
+  }
+  const fmtSize = (n) => (!n ? '' : n < 1024 ? n + ' B' : n < 1048576 ? Math.round(n / 1024) + ' KB' : (n / 1048576).toFixed(1) + ' MB');
+  const saveWork = () => { try { localStorage.setItem('cg-work', JSON.stringify({ data: st.data, orphans: st.orphans, cfg: st.cfg, settings: st.settings })); } catch (e) { /* storage full: ignore */ } };
+  const toLocalInput = (iso) => { const d = new Date(iso); if (!iso || isNaN(d)) return ''; const p = (n) => String(n).padStart(2, '0'); return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate()) + 'T' + p(d.getHours()) + ':' + p(d.getMinutes()); };
+
+  /* ---------- media (images + documents) ---------- */
+  const mediaBase = () => String(st.settings.mediaBase || st.lastBase || '').replace(/\/+$/, '');
+  function mediaUrl(ref, size) {
+    if (!ref) return '';
+    if (/^https?:\/\//i.test(ref)) return ref;
+    return mediaBase() + '/' + (size === 't' ? ref.replace(/\.(webp|jpe?g|png|gif)$/i, '.t.$1') : ref);
+  }
+  async function sniff(file) {
+    const b = new Uint8Array(await file.slice(0, 16).arrayBuffer());
+    const is = (sig, o) => sig.every((x, i) => b[(o || 0) + i] === x);
+    if (is([0x89, 0x50, 0x4e, 0x47])) return 'png';
+    if (is([0xff, 0xd8, 0xff])) return 'jpg';
+    if (is([0x47, 0x49, 0x46, 0x38])) return 'gif';
+    if (is([0x52, 0x49, 0x46, 0x46]) && is([0x57, 0x45, 0x42, 0x50], 8)) return 'webp';
+    if (is([0x25, 0x50, 0x44, 0x46])) return 'pdf';
+    if (is([0x50, 0x4b, 0x03, 0x04])) return 'ooxml';
+    if (is([0xd0, 0xcf, 0x11, 0xe0])) return 'ole';
+    return '';
+  }
+  const toBlob = (canvas, type, q) => new Promise((res) => canvas.toBlob(res, type, q));
+  // Validate, then downscale to a full-size copy (max 1280px) and a thumbnail (max 320px). Free, in-browser, no service.
+  async function processImage(file) {
+    const kind = await sniff(file);
+    if (['png', 'jpg', 'gif', 'webp'].indexOf(kind) < 0) throw new Error('That is not a picture. Choose a JPG, PNG, WebP or GIF image.');
+    if (file.size > S.LIMITS.rawImageMB * 1048576) throw new Error('That picture is too large (over ' + S.LIMITS.rawImageMB + ' MB). Choose a smaller one.');
+    let bmp;
+    try { bmp = await createImageBitmap(file); } catch (e) { throw new Error('This picture could not be read. It may be damaged.'); }
+    if (bmp.width < 32 || bmp.height < 32) throw new Error('This picture is too small (minimum 32 pixels).');
+    const make = async (max, q) => {
+      const k = Math.min(1, max / Math.max(bmp.width, bmp.height));
+      const c = document.createElement('canvas');
+      c.width = Math.max(1, Math.round(bmp.width * k)); c.height = Math.max(1, Math.round(bmp.height * k));
+      c.getContext('2d').drawImage(bmp, 0, 0, c.width, c.height);
+      let b = await toBlob(c, 'image/webp', q);
+      if (!b || b.type !== 'image/webp') b = await toBlob(c, 'image/jpeg', q);
+      return b;
+    };
+    let full = await make(1280, 0.82);
+    for (const [m, q] of [[1024, 0.7], [800, 0.6]]) if (full.size > S.LIMITS.imageMB * 1048576) full = await make(m, q);
+    if (full.size > S.LIMITS.imageMB * 1048576) throw new Error('This picture is still too large after compression. Choose a simpler picture.');
+    const thumb = await make(320, 0.75);
+    return { full, thumb, w: bmp.width, h: bmp.height };
+  }
+  async function checkDoc(file, accept) {
+    const ext = (file.name.split('.').pop() || '').toLowerCase();
+    if (!S.DOC_EXT[ext]) throw new Error('This file type is not allowed. Use PDF, Word, Excel or PowerPoint.');
+    if (accept === 'pdf' && ext !== 'pdf') throw new Error('Only PDF files are allowed in this field.');
+    if (file.size > S.LIMITS.docMB * 1048576) throw new Error('This file is too large (limit ' + S.LIMITS.docMB + ' MB).');
+    if (!file.size) throw new Error('This file is empty.');
+    const k = await sniff(file);
+    const okk = ext === 'pdf' ? k === 'pdf' : /x$/.test(ext) ? k === 'ooxml' : k === 'ole';
+    if (!okk) throw new Error('The file contents do not match its name. It may be damaged or renamed.');
+    return ext;
+  }
+  function uploadBlob(kind, blob, name, thumbOf) {
+    if (!st.api) return Promise.reject(new Error('Connect to the Worker (Settings) to upload files.'));
+    const h = { Authorization: 'Bearer ' + st.key, 'Content-Type': 'application/octet-stream', 'X-Kind': kind, 'X-File-Name': encodeURIComponent(name || 'file') };
+    if (thumbOf) h['X-Thumb-Of'] = thumbOf;
+    return fetch(st.api + '/api/upload', { method: 'POST', headers: h, body: blob })
+      .then((r) => r.json().catch(() => ({})).then((j) => { if (!r.ok || !j.ok) throw new Error(j.error || 'Upload failed (' + r.status + ').'); return j; }), () => { throw new Error('Could not reach the Worker. Check your connection.'); });
+  }
+
+  // Media widget: values live in ctx.vals[k]  (image: key|URL string, file: {k,n,t,s,dl}, files: [..])
+  function mwHTML(ctx, k, kind, accept) {
+    const v = ctx.vals[k];
+    let h = '<div class="mw" data-k="' + esc(k) + '" data-kind="' + kind + '" data-accept="' + (accept || '') + '">';
+    if (kind === 'image') {
+      if (v) h += '<div class="mrow"><img class="mp" src="' + esc(mediaUrl(v, 't')) + '" alt="Preview"><div class="minfo">' + (/^https?:/.test(v) ? 'External picture' : 'Uploaded picture') + '<br><button type="button" class="btn sm" data-mw="choose">Replace</button> <button type="button" class="btn sm d" data-mw="remove">Remove</button></div></div>';
+      else h += '<button type="button" class="btn" data-mw="choose">Choose image…</button>';
+      h += '<details><summary class="mu">Use an external web address instead</summary><input type="url" data-mwurl placeholder="https://example.com/image.jpg" value="' + (/^https?:/.test(v || '') ? esc(v) : '') + '"></details>';
+    } else {
+      const arr = kind === 'files' ? (v || []) : v ? [v] : [];
+      arr.forEach((f, i) => {
+        h += '<div class="mrow" data-i="' + i + '"><div class="minfo"><b>' + esc(f.n || f.k) + '</b><br><span class="mu">' + esc((f.t || '').toUpperCase()) + (f.s ? ' · ' + fmtSize(f.s) : '') + '</span> <a href="' + esc(mediaUrl(f.k)) + '" target="_blank" rel="noopener">Preview</a></div>' +
+          '<select data-mwperm aria-label="Download permission"><option value="0" ' + (!f.dl ? 'selected' : '') + '>View only</option><option value="1" ' + (f.dl ? 'selected' : '') + '>Download allowed</option></select>' +
+          '<button type="button" class="btn sm" data-mw="choose">Replace</button><button type="button" class="btn sm d" data-mw="remove">Delete</button></div>';
+        if (!f.dl && f.t && f.t !== 'pdf') h += '<div class="mmsg bad">Browsers cannot display ' + esc(f.t.toUpperCase()) + ' files, so students will see no way to open a view-only file. Use PDF for view-only documents.</div>';
+      });
+      if (kind === 'files' || !arr.length) h += '<div class="mrow"><button type="button" class="btn" data-mw="choose" data-add="1">' + (kind === 'files' ? '+ Add document…' : 'Choose document…') + '</button></div>';
+    }
+    h += '<div class="mmsg" data-mmsg></div><input type="file" class="mwin" hidden accept="' + (kind === 'image' ? 'image/*' : accept === 'pdf' ? 'application/pdf,.pdf' : '.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx') + '"></div>';
+    return h;
+  }
+  function mwBind(box, ctx) {
+    const W = (el) => el.closest('.mw');
+    const msg = (w, m, bad) => { const e = $('[data-mmsg]', w); e.textContent = m || ''; e.className = 'mmsg' + (bad ? ' bad' : ''); };
+    const redraw = (w) => { const k = w.dataset.k; w.outerHTML = mwHTML(ctx, k, w.dataset.kind, w.dataset.accept); };
+    box.addEventListener('click', (e) => {
+      const b = e.target.closest('[data-mw]');
+      if (!b) return;
+      const w = W(b), kind = w.dataset.kind, k = w.dataset.k;
+      if (b.dataset.mw === 'choose') { const inp = $('.mwin', w); inp.dataset.idx = b.dataset.add ? '' : String((b.closest('[data-i]') || {}).dataset ? b.closest('[data-i]').dataset.i : ''); inp.click(); }
+      else if (b.dataset.mw === 'remove') {
+        if (kind === 'image') ctx.vals[k] = '';
+        else if (kind === 'file') ctx.vals[k] = null;
+        else ctx.vals[k].splice(+b.closest('[data-i]').dataset.i, 1);
+        redraw(w);
+      }
+    });
+    box.addEventListener('change', async (e) => {
+      const t = e.target, w = W(t);
+      if (!w) return;
+      const kind = w.dataset.kind, k = w.dataset.k, accept = w.dataset.accept;
+      if (t.matches('[data-mwperm]')) {
+        const i = +t.closest('[data-i]').dataset.i, f = kind === 'files' ? ctx.vals[k][i] : ctx.vals[k];
+        f.dl = t.value === '1' ? 1 : 0; redraw(w); return;
+      }
+      if (t.matches('[data-mwurl]')) {
+        const u = t.value.trim();
+        if (u && !S.isUrl(u)) { msg(w, 'That is not a valid web address.', true); return; }
+        ctx.vals[k] = u; redraw(w); return;
+      }
+      if (!t.matches('.mwin') || !t.files[0]) return;
+      const file = t.files[0], idx = t.dataset.idx;
+      t.value = '';
+      try {
+        msg(w, 'Checking…');
+        if (kind === 'image') {
+          const p = await processImage(file);
+          msg(w, 'Uploading…');
+          const full = await uploadBlob('image', p.full, file.name);
+          await uploadBlob('thumb', p.thumb, file.name, full.key);
+          st.lastBase = full.base; if (!st.settings.mediaBase) st.settings.mediaBase = full.base;
+          ctx.vals[k] = full.key;
+        } else {
+          const ext = await checkDoc(file, accept);
+          msg(w, 'Uploading…');
+          const up = await uploadBlob('doc', file, file.name);
+          st.lastBase = up.base; if (!st.settings.mediaBase) st.settings.mediaBase = up.base;
+          const f = { k: up.key, n: file.name, t: ext, s: up.size, dl: ctx.dl ? 1 : 0 };
+          if (kind === 'file') ctx.vals[k] = f;
+          else if (idx !== '' && idx != null) ctx.vals[k][+idx] = Object.assign(f, { dl: ctx.vals[k][+idx].dl });
+          else ctx.vals[k] = (ctx.vals[k] || []).concat([f]);
+        }
+        redraw(w);
+        const w2 = $('.mw[data-k="' + k + '"]', box); if (w2) msg(w2, 'Uploaded.');
+      } catch (err) { msg(w, err.message, true); }
+    });
+  }
+
+  /* ---------- state <-> files ---------- */
+  function currentFiles() {
+    const f = {};
+    S.BASE_TYPE_IDS().forEach((t) => { f[fileOf(t)] = st.data[t] || []; });
+    f[CUSTOM_FILE] = [].concat(...S.FEATURES.map((ft) => st.data[ft.id] || []), st.orphans);
+    f[FEATURES_FILE] = st.cfg; f[SETTINGS_FILE] = st.settings;
+    return f;
+  }
+  function recordMap(filesObj, parse) {
+    const m = {};
+    Object.keys(filesObj).forEach((p) => {
+      if (p === FEATURES_FILE || p === SETTINGS_FILE) return;
+      (parse ? JSON.parse(filesObj[p] || '[]') : filesObj[p]).forEach((r) => { m[r.id] = JSON.stringify(r); });
+    });
+    return m;
+  }
+  function diff() {
+    const cur = currentFiles(), d = { added: 0, changed: 0, removed: 0, files: [] };
+    const a = recordMap(st.orig, true), b = recordMap(cur, false);
+    Object.keys(b).forEach((id) => { if (!a[id]) d.added++; else if (a[id] !== b[id]) d.changed++; });
+    Object.keys(a).forEach((id) => { if (!b[id]) d.removed++; });
+    Object.keys(cur).forEach((p) => { if (JSON.stringify(cur[p]) !== st.orig[p]) d.files.push(p); });
+    d.features = JSON.stringify(cur[FEATURES_FILE]) !== st.orig[FEATURES_FILE];
+    d.settings = JSON.stringify(cur[SETTINGS_FILE]) !== st.orig[SETTINGS_FILE];
+    d.n = d.added + d.changed + d.removed + (d.features ? 1 : 0) + (d.settings ? 1 : 0);
+    return d;
+  }
+  let chgSet = {};
+  function changedIds() {
+    const a = recordMap(st.orig, true), b = recordMap(currentFiles(), false), set = {};
+    Object.keys(b).forEach((id) => { if (a[id] !== b[id]) set[id] = 1; });
+    return set;
+  }
+
+  /* ---------- connect ---------- */
+  function loadFiles(files) {
+    const cfg = files[FEATURES_FILE] && typeof files[FEATURES_FILE] === 'object' && !Array.isArray(files[FEATURES_FILE]) ? files[FEATURES_FILE] : { features: [], extend: {} };
+    st.cfg = { features: cfg.features || [], extend: cfg.extend || {} };
+    S.configure(st.cfg);
+    st.data = {}; st.orphans = [];
+    S.TYPE_IDS.forEach((t) => { st.data[t] = []; });
+    S.BASE_TYPE_IDS().forEach((t) => { const a = files[fileOf(t)]; st.data[t] = Array.isArray(a) ? a : []; });
+    (Array.isArray(files[CUSTOM_FILE]) ? files[CUSTOM_FILE] : []).forEach((r) => { if (st.data[r.type] && isCustomType(r.type)) st.data[r.type].push(r); else st.orphans.push(r); });
+    st.settings = files[SETTINGS_FILE] && typeof files[SETTINGS_FILE] === 'object' && !Array.isArray(files[SETTINGS_FILE]) ? files[SETTINGS_FILE] : {};
+    st.orig = {}; const cur = currentFiles();
+    Object.keys(cur).forEach((p) => { st.orig[p] = JSON.stringify(cur[p]); });
+    try {
+      const w = JSON.parse(localStorage.getItem('cg-work') || 'null');
+      if (w && w.data && JSON.stringify([w.data, w.cfg, w.settings]) !== JSON.stringify([st.data, st.cfg, st.settings]) && confirm('You have unpublished changes saved on this device. Keep them? (Cancel discards them and uses the published data.)')) {
+        st.cfg = w.cfg || st.cfg; S.configure(st.cfg); st.data = w.data; st.orphans = w.orphans || []; st.settings = w.settings || st.settings;
+        S.TYPE_IDS.forEach((t) => { if (!st.data[t]) st.data[t] = []; });
+      } else localStorage.removeItem('cg-work');
+    } catch (e) { /* ignore */ }
+    st.ok = true;
+  }
+  function connect() {
+    st.api = ($('#c-api').value || '').trim().replace(/\/+$/, '');
+    st.key = $('#c-key').value;
+    if (!st.api || !st.key) { st.connectMsg = 'Enter the Worker URL and your Editor key.'; return render(); }
+    st.busy = true; st.connectMsg = 'Connecting…'; render();
+    fetch(st.api + '/api/source', { headers: { Authorization: 'Bearer ' + st.key } }).then((r) => {
+      if (r.status === 401 || r.status === 403) throw new Error('The Editor key was not accepted (or this Editor’s address is not allowed by the Worker).');
+      if (!r.ok) throw new Error('The Worker answered with an error (' + r.status + ').');
+      return r.json();
+    }).then((j) => {
+      localStorage.setItem('cg-api', st.api); sessionStorage.setItem('cg-key', st.key);
+      loadFiles(j.files || {}); st.busy = false; st.connectMsg = ''; render();
+    }).catch((e) => { st.busy = false; st.connectMsg = e.message === 'Failed to fetch' ? 'Could not reach the Worker. Check the URL and your connection.' : e.message; render(); });
+  }
+  function loadBundle(file) {
+    const rd = new FileReader();
+    rd.onload = () => {
+      try {
+        const j = JSON.parse(rd.result);
+        const files = j && j.format === 'campus-guide-source' ? j.files : j;
+        if (!files || typeof files !== 'object' || !Object.keys(files).some((k) => k.indexOf('data/source/') === 0)) throw new Error('Not a Campus Guide data.json file');
+        loadFiles(files); render();
+      } catch (e) { st.connectMsg = 'That file could not be read: ' + e.message; render(); }
+    };
+    rd.readAsText(file);
+  }
+  function disconnect() { sessionStorage.removeItem('cg-key'); st.key = ''; st.ok = false; render(); }
+
+  /* ---------- views ---------- */
+  function renderConnect() {
+    root.innerHTML = `<div class="bar"><div class="in"><h1>CAMPUS <b>GUIDE</b> Editor</h1></div></div><div class="wrap">
+      <div class="card"><h2>Connect</h2>
+        <p class="mu">Enter your publishing Worker address and your Editor key. The key is kept only for this browser tab.</p>
+        <div class="fld"><label for="c-api">Worker URL</label><input id="c-api" type="url" inputmode="url" placeholder="https://campus-guide-publish.your-name.workers.dev" value="${esc(st.api)}"></div>
+        <div class="fld"><label for="c-key">Editor key</label><input id="c-key" type="password" autocomplete="current-password" value="${esc(st.key)}"></div>
+        ${st.connectMsg ? `<div class="msg ${/Connecting/.test(st.connectMsg) ? 'ok' : 'err'}">${esc(st.connectMsg)}</div>` : ''}
+        <button class="btn p" data-act="connect" ${st.busy ? 'disabled' : ''}>Connect</button></div>
+      <div class="card"><h2>Work without the Worker</h2>
+        <p class="mu">Load your <code>data.json</code> to edit offline, then export it again and upload it to GitHub. Uploading images and documents needs the Worker.</p>
+        <input type="file" id="c-file" accept=".json,application/json">
+        <p><button class="btn sm" data-act="empty">Start with empty data</button></p></div></div>`;
+  }
+  function render() {
+    if (!st.ok) return renderConnect();
+    const d = diff();
+    chgSet = changedIds();
+    root.innerHTML = `<div class="bar"><div class="in"><h1>CAMPUS <b>GUIDE</b> Editor</h1>
+      <button class="btn ${d.n ? 'p' : ''}" data-act="goPublish">Publish${d.n ? ' (' + d.n + ')' : ''}</button></div></div>
+      <div class="wrap">${navHTML()}<div id="body">${bodyHTML(d)}</div></div>`;
+  }
+  function navHTML() {
+    const g = [['content', 'Content'], ['info', 'Information'], ['custom', 'Custom Features'], ['system', 'System']];
+    let chips = '';
+    if (st.grp === 'system') chips = SYS.map((s) => `<button data-act="sys" data-v="${s[0]}" aria-pressed="${st.sys === s[0]}">${s[1]}</button>`).join('');
+    else if (st.grp === 'custom') chips = ['features'].concat(typesOf('custom')).map((t) => `<button data-act="typ" data-v="${t}" aria-pressed="${st.typ === t}">${t === 'features' ? 'Features' : esc(tabLabel(t))}</button>`).join('');
+    else chips = ['all'].concat(typesOf(st.grp)).map((t) => `<button data-act="typ" data-v="${t}" aria-pressed="${st.typ === t}">${t === 'all' ? 'All' : esc(tabLabel(t))}</button>`).join('');
+    return `<div class="tabs g">${g.map((x) => `<button data-act="grp" data-v="${x[0]}" aria-pressed="${st.grp === x[0]}">${x[1]}</button>`).join('')}</div><div class="tabs">${chips}</div>`;
+  }
+  function bodyHTML(d) {
+    if (st.grp === 'system') return { images: imagesView, verification: verificationView, archive: archiveView, publish: publishView, settings: settingsView }[st.sys](d);
+    if (st.grp === 'custom' && (st.typ === 'features' || !S.TYPES[st.typ])) return featuresView();
+    const types = st.typ === 'all' ? typesOf(st.grp) : [st.typ];
+    const label = st.typ === 'all' ? 'record' : S.TYPES[st.typ].label.toLowerCase();
+    const canFields = st.typ !== 'all' && !isCustomType(st.typ);
+    return `<div class="tools"><input type="search" id="q" placeholder="Search ${esc(label)}s…" value="${esc(st.q)}" aria-label="Search records">
+      <select id="fs" aria-label="Status filter"><option value="">Any status</option>${Object.keys(LC).map((k) => `<option value="${k}" ${st.fs === k ? 'selected' : ''}>${LC[k]}</option>`).join('')}</select>
+      <select id="fv" aria-label="Verification filter"><option value="">Any verification</option>${Object.keys(S.VERIFY).map((k) => `<option value="${k}" ${st.fv === k ? 'selected' : ''}>${S.VERIFY[k]}</option>`).join('')}</select></div>
+      <button class="btn p full" data-act="new">+ New ${st.typ === 'all' ? 'record' : esc(label)}</button>
+      ${canFields ? '<p><button class="btn sm" data-act="fields">+ Add field to ' + esc(label) + 's…</button></p>' : ''}
+      ${isCustomType(st.typ) ? '<p><button class="btn sm" data-act="editFeature" data-id="' + esc(st.typ) + '">Edit this feature and its fields…</button></p>' : ''}
+      <ul class="list" id="listbox">${listHTML(types)}</ul>`;
+  }
+  function featuresView() {
+    return `<div class="card"><h2>Custom Features</h2><p class="mu">Create new kinds of campus information (for example Scholarship Opportunities) with your own fields. They are searchable and shown on the public site automatically, in the design Campus Guide already uses. No code needed.</p>
+      <button class="btn p full" data-act="newFeature">+ Add new feature</button></div>
+      <ul class="list">${S.FEATURES.map((ft) => `<li class="card"><b>${esc(ft.name)}</b>
+        <div class="badges"><span class="bd ${ft.status === 'hidden' ? 'archived' : 'active'}">${ft.status === 'hidden' ? 'Hidden' : 'Public'}</span><span class="bd">${ft.searchable === false ? 'Not searchable' : 'Searchable'}</span>${ft.home ? '<span class="bd">On homepage</span>' : ''}<span class="bd">${(st.data[ft.id] || []).length} record(s)</span><span class="bd">${(ft.fields || []).length} field(s)</span></div>
+        <p><button class="btn sm" data-act="typ" data-v="${esc(ft.id)}">Open records</button> <button class="btn sm" data-act="editFeature" data-id="${esc(ft.id)}">Edit feature</button></p></li>`).join('') || '<li class="empty">No custom features yet.</li>'}</ul>`;
+  }
+  function rowHTML(r, extra) {
+    const lc = lcOf(r), v = (r.verification || {}).status || 'unverified';
+    const chg = chgSet[r.id] ? '<span class="bd chg">unpublished change</span>' : '';
+    return `<li class="row"><button class="rowmain" data-act="edit" data-id="${esc(r.id)}"><b>${esc(r.title || '(untitled)')}</b><small>${esc(S.TYPES[r.type].label)}${r.subtitle ? ' · ' + esc(r.subtitle) : ''}</small>
+      <span class="badges"><span class="bd ${lc}">${LC[lc]}</span><span class="bd ver">${esc(S.VERIFY[v] || v)}</span>${r.image ? '<span class="bd">image</span>' : ''}${(r.files && r.files.length) || r.file ? '<span class="bd">file</span>' : ''}${r.expires ? `<span class="bd">${esc(fmtExp(r))}</span>` : ''}${chg}</span></button>${extra || ''}</li>`;
+  }
+  function listHTML(types) {
+    const q = norm(st.q), out = [];
+    types.forEach((t) => (st.data[t] || []).forEach((r) => {
+      if (st.fs && lcOf(r) !== st.fs) return;
+      if (st.fv && ((r.verification || {}).status || 'unverified') !== st.fv) return;
+      if (q && norm([r.title, r.subtitle, r.id, (r.keywords || []).join(' '), (r.aliases || []).join(' ')].join(' ')).indexOf(q) < 0) return;
+      out.push(r);
+    }));
+    out.sort((a, b) => String(a.title).localeCompare(String(b.title), undefined, { numeric: true }));
+    if (!out.length) return '<li class="empty">No records match. Use “+ New” to add one.</li>';
+    return out.slice(0, 200).map((r) => {
+      const lc = lcOf(r);
+      const act = lc === 'archived' || lc === 'expired' ? `<button class="btn sm" data-act="restore" data-id="${esc(r.id)}">Restore</button>` : `<button class="btn sm" data-act="archive" data-id="${esc(r.id)}">Archive</button>`;
+      return rowHTML(r, `<div class="rowact">${act}</div>`);
+    }).join('') + (out.length > 200 ? '<li class="empty">Showing 200 of ' + out.length + '. Refine your search.</li>' : '');
+  }
+
+  function usedKeys() {
+    const set = new Set();
+    const walk = (o) => {
+      if (typeof o === 'string') { if (S.isImageKey(o) || S.isDocKey(o)) set.add(o); }
+      else if (Array.isArray(o)) o.forEach(walk);
+      else if (o && typeof o === 'object') Object.values(o).forEach(walk);
+    };
+    walk(currentFiles());
+    return set;
+  }
+  function imagesView() {
+    const recs = allRecs().filter((r) => r.image);
+    const m = st.media;
+    const used = usedKeys();
+    const orphan = m ? m.objects.filter((o) => !/\.t\.[a-z]+$/.test(o.key) && !used.has(o.key)) : [];
+    return `<div class="card"><h2>Images and files</h2><p class="mu">Pictures and documents are uploaded to Campus Guide storage (not GitHub). ${recs.length} record(s) have a main image. Media address: ${esc(mediaBase() || 'not set yet (set automatically on first upload)')}</p>
+      <button class="btn sm" data-act="checkAll" ${recs.length ? '' : 'disabled'}>Check all images load</button>
+      <button class="btn sm" data-act="loadMedia" ${st.api ? '' : 'disabled'}>Show storage and unused files</button></div>
+      ${m ? `<div class="card"><h2>Storage</h2><p class="mu">${m.objects.length} stored objects, ${fmtSize(m.objects.reduce((a, o) => a + o.size, 0))}. Unused files (not used by any record):</p>
+        ${orphan.length ? orphan.map((o) => `<div class="mrow imgrow"><div class="tx">${esc(o.key)}<div class="mu">${fmtSize(o.size)}</div></div><button class="btn sm d" data-act="delMedia" data-key="${esc(o.key)}">Delete</button></div>`).join('') : '<p class="mu">No unused files.</p>'}</div>` : ''}
+      <ul class="list">${recs.map((r) => `<li class="card"><div class="imgrow"><img src="${esc(mediaUrl(r.image, 't'))}" alt="" loading="lazy" referrerpolicy="no-referrer"><div class="tx"><b>${esc(r.title)}</b><div class="mu">${esc(r.image)}</div>
+        <div class="mu" id="is-${esc(r.id)}">${esc(st.imgStatus[r.id] || '')}</div></div></div>
+        <p><button class="btn sm" data-act="check" data-id="${esc(r.id)}">Check</button> <button class="btn sm" data-act="edit" data-id="${esc(r.id)}">Edit</button></p></li>`).join('') || '<li class="empty">No records have a main image yet.</li>'}</ul>`;
+  }
+  function verificationView() {
+    const recs = allRecs().filter((r) => !S.isVerified((r.verification || {}).status || 'unverified'));
+    return `<div class="card"><h2>Needs verification</h2><p class="mu">Records are never verified automatically. Choose a status after you have checked the information.</p></div>
+      <ul class="list">${recs.map((r) => `<li class="card"><b>${esc(r.title)}</b> <span class="mu">· ${esc(S.TYPES[r.type].label)}</span>
+        <select data-act="setver" data-id="${esc(r.id)}" aria-label="Verification for ${esc(r.title)}">${Object.keys(S.VERIFY).map((k) => `<option value="${k}" ${((r.verification || {}).status || 'unverified') === k ? 'selected' : ''}>${S.VERIFY[k]}</option>`).join('')}</select></li>`).join('') || '<li class="empty">Everything is verified.</li>'}</ul>`;
+  }
+  function archiveView() {
+    const recs = allRecs().filter((r) => ['archived', 'expired'].indexOf(lcOf(r)) >= 0);
+    return `<div class="card"><h2>Archive and expired</h2><p class="mu">These records are not public. Restore puts them back; delete removes them permanently.</p></div>
+      <ul class="list">${recs.map((r) => rowHTML(r, `<div class="rowact"><button class="btn sm" data-act="restore" data-id="${esc(r.id)}">Restore</button><button class="btn sm d" data-act="del" data-id="${esc(r.id)}">Delete</button></div>`)).join('') || '<li class="empty">Nothing archived or expired.</li>'}</ul>`;
+  }
+  function settingsView() {
+    const s = st.settings;
+    return `<div class="card"><h2>Site settings</h2>
+      <div class="fld"><label for="s-uni">University</label><input id="s-uni" value="${esc(s.university)}"></div>
+      <div class="fld"><label for="s-campus">Campus</label><input id="s-campus" value="${esc(s.campus)}"></div>
+      <div class="fld"><label for="s-map">Map search suffix</label><input id="s-map" value="${esc(s.mapSuffix)}"><div class="hint">Added to place names when “Get Directions” searches the map, e.g. “Greenfield University, Main Campus”.</div></div>
+      <div class="fld"><label for="s-media">Media address</label><input id="s-media" value="${esc(s.mediaBase)}"><div class="hint">Where uploaded images and documents are served from. Set automatically on your first upload. Change it only if you move storage (for example to an R2 custom domain).</div></div>
+      <button class="btn p" data-act="saveSettings">Save settings</button></div>
+      <div class="card"><h2>Connection</h2><p class="mu">Worker: ${esc(st.api || 'not connected (offline mode)')}</p>
+      ${CFG.SITE ? `<p><a href="${esc(CFG.SITE)}" target="_blank" rel="noopener">Open public site</a></p>` : ''}
+      <button class="btn sm" data-act="reload">Reload published data (discard local changes)</button> <button class="btn sm" data-act="disconnect">Disconnect</button></div>`;
+  }
+  function publishView(d) {
+    const rep = st.report;
+    const list = (a) => `<ul>${a.slice(0, 30).map((e) => `<li><b>${esc(e.title || e.id)}</b> (${esc(e.type)}): ${esc(e.msg)}</li>`).join('')}${a.length > 30 ? `<li>…and ${a.length - 30} more</li>` : ''}</ul>`;
+    return `<div class="card"><h2>Publish</h2>
+      <p>${d.n ? `<b>${d.added}</b> added · <b>${d.changed}</b> changed · <b>${d.removed}</b> removed${d.features ? ' · custom features changed' : ''}${d.settings ? ' · settings changed' : ''}` : 'No unpublished changes.'}</p>
+      <p class="mu">Publishing sends your changes to the secure Worker, which checks them and commits them to GitHub. Cloudflare then rebuilds the public site (usually about a minute). Uploaded images and documents are already in storage.</p>
+      <p><button class="btn" data-act="validate">Check for problems</button> <button class="btn p" data-act="publish" ${d.n && !st.busy ? '' : 'disabled'}>${st.busy ? 'Publishing…' : 'Publish now'}</button></p>
+      <p><button class="btn sm" data-act="export">Export data.json (manual publish)</button></p></div>
+      ${rep ? (rep.errors.length ? `<div class="msg err"><b>${rep.errors.length} problem(s) must be fixed before publishing</b>${list(rep.errors)}</div>` : '<div class="msg ok">No blocking problems found.</div>') + (rep.warnings.length ? `<div class="msg warn"><b>${rep.warnings.length} warning(s)</b>${list(rep.warnings)}</div>` : '') : ''}
+      ${st.pubMsg ? `<div class="msg ${st.pubMsg.ok ? 'ok' : 'err'}">${st.pubMsg.html}</div>` : ''}`;
+  }
+
+  /* ---------- record form ---------- */
+  function blank(type) {
+    const ft = S.featureOf(type);
+    return {
+      id: '', type, title: '', subtitle: '', description: '', keywords: [], aliases: [], image: '', status: 'draft',
+      verification: { status: 'unverified', by: '', date: '', note: '' },
+      expires: type === 'live' ? S.expiryFromPreset('24h', Date.now()) : null,
+      university: st.settings.university || '', campus: st.settings.campus || '', related: [], updated: new Date().toISOString()
+    };
+  }
+  function refLabel(v) {
+    const ids = Array.isArray(v) ? v : v ? [v] : [];
+    if (!ids.length) return 'Choose…';
+    return ids.map((id) => { const r = find(id); return r ? r.title : id + ' (missing)'; }).join(', ');
+  }
+  function fieldHTML(fd, r, ctx) {
+    const id = 'f-' + fd.k, v = r[fd.k];
+    const lab = `<label for="${id}">${esc(fd.l)}${fd.req ? ' *' : ''}</label>`;
+    const wrap = (inner) => `<div class="fld" data-k="${fd.k}">${inner}</div>`;
+    switch (fd.t) {
+      case 'textarea': return wrap(`${lab}<textarea id="${id}">${esc(v)}</textarea>`);
+      case 'list': return wrap(`${lab}<textarea id="${id}" rows="4">${esc((v || []).join('\n'))}</textarea>`);
+      case 'select': return wrap(`${lab}<select id="${id}"><option value=""></option>${(fd.opts || []).map((o) => `<option ${v === o ? 'selected' : ''}>${esc(o)}</option>`).join('')}</select>`);
+      case 'checkbox': return wrap(`<span class="lbl">${esc(fd.l)}${fd.req ? ' *' : ''}</span><label class="chk"><input type="checkbox" id="${id}" ${v ? 'checked' : ''}> Yes</label>`);
+      case 'link': return wrap(`<span class="lbl">${esc(fd.l)}${fd.req ? ' *' : ''}</span><input id="${id}-l" type="text" placeholder="Button text, e.g. Apply now" value="${esc(v && v.l)}" aria-label="${esc(fd.l)} text"><input id="${id}-u" type="url" inputmode="url" placeholder="https://…" value="${esc(v && v.u)}" aria-label="${esc(fd.l)} address">`);
+      case 'image': ctx.vals[fd.k] = v || ''; return wrap(`<span class="lbl">${esc(fd.l)}${fd.req ? ' *' : ''}</span>${mwHTML(ctx, fd.k, 'image')}`);
+      case 'file': ctx.vals[fd.k] = v || null; return wrap(`<span class="lbl">${esc(fd.l)}${fd.req ? ' *' : ''}</span>${mwHTML(ctx, fd.k, 'file', fd.accept)}`);
+      case 'files': ctx.vals[fd.k] = (v || []).map(clone); return wrap(`<span class="lbl">${esc(fd.l)}</span>${mwHTML(ctx, fd.k, 'files')}<div class="hint">Each document is View only unless you choose Download allowed.</div>`);
+      case 'ref': case 'refs': return wrap(`<span class="lbl">${esc(fd.l)}${fd.req ? ' *' : ''}</span><button type="button" class="pick" data-pick="${fd.k}" id="pk-${fd.k}"></button>`);
+      default: {
+        const type = { email: 'email', phone: 'tel', url: 'url', date: 'date', time: 'time', number: 'number', datetime: 'datetime-local' }[fd.t] || 'text';
+        const val = fd.t === 'datetime' ? toLocalInput(v) : v;
+        return wrap(`${lab}<input id="${id}" type="${type}" ${fd.t === 'number' ? 'step="any"' : ''} value="${esc(val)}" ${fd.t === 'location' ? 'placeholder="Place or address"' : ''}>`);
+      }
+    }
+  }
+  function expiryHTML(r) {
+    const keep = r.expires ? `<option value="keep" selected>Keep: ${esc(fmtExp(r))}</option>` : '';
+    return `<div class="fld"><label for="f-exp">Expiration</label><select id="f-exp">${keep}${S.EXPIRY_PRESETS.map((p) => `<option value="${p[0]}" ${!r.expires && p[0] === 'never' ? 'selected' : ''}>${p[0] === 'never' || p[0] === 'custom' ? p[1] : 'Expires in ' + p[1]}</option>`).join('')}</select>
+      <input type="datetime-local" id="f-expc" hidden aria-label="Custom expiry"><div class="hint">Expired records leave the public site automatically and stay here so you can restore them.</div></div>`;
+  }
+
+  function openForm(type, id) {
+    const T = S.TYPES[type], ft = S.featureOf(type), isNew = !id;
+    const r = isNew ? blank(type) : clone(find(id));
+    r.verification = r.verification || { status: 'unverified' };
+    const ctx = { vals: { image: r.image || '' }, dl: ft && ft.download === 'download' };
+    const refs = { related: (r.related || []).slice() };
+    T.fields.forEach((fd) => { if (fd.t === 'ref') refs[fd.k] = r[fd.k] || ''; if (fd.t === 'refs') refs[fd.k] = (r[fd.k] || []).slice(); });
+    let idTouched = !isNew;
+    const v = r.verification;
+    const showVer = !ft || ft.verification !== false, showExp = !ft || ft.expiration !== false;
+    overlay.hidden = false;
+    overlay.innerHTML = `<div class="sheet"><div class="box">
+      <div class="hd"><h2>${isNew ? 'New' : 'Edit'} ${esc(T.label.toLowerCase())}</h2><button class="btn sm" data-x="cancel">Close</button></div>
+      <div id="ferr"></div>
+      <div class="fld"><label for="f-title">Title *</label><input id="f-title" value="${esc(r.title)}" autocomplete="off"></div>
+      <div class="fld"><label for="f-id">ID ${isNew ? '(created from the title)' : '(cannot change)'}</label><input id="f-id" value="${esc(r.id)}" ${isNew ? '' : 'readonly'} autocapitalize="off"></div>
+      <div class="fld"><label for="f-subtitle">Subtitle</label><input id="f-subtitle" value="${esc(r.subtitle)}"></div>
+      <div class="fld"><label for="f-description">Description</label><textarea id="f-description" rows="4">${esc(r.description)}</textarea></div>
+      <div class="sec">Details</div>${T.fields.filter((fd) => !fd.hidden).map((fd) => fieldHTML(fd, r, ctx)).join('') || '<p class="mu">This type has no extra fields.</p>'}
+      <div class="sec">Search</div>
+      <div class="fld"><label for="f-keywords">Keywords (comma or new line)</label><textarea id="f-keywords" rows="2">${esc((r.keywords || []).join(', '))}</textarea><div class="hint">Words students might type, e.g. finance, money, fees.</div></div>
+      <div class="fld"><label for="f-aliases">Aliases (comma or new line)</label><textarea id="f-aliases" rows="2">${esc((r.aliases || []).join(', '))}</textarea><div class="hint">Other names, e.g. burs, bursary office.</div></div>
+      <div class="sec">Main image</div>
+      <div class="fld">${mwHTML(ctx, 'image', 'image')}</div>
+      <div class="sec">Relationships</div>
+      <div class="fld"><span class="lbl">Related records</span><button type="button" class="pick" data-pick="related" id="pk-related"></button></div>
+      ${showVer ? `<div class="sec">Verification</div>
+      <div class="fld"><label for="f-vs">Status</label><select id="f-vs">${Object.keys(S.VERIFY).map((k) => `<option value="${k}" ${(v.status || 'unverified') === k ? 'selected' : ''}>${S.VERIFY[k]}</option>`).join('')}</select></div>
+      <div class="fld"><label for="f-vby">Verified by</label><input id="f-vby" value="${esc(v.by || st.verifier)}"></div>
+      <div class="fld"><label for="f-vdate">Verification date</label><input id="f-vdate" type="date" value="${esc(v.date)}"></div>
+      <div class="fld"><label for="f-vnote">Internal note (never public)</label><textarea id="f-vnote" rows="2">${esc(v.note)}</textarea></div>` : ''}
+      <div class="sec">Publishing</div>
+      <div class="fld"><label for="f-status">State</label><select id="f-status">${S.STATUSES.map((s) => `<option value="${s}" ${r.status === s ? 'selected' : ''}>${s === 'published' ? 'Published' : s === 'draft' ? 'Draft (unpublished)' : 'Archived'}</option>`).join('')}</select><div class="hint">Only Published records that have not expired reach the public site.</div></div>
+      ${showExp ? expiryHTML(r) : ''}
+      <details><summary class="mu">Advanced</summary><div class="fld"><label for="f-uni">University</label><input id="f-uni" value="${esc(r.university)}"></div><div class="fld"><label for="f-campus">Campus</label><input id="f-campus" value="${esc(r.campus)}"></div></details>
+      <div class="foot"><button class="btn p" data-x="save">Save</button><button class="btn" data-x="preview">Preview</button>${isNew ? '' : (lcOf(r) === 'archived' ? '<button class="btn" data-x="restore">Restore</button>' : '<button class="btn" data-x="archive">Archive</button>') + '<button class="btn d" data-x="del">Delete</button>'}</div>
+    </div></div>`;
+    const box = $('.box', overlay);
+    mwBind(box, ctx);
+    const g = (id2) => $('#' + id2, overlay);
+    const upd = () => {
+      T.fields.forEach((fd) => { const b = $('#pk-' + fd.k, overlay); if (b) b.textContent = refLabel(refs[fd.k]); });
+      g('pk-related').textContent = refLabel(refs.related);
+    };
+    upd();
+    if (showExp) g('f-exp').onchange = () => { g('f-expc').hidden = g('f-exp').value !== 'custom'; };
+    g('f-title').oninput = () => { if (!idTouched) g('f-id').value = isNew ? uniqueId(type, g('f-title').value) : r.id; };
+    g('f-id').oninput = () => { idTouched = true; };
+
+    const collect = () => {
+      const o = clone(r);
+      o.title = g('f-title').value.trim();
+      o.id = isNew ? g('f-id').value.trim() : r.id;
+      o.subtitle = g('f-subtitle').value.trim();
+      o.description = g('f-description').value.trim();
+      o.keywords = csv(g('f-keywords').value); o.aliases = csv(g('f-aliases').value);
+      o.image = ctx.vals.image || '';
+      o.status = g('f-status').value;
+      if (showVer) {
+        const vs = g('f-vs').value;
+        o.verification = { status: vs, by: g('f-vby').value.trim(), date: g('f-vdate').value, note: g('f-vnote').value.trim() };
+        if (S.isVerified(vs) && !o.verification.date) o.verification.date = today();
+      }
+      if (showExp) {
+        const ex = g('f-exp').value;
+        if (ex === 'never') o.expires = null;
+        else if (ex === 'custom') { const c = g('f-expc').value; o.expires = c ? new Date(c).toISOString() : 'invalid'; }
+        else if (ex !== 'keep') o.expires = S.expiryFromPreset(ex, Date.now());
+      } else o.expires = null;
+      o.university = g('f-uni').value.trim(); o.campus = g('f-campus').value.trim();
+      o.related = refs.related.slice();
+      T.fields.forEach((fd) => {
+        if (fd.hidden) return;
+        let val;
+        const el = g('f-' + fd.k);
+        if (fd.t === 'ref') val = refs[fd.k];
+        else if (fd.t === 'refs') val = refs[fd.k].slice();
+        else if (fd.t === 'list') val = lines(el.value);
+        else if (fd.t === 'number') val = el.value === '' ? '' : Number(el.value);
+        else if (fd.t === 'checkbox') val = el.checked;
+        else if (fd.t === 'link') { const u = g('f-' + fd.k + '-u').value.trim(), l = g('f-' + fd.k + '-l').value.trim(); val = u || l ? { l: l, u: u } : ''; }
+        else if (fd.t === 'datetime') val = el.value ? new Date(el.value).toISOString() : '';
+        else if (fd.t === 'image' || fd.t === 'file' || fd.t === 'files') val = ctx.vals[fd.k];
+        else val = el.value.trim();
+        if (fd.t === 'checkbox' ? val === false : isEmpty(val)) delete o[fd.k]; else o[fd.k] = val;
+      });
+      o.updated = new Date().toISOString();
+      return o;
+    };
+    const lookupFor = (rec) => { const m = {}; allRecs().forEach((x) => { m[x.id] = x.type; }); m[rec.id] = rec.type; return (i) => m[i]; };
+    const showErrs = (errs) => {
+      g('ferr').innerHTML = errs.length ? `<div class="msg err"><b>Fix these before saving:</b><ul>${errs.map((e) => `<li>${esc(e)}</li>`).join('')}</ul></div>` : '';
+      if (errs.length) g('ferr').scrollIntoView();
+    };
+    const save = () => {
+      const o = collect();
+      const errs = S.validateRecord(o, lookupFor(o));
+      if (o.expires === 'invalid') errs.push('Choose a custom expiry date and time');
+      if (isNew && find(o.id)) errs.push('That ID is already used by "' + find(o.id).title + '". Change the title or ID.');
+      showErrs(errs);
+      if (errs.length) return;
+      if (isNew && (st.data[type] || []).some((x) => norm(x.title) === norm(o.title)) && !confirm('A ' + T.label.toLowerCase() + ' called "' + o.title + '" already exists. Create another?')) return;
+      const arr = st.data[type] = st.data[type] || [];
+      const i = arr.findIndex((x) => x.id === o.id);
+      if (i >= 0) arr[i] = o; else arr.push(o);
+      if (S.isVerified(o.verification.status) && o.verification.by) { st.verifier = o.verification.by; localStorage.setItem('cg-verifier', st.verifier); }
+      saveWork(); closeOverlay(); toast('Saved. Publish to make it live.'); render();
+    };
+    box.addEventListener('click', (e) => {
+      const b = e.target.closest('button');
+      if (!b) return;
+      const k = b.getAttribute('data-pick');
+      if (k) {
+        const fd = T.fields.find((x) => x.k === k);
+        const types = k === 'related' || !fd.to ? S.TYPE_IDS : fd.to;
+        const multi = k === 'related' || fd.t === 'refs';
+        pick(types, refs[k], multi, k === 'related' ? 'Related records' : fd.l, r.id).then((sel) => { if (sel !== null) { refs[k] = sel; upd(); } });
+        return;
+      }
+      switch (b.getAttribute('data-x')) {
+        case 'cancel': closeOverlay(); break;
+        case 'save': save(); break;
+        case 'preview': previewSheet(collect(), T); break;
+        case 'archive': { const o = find(r.id); o.status = 'archived'; o.updated = new Date().toISOString(); saveWork(); closeOverlay(); toast('Archived'); render(); break; }
+        case 'restore': closeOverlay(); restore(r.id); break;
+        case 'del': closeOverlay(); del(r.id); break;
+      }
+    });
+    g('f-title').focus();
+  }
+  function closeOverlay() { overlay.hidden = true; overlay.innerHTML = ''; }
+  function uniqueId(type, title) {
+    const base = type + '-' + (S.slugify(title) || 'new');
+    let id = base, n = 2;
+    while (find(id)) id = base + '-' + n++;
+    return id;
+  }
+
+  /* ---------- preview (how the public page will present this record) ---------- */
+  function previewSheet(rec, T) {
+    const el = document.createElement('div');
+    el.className = 'sheet l2';
+    const facts = [], files = [], blocks = [];
+    T.fields.forEach((fd) => {
+      const v = rec[fd.k];
+      if (fd.hidden || fd.pub === false || isEmpty(v) || (fd.t === 'checkbox' && !v)) return;
+      if (fd.t === 'file') files.push(v);
+      else if (fd.t === 'files') v.forEach((f) => files.push(f));
+      else if (fd.t === 'textarea') blocks.push([fd.l, v]);
+      else if (fd.t === 'image') facts.push([fd.l, '(picture)']);
+      else if (fd.t === 'ref') facts.push([fd.l, (find(v) || {}).title || v]);
+      else if (fd.t === 'refs') facts.push([fd.l, v.map((i) => (find(i) || {}).title || i).join(', ')]);
+      else if (fd.t === 'checkbox') facts.push([fd.l, 'Yes']);
+      else if (fd.t === 'link') facts.push([fd.l, v.l || v.u]);
+      else if (fd.t === 'list') facts.push([fd.l, v.length + ' item(s)']);
+      else facts.push([fd.l, String(v)]);
+    });
+    const ver = rec.verification || {};
+    el.innerHTML = `<div class="box"><div class="hd"><h2>Preview</h2><button class="btn sm" data-p="close">Close</button></div>
+      <p class="mu">Approximate view of the public detail page. The final layout is generated when you publish.</p>
+      <div class="pv"><span class="kind">${esc(T.label)}</span><h3>${esc(rec.title || '(no title)')}</h3>${rec.subtitle ? `<div class="mu">${esc(rec.subtitle)}</div>` : ''}
+      ${S.isVerified(ver.status) ? `<div class="mu">✓ ${esc(S.VERIFY[ver.status])}${ver.by ? ' · by ' + esc(ver.by) : ''}</div>` : `<div class="mu">${esc(S.VERIFY[ver.status || 'unverified'])}</div>`}
+      ${rec.image ? `<img src="${esc(mediaUrl(rec.image, 'f'))}" alt="">` : ''}
+      ${rec.description ? `<p>${esc(rec.description)}</p>` : ''}
+      ${facts.length ? `<dl>${facts.map((f) => `<div><dt>${esc(f[0])}</dt><dd>${esc(f[1])}</dd></div>`).join('')}</dl>` : ''}
+      ${blocks.map((b) => `<h4>${esc(b[0])}</h4><p>${esc(b[1])}</p>`).join('')}
+      ${files.length ? '<h4>Documents</h4>' + files.map((f) => `<div class="doc"><span>${esc(f.n || f.k)}<br><span class="mu">${esc((f.t || '').toUpperCase())}${f.s ? ' · ' + fmtSize(f.s) : ''}</span></span><span class="bd ${f.dl ? 'active' : ''}">${f.dl ? 'Download button shown' : 'View only: no download button'}</span></div>`).join('') : ''}
+      </div></div>`;
+    document.body.appendChild(el);
+    el.onclick = (e) => { if (e.target.closest('[data-p]')) el.remove(); };
+  }
+
+  /* ---------- relationship picker ---------- */
+  function pick(types, current, multi, title, selfId) {
+    return new Promise((resolve) => {
+      const sel = new Set(Array.isArray(current) ? current : current ? [current] : []);
+      const el = document.createElement('div');
+      el.className = 'sheet l2';
+      el.innerHTML = `<div class="box"><div class="hd"><h2>${esc(title)}</h2><button class="btn sm" data-p="cancel">Cancel</button></div>
+        <div class="fld"><input type="search" id="pq" placeholder="Search…" aria-label="Search records"></div><div id="pl"></div>
+        <div class="foot"><button class="btn p" data-p="done">Done</button>${multi ? '' : '<button class="btn" data-p="clear">Clear</button>'}</div></div>`;
+      document.body.appendChild(el);
+      const draw = () => {
+        const q = norm($('#pq', el).value);
+        const items = [].concat(...types.map((t) => st.data[t] || [])).filter((r) => r.id !== selfId && (!q || norm(r.title + ' ' + (r.subtitle || '')).indexOf(q) >= 0))
+          .sort((a, b) => (sel.has(b.id) - sel.has(a.id)) || String(a.title).localeCompare(String(b.title), undefined, { numeric: true })).slice(0, 80);
+        $('#pl', el).innerHTML = items.map((r) => `<label class="pk"><input type="${multi ? 'checkbox' : 'radio'}" name="pk" value="${esc(r.id)}" ${sel.has(r.id) ? 'checked' : ''}><span>${esc(r.title)}<small>${esc(S.TYPES[r.type].label)}${r.subtitle ? ' · ' + esc(r.subtitle) : ''}</small></span></label>`).join('') || '<p class="empty">Nothing to choose from yet. Create those records first.</p>';
+      };
+      draw();
+      $('#pq', el).oninput = draw;
+      el.onchange = (e) => {
+        const i = e.target;
+        if (i.name !== 'pk') return;
+        if (!multi) sel.clear();
+        if (i.checked) sel.add(i.value); else sel.delete(i.value);
+      };
+      el.onclick = (e) => {
+        const b = e.target.closest('button');
+        if (!b) return;
+        const a = b.getAttribute('data-p');
+        el.remove();
+        if (a === 'cancel') resolve(null);
+        else if (a === 'clear') resolve(multi ? [] : '');
+        else resolve(multi ? Array.from(sel) : (Array.from(sel)[0] || ''));
+      };
+    });
+  }
+
+  /* ---------- Custom Features + Custom Field builder ---------- */
+  const newFeature = () => ({ id: '', name: '', singular: '', description: '', category: 'information', status: 'published', searchable: true, home: false, sort: 0, verification: true, expiration: true, download: 'view', icon: '', fields: [] });
+  function fieldInUse(ownerType, k) { return (st.data[ownerType] || []).some((r) => !isEmpty(r[k]) && r[k] !== false); }
+  function fieldCardHTML(f, i, ownerType, n) {
+    const inUse = !f._new && ownerType && fieldInUse(ownerType, f.k);
+    const kinds = S.safeKinds(f.t, inUse);
+    const types = S.TYPE_IDS.filter((t) => t !== ownerType);
+    return `<div class="fc" data-i="${i}"><div class="fch"><b>Field ${i + 1}</b><span><button type="button" class="btn sm" data-fb="up" ${i === 0 ? 'disabled' : ''} aria-label="Move up">↑</button><button type="button" class="btn sm" data-fb="down" ${i === n - 1 ? 'disabled' : ''} aria-label="Move down">↓</button><button type="button" class="btn sm d" data-fb="del" aria-label="Delete field">✕</button></span></div>
+      <input type="text" class="fl" value="${esc(f.l)}" placeholder="Field name, e.g. Deadline" aria-label="Field name">
+      <select class="ft" aria-label="Field type">${S.BUILDER_KINDS.filter((k) => kinds.indexOf(k[0]) >= 0).map((k) => `<option value="${k[0]}" ${f.t === k[0] ? 'selected' : ''}>${k[1]}</option>`).join('')}</select>
+      ${inUse ? '<div class="hint">Some records already have data here, so only compatible types are offered.</div>' : ''}
+      <label class="chk"><input type="checkbox" class="freq" ${f.req ? 'checked' : ''}> Required</label><label class="chk"><input type="checkbox" class="fpub" ${f.pub !== false ? 'checked' : ''}> Show on public page</label><label class="chk"><input type="checkbox" class="fhid" ${f.hidden ? 'checked' : ''}> Hidden</label>
+      ${f.t === 'select' ? `<textarea class="fopts" rows="3" placeholder="One option per line" aria-label="Options">${esc((f.opts || []).join('\n'))}</textarea>` : ''}
+      ${f.t === 'related' ? `<select class="fto" aria-label="Related record type"><option value="">Any record</option>${types.map((t) => `<option value="${t}" ${(f.to || [])[0] === t ? 'selected' : ''}>${esc(S.TYPES[t].label)}</option>`).join('')}</select><label class="chk"><input type="checkbox" class="fmulti" ${f.multi ? 'checked' : ''}> Allow several</label>` : ''}
+    </div>`;
+  }
+  function openFeature(id, extType) {
+    const isExt = !!extType;
+    let ft = isExt ? { id: extType, fields: ((st.cfg.extend || {})[extType] || []).map(clone) } : id ? clone(S.featureOf(id)) : newFeature();
+    const isNew = !isExt && !id;
+    const ownerType = isExt ? extType : isNew ? null : ft.id;
+    const ctx = { vals: { icon: ft.icon || '' }, dl: false };
+    const title = isExt ? 'Fields of ' + S.TYPES[extType].label : isNew ? 'New custom feature' : 'Edit feature';
+    overlay.hidden = false;
+    const draw = () => {
+      const feat = isExt ? '' : `
+        <div class="fld"><label for="cf-name">Feature name *</label><input id="cf-name" value="${esc(ft.name)}" placeholder="e.g. Scholarship Opportunities"></div>
+        <div class="fld"><label for="cf-sing">Name of one item</label><input id="cf-sing" value="${esc(ft.singular)}" placeholder="e.g. Scholarship"></div>
+        <div class="fld"><label for="cf-desc">Description</label><textarea id="cf-desc" rows="2">${esc(ft.description)}</textarea></div>
+        <div class="fld"><label for="cf-cat">Public category (filter)</label><select id="cf-cat">${S.GROUPS.slice(1).map((g) => `<option value="${g.id}" ${ft.category === g.id ? 'selected' : ''}>${esc(g.label)}</option>`).join('')}</select><div class="hint">Where it appears under the public filters. "Information" suits most new features.</div></div>
+        <div class="fld"><span class="lbl">Icon / image (optional)</span>${mwHTML(ctx, 'icon', 'image')}</div>
+        <div class="fld"><label for="cf-status">Visibility</label><select id="cf-status"><option value="published" ${ft.status !== 'hidden' ? 'selected' : ''}>Public</option><option value="hidden" ${ft.status === 'hidden' ? 'selected' : ''}>Hidden (not on the public site)</option></select></div>
+        <label class="chk"><input type="checkbox" id="cf-search" ${ft.searchable !== false ? 'checked' : ''}> Searchable</label>
+        <label class="chk"><input type="checkbox" id="cf-home" ${ft.home ? 'checked' : ''}> Show on homepage</label>
+        <label class="chk"><input type="checkbox" id="cf-ver" ${ft.verification !== false ? 'checked' : ''}> Verification</label>
+        <label class="chk"><input type="checkbox" id="cf-exp" ${ft.expiration !== false ? 'checked' : ''}> Expiration</label>
+        <div class="fld"><label for="cf-sort">Sort order (homepage)</label><input id="cf-sort" type="number" value="${esc(ft.sort || 0)}"></div>
+        <div class="fld"><label for="cf-dl">Download permission for new files</label><select id="cf-dl"><option value="view" ${ft.download !== 'download' ? 'selected' : ''}>View only (default)</option><option value="download" ${ft.download === 'download' ? 'selected' : ''}>Download allowed</option></select><div class="hint">Each file can still be changed individually.</div></div>`;
+      overlay.innerHTML = `<div class="sheet"><div class="box"><div class="hd"><h2>${esc(title)}</h2><button class="btn sm" data-c="cancel">Close</button></div>
+        <div id="cferr"></div>${feat}
+        <div class="sec">Fields</div><div id="cfields">${ft.fields.map((f, i) => fieldCardHTML(f, i, ownerType, ft.fields.length)).join('') || '<p class="mu">No fields yet. Every item always has a title, description, keywords, image, verification and expiry; add the extra information it needs.</p>'}</div>
+        <p><button type="button" class="btn p full" data-c="addField">+ Add field</button></p>
+        <div class="foot"><button class="btn p" data-c="save">Save</button>${isNew || isExt ? '' : '<button class="btn d" data-c="delete">Delete feature</button>'}</div></div></div>`;
+      mwBind($('.box', overlay), ctx);
+    };
+    // read the field cards back into ft.fields (so nothing typed is lost when the list is redrawn)
+    const sync = () => {
+      $('#cfields', overlay).querySelectorAll('.fc').forEach((c) => {
+        const f = ft.fields[+c.dataset.i];
+        f.l = $('.fl', c).value.trim(); f.t = $('.ft', c).value;
+        f.req = $('.freq', c).checked; f.pub = $('.fpub', c).checked; f.hidden = $('.fhid', c).checked;
+        if (f.t === 'select') f.opts = lines(($('.fopts', c) || { value: (f.opts || []).join('\n') }).value); else delete f.opts;
+        if (f.t === 'related') { const to = $('.fto', c) ? $('.fto', c).value : ''; f.to = to ? [to] : []; f.multi = $('.fmulti', c) ? $('.fmulti', c).checked : !!f.multi; } else { delete f.to; delete f.multi; }
+      });
+    };
+    const read = () => {
+      if (isExt) return;
+      ft.name = $('#cf-name', overlay).value.trim(); ft.singular = $('#cf-sing', overlay).value.trim(); ft.description = $('#cf-desc', overlay).value.trim();
+      ft.category = $('#cf-cat', overlay).value; ft.status = $('#cf-status', overlay).value; ft.searchable = $('#cf-search', overlay).checked; ft.home = $('#cf-home', overlay).checked;
+      ft.verification = $('#cf-ver', overlay).checked; ft.expiration = $('#cf-exp', overlay).checked; ft.sort = Number($('#cf-sort', overlay).value) || 0;
+      ft.download = $('#cf-dl', overlay).value; ft.icon = ctx.vals.icon || '';
+    };
+    const showErr = (errs) => { $('#cferr', overlay).innerHTML = errs.length ? `<div class="msg err"><b>Fix these first:</b><ul>${errs.map((e) => `<li>${esc(e)}</li>`).join('')}</ul></div>` : ''; if (errs.length) $('#cferr', overlay).scrollIntoView(); };
+    const keyFor = (f) => {
+      const base = 'c_' + (S.slugify(f.l).replace(/-/g, '_').slice(0, 24) || 'field');
+      let k = base, n = 2;
+      while (ft.fields.some((x) => x !== f && x.k === k) || (isExt && S.TYPES[extType].fields.some((x) => x.k === k && !ft.fields.some((y) => y.k === k)))) k = base + '_' + n++;
+      return k;
+    };
+    const saveIt = () => {
+      read(); sync();
+      const errs = [];
+      ft.fields.forEach((f) => { if (f._new) { f.k = keyFor(f); } });
+      ft.fields.forEach((f) => { delete f._new; if (!f.l) errs.push('Every field needs a name.'); });
+      if (!isExt) {
+        if (!ft.name) errs.push('Give the feature a name.');
+        if (isNew) {
+          ft.id = S.slugify(ft.name).slice(0, 30);
+          if (!ft.id) errs.push('The name needs letters or numbers.');
+          else if (S.TYPES[ft.id] || S.RESERVED.indexOf(ft.id) >= 0) errs.push('A feature or type called "' + ft.id + '" already exists. Choose another name.');
+        }
+        if (!ft.singular) ft.singular = ft.name;
+      }
+      const draft = clone(st.cfg);
+      if (isExt) { draft.extend = draft.extend || {}; if (ft.fields.length) draft.extend[extType] = ft.fields; else delete draft.extend[extType]; }
+      else { draft.features = draft.features || []; const i = draft.features.findIndex((x) => x.id === ft.id); if (i >= 0) draft.features[i] = ft; else draft.features.push(ft); }
+      S.validateConfig(draft).forEach((m) => errs.push(m));
+      showErr([...new Set(errs)]);
+      if (errs.length) return;
+      // fields removed from a feature: drop their stored values
+      const owner = isExt ? extType : ft.id;
+      const keep = new Set(ft.fields.map((f) => f.k));
+      const oldFields = isExt ? ((st.cfg.extend || {})[extType] || []) : ((S.featureOf(ft.id) || {}).fields || []);
+      oldFields.forEach((of) => { if (!keep.has(of.k)) (st.data[owner] || []).forEach((r) => { delete r[of.k]; }); });
+      st.cfg = draft; S.configure(st.cfg);
+      if (!st.data[owner]) st.data[owner] = [];
+      saveWork(); closeOverlay(); toast('Saved. Publish to make it live.');
+      if (!isExt) { st.grp = 'custom'; st.typ = 'features'; }
+      render();
+    };
+    draw();
+    overlay.onclick = (e) => {
+      const b = e.target.closest('button');
+      if (!b) return;
+      const c = b.dataset.c, fb = b.dataset.fb;
+      if (c === 'cancel') closeOverlay();
+      else if (c === 'save') saveIt();
+      else if (c === 'addField') { read(); sync(); ft.fields.push({ k: 'c_new_' + ft.fields.length, l: '', t: 'text', req: false, pub: true, hidden: false, _new: true }); draw(); }
+      else if (c === 'delete') {
+        if ((st.data[ft.id] || []).length) { showErr(['This feature still has ' + st.data[ft.id].length + ' record(s). Delete or archive them first, or set the feature to Hidden instead.']); return; }
+        if (!confirm('Delete the feature "' + ft.name + '"?')) return;
+        st.cfg.features = st.cfg.features.filter((x) => x.id !== ft.id); delete st.data[ft.id]; S.configure(st.cfg);
+        saveWork(); closeOverlay(); st.typ = 'features'; toast('Feature deleted. Publish to apply.'); render();
+      } else if (fb) {
+        read(); sync();
+        const i = +b.closest('.fc').dataset.i;
+        if (fb === 'del') {
+          const f = ft.fields[i];
+          if (!f._new && ownerType && fieldInUse(ownerType, f.k) && !confirm('Records already have data in "' + f.l + '". Deleting the field removes that data when you save. Continue?')) return;
+          ft.fields.splice(i, 1);
+        } else { const j = fb === 'up' ? i - 1 : i + 1; [ft.fields[i], ft.fields[j]] = [ft.fields[j], ft.fields[i]]; }
+        draw();
+      }
+    };
+    overlay.onchange = (e) => {
+      if (e.target.classList && e.target.classList.contains('ft')) { read(); sync(); draw(); }
+    };
+  }
+
+  /* ---------- actions ---------- */
+  function chooseType() {
+    const types = st.typ === 'all' ? typesOf(st.grp) : [st.typ];
+    if (types.length === 1) return openForm(types[0], null);
+    overlay.hidden = false;
+    overlay.innerHTML = `<div class="sheet"><div class="box"><div class="hd"><h2>What are you adding?</h2><button class="btn sm" data-x="cancel">Cancel</button></div>
+      ${types.map((t) => `<p><button class="btn full" data-t="${t}">${esc(S.TYPES[t].label)}</button></p>`).join('')}</div></div>`;
+    overlay.onclick = (e) => {
+      const b = e.target.closest('button');
+      if (!b) return;
+      if (b.getAttribute('data-t')) { closeOverlay(); openForm(b.getAttribute('data-t'), null); } else closeOverlay();
+    };
+  }
+  function archive(id) { const r = find(id); r.status = 'archived'; r.updated = new Date().toISOString(); saveWork(); toast('Archived'); render(); }
+  function restore(id) {
+    const r = find(id);
+    if (r.expires && Date.parse(r.expires) <= Date.now()) {
+      const k = (prompt('This record has expired. Keep it live for how long?\nType one: never, 5m, 30m, 1h, 6h, 24h, 3d, 7d', 'never') || '').trim();
+      if (!k) return;
+      if (k === 'never') r.expires = null;
+      else if (S.expiryFromPreset(k, Date.now())) r.expires = S.expiryFromPreset(k, Date.now());
+      else { toast('Not a valid option'); return; }
+    }
+    r.status = 'published'; r.updated = new Date().toISOString();
+    saveWork(); toast('Restored. Publish to make it live.'); render();
+  }
+  function del(id) {
+    const r = find(id);
+    if (!r || !confirm('Delete "' + r.title + '" permanently? This cannot be undone once published. (Archive keeps it.)')) return;
+    st.data[r.type] = st.data[r.type].filter((x) => x.id !== id);
+    let cleaned = 0;
+    allRecs().forEach((o) => {
+      S.refFields(o.type).forEach((fd) => {
+        if (fd.t === 'ref' && o[fd.k] === id) { delete o[fd.k]; cleaned++; }
+        if (fd.t === 'refs' && (o[fd.k] || []).indexOf(id) >= 0) { o[fd.k] = o[fd.k].filter((x) => x !== id); cleaned++; }
+      });
+      if ((o.related || []).indexOf(id) >= 0) { o.related = o.related.filter((x) => x !== id); cleaned++; }
+    });
+    saveWork(); toast('Deleted' + (cleaned ? ' and removed ' + cleaned + ' link(s) to it' : '')); render();
+  }
+  function buildData() {
+    const d = {}; S.TYPE_IDS.forEach((t) => { d[t] = st.data[t] || []; }); d.__orphans = st.orphans;
+    return d;
+  }
+  function validate() {
+    const cfgErr = S.validateConfig(st.cfg).map((m) => ({ id: 'features', type: 'config', msg: m }));
+    const rep = S.validateAll(buildData(), Date.now());
+    rep.errors = cfgErr.concat(rep.errors);
+    st.report = rep; st.pubMsg = null; render();
+    return rep;
+  }
+  function publish() {
+    const rep = validate();
+    if (rep.errors.length) { toast('Fix the problems first'); return; }
+    if (!st.api) { st.pubMsg = { ok: false, html: 'Not connected to a Worker. Use “Export data.json” to publish manually.' }; render(); return; }
+    const d = diff(), cur = currentFiles(), files = {};
+    d.files.forEach((p) => { files[p] = cur[p]; });
+    st.busy = true; st.pubMsg = null; render();
+    fetch(st.api + '/api/publish', {
+      method: 'POST', headers: { Authorization: 'Bearer ' + st.key, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: 'Campus Guide: update ' + d.n + ' item(s)', files })
+    }).then((r) => r.json().catch(() => ({})).then((j) => ({ r, j }))).then(({ r, j }) => {
+      st.busy = false;
+      if (!r.ok || !j.ok) { st.pubMsg = { ok: false, html: '<b>Publishing failed.</b> ' + esc(j.error || 'The Worker answered with status ' + r.status + '.') + ' Your changes are still saved here; nothing was lost.' }; return render(); }
+      const now = currentFiles(); st.orig = {}; Object.keys(now).forEach((p) => { st.orig[p] = JSON.stringify(now[p]); });
+      localStorage.removeItem('cg-work');
+      st.pubMsg = { ok: true, html: '<b>Published.</b> ' + (j.unchanged ? 'GitHub already had these changes.' : 'Commit ' + esc(String(j.commit || '').slice(0, 7)) + ' saved to GitHub.') + ' Cloudflare is now deploying; the public site usually updates within a minute.' + (CFG.SITE ? ' <a href="' + esc(CFG.SITE) + '" target="_blank" rel="noopener">Open public site</a>' : '') };
+      render();
+    }).catch(() => { st.busy = false; st.pubMsg = { ok: false, html: '<b>Publishing failed.</b> Could not reach the Worker. Check your connection and the Worker URL. Your changes are still saved here.' }; render(); });
+  }
+  function exportBundle() {
+    const blob = new Blob([JSON.stringify(currentFiles(), null, 2)], { type: 'application/json' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob); a.download = 'data.json'; document.body.appendChild(a); a.click(); a.remove();
+    toast('data.json downloaded. Upload it to your GitHub repository, replacing the old data.json.');
+  }
+  function checkImage(url) {
+    return new Promise((resolve) => {
+      const im = new Image(); let done = false;
+      const end = (ok) => { if (!done) { done = true; resolve(ok); } };
+      im.onload = () => end(true); im.onerror = () => end(false);
+      im.referrerPolicy = 'no-referrer'; im.src = url;
+      setTimeout(() => end(false), 10000);
+    });
+  }
+  function checkImgFor(id) {
+    const r = find(id); st.imgStatus[id] = 'Checking…'; const el = $('#is-' + id); if (el) el.textContent = 'Checking…';
+    return checkImage(mediaUrl(r.image, 'f')).then((ok) => { st.imgStatus[id] = ok ? 'OK: loads correctly' : 'BROKEN: could not load'; const e2 = $('#is-' + id); if (e2) e2.textContent = st.imgStatus[id]; });
+  }
+  function loadMedia() {
+    fetch(st.api + '/api/media', { headers: { Authorization: 'Bearer ' + st.key } }).then((r) => r.json()).then((j) => {
+      if (!j.ok) throw new Error(j.error || 'failed');
+      st.media = j; if (j.base && !st.lastBase) st.lastBase = j.base; render();
+    }).catch((e) => toast('Could not read storage: ' + e.message));
+  }
+  function deleteMedia(key) {
+    if (!confirm('Delete this unused file from storage?')) return;
+    fetch(st.api + '/api/media/delete', { method: 'POST', headers: { Authorization: 'Bearer ' + st.key, 'Content-Type': 'application/json' }, body: JSON.stringify({ keys: [key] }) })
+      .then((r) => r.json()).then((j) => { if (!j.ok) throw new Error(j.error || 'failed'); toast(j.deleted.length ? 'Deleted' : 'Kept: it is still used by published data'); loadMedia(); })
+      .catch((e) => toast('Could not delete: ' + e.message));
+  }
+
+  /* ---------- events ---------- */
+  root.addEventListener('click', (e) => {
+    const b = e.target.closest('[data-act]');
+    if (!b) return;
+    const a = b.getAttribute('data-act'), id = b.getAttribute('data-id'), v = b.getAttribute('data-v');
+    switch (a) {
+      case 'connect': connect(); break;
+      case 'empty': loadFiles({}); render(); break;
+      case 'grp': st.grp = v; st.typ = v === 'custom' ? 'features' : 'all'; st.q = ''; st.fs = ''; st.fv = ''; render(); break;
+      case 'typ': st.typ = v; render(); break;
+      case 'sys': st.sys = v; render(); break;
+      case 'goPublish': st.grp = 'system'; st.sys = 'publish'; render(); break;
+      case 'new': chooseType(); break;
+      case 'newFeature': openFeature(null); break;
+      case 'editFeature': openFeature(id); break;
+      case 'fields': openFeature(null, st.typ); break;
+      case 'edit': openForm(find(id).type, id); break;
+      case 'archive': archive(id); break;
+      case 'restore': restore(id); break;
+      case 'del': del(id); break;
+      case 'validate': validate(); break;
+      case 'publish': publish(); break;
+      case 'export': exportBundle(); break;
+      case 'check': checkImgFor(id); break;
+      case 'checkAll': allRecs().filter((r) => r.image).reduce((p, r) => p.then(() => checkImgFor(r.id)), Promise.resolve()); break;
+      case 'loadMedia': loadMedia(); break;
+      case 'delMedia': deleteMedia(b.getAttribute('data-key')); break;
+      case 'saveSettings': st.settings = { university: $('#s-uni').value.trim(), campus: $('#s-campus').value.trim(), mapSuffix: $('#s-map').value.trim(), mediaBase: $('#s-media').value.trim() }; Object.keys(st.settings).forEach((k) => { if (!st.settings[k]) delete st.settings[k]; }); saveWork(); toast('Settings saved. Publish to apply.'); render(); break;
+      case 'reload': if (confirm('Discard all unpublished changes on this device and reload the published data?')) { localStorage.removeItem('cg-work'); st.ok = false; renderConnect(); $('#c-api').value = st.api; $('#c-key').value = st.key; connect(); } break;
+      case 'disconnect': disconnect(); break;
+    }
+  });
+  root.addEventListener('input', (e) => {
+    if (e.target.id === 'q') { st.q = e.target.value; $('#listbox').innerHTML = listHTML(st.typ === 'all' ? typesOf(st.grp) : [st.typ]); }
+  });
+  root.addEventListener('change', (e) => {
+    const t = e.target;
+    if (t.id === 'fs') { st.fs = t.value; render(); }
+    else if (t.id === 'fv') { st.fv = t.value; render(); }
+    else if (t.id === 'c-file' && t.files[0]) loadBundle(t.files[0]);
+    else if (t.getAttribute && t.getAttribute('data-act') === 'setver') {
+      const r = find(t.getAttribute('data-id'));
+      let by = (r.verification || {}).by || '';
+      if (S.isVerified(t.value)) {
+        by = prompt('Verified by (name of the person or office who confirmed this):', by || st.verifier);
+        if (!by || !by.trim()) { render(); return; }
+        st.verifier = by.trim(); localStorage.setItem('cg-verifier', st.verifier);
+      }
+      r.verification = { status: t.value, by: by.trim(), date: S.isVerified(t.value) ? today() : '', note: (r.verification || {}).note || '' };
+      r.updated = new Date().toISOString(); saveWork(); toast('Verification updated'); render();
+    }
+  });
+  window.addEventListener('beforeunload', (e) => { if (st.ok && diff().n) { e.preventDefault(); e.returnValue = ''; } });
+  window.__cgEditor = { state: st, S: S }; // test hook (read-only use)
+
+  render();
+  if (st.api && st.key) connect(); // resume this tab's session
+})();
+##### END FILE #####
+
+##### FILE: editor/schema.js #####
+/*
+ * Campus Guide — shared schema.
+ * One definition of record types, fields, relationships, lifecycle and validation.
+ * Works in Node (build tools, tests, dev server) and in the browser (Editor).
+ * The public website does NOT load this file.
+ */
+(function (root, factory) {
+  if (typeof module === 'object' && module.exports) module.exports = factory();
+  else root.CGSchema = factory();
+})(typeof self !== 'undefined' ? self : this, function () {
+  'use strict';
+
+  var f = function (k, l, t, o) {
+    var x = { k: k, l: l, t: t };
+    if (o) for (var i in o) x[i] = o[i];
+    return x;
+  };
+  // ref / refs: relationship by record ID. `l` = label on this record, `rev` = label shown on the target record.
+  var ref = function (k, l, to, rev, multi) {
+    return f(k, l, multi ? 'refs' : 'ref', { to: to, rev: rev });
+  };
+
+  var BASE = {
+    // ---------- CONTENT ----------
+    office: { label: 'Office', plural: 'offices', group: 'content', fields: [
+      ref('building', 'Building', ['building'], 'Offices inside'),
+      f('floor', 'Floor', 'text'), f('room', 'Room', 'text'),
+      f('hours', 'Opening hours', 'text'), f('phone', 'Phone', 'phone'), f('email', 'Email', 'email'),
+      ref('services', 'Services offered', ['service'], 'Offered by', true),
+      f('bring', 'What students should bring (one per line)', 'list'),
+      f('directions', 'Directions', 'textarea')]},
+    lecturer: { label: 'Lecturer', plural: 'lecturers', group: 'content', fields: [
+      ref('department', 'Department', ['department'], 'Lecturers'),
+      f('role', 'Role', 'text'),
+      ref('office', 'Office', ['office'], 'Lecturers'),
+      ref('courses', 'Courses taught', ['course'], 'Lecturers', true),
+      f('email', 'Email', 'email'), f('phone', 'Phone', 'phone'),
+      f('bio', 'Biography', 'textarea')]},
+    course: { label: 'Course', plural: 'courses', group: 'content', fields: [
+      ref('department', 'Department', ['department'], 'Courses'),
+      f('level', 'Level', 'text'), f('semester', 'Semester', 'text'),
+      ref('lecturers', 'Lecturers', ['lecturer'], 'Courses taught', true)]},
+    department: { label: 'Department', plural: 'departments', group: 'content', fields: [
+      ref('faculty', 'Faculty', ['faculty'], 'Departments'),
+      ref('hod', 'Head of department', ['lecturer'], 'Head of'),
+      ref('office', 'Office', ['office'], 'Department'),
+      f('phone', 'Phone', 'phone'), f('email', 'Email', 'email')]},
+    faculty: { label: 'Faculty', plural: 'faculties', group: 'content', fields: [
+      ref('dean', 'Dean', ['lecturer'], 'Dean of'),
+      ref('office', 'Office', ['office'], 'Faculty'),
+      f('phone', 'Phone', 'phone'), f('email', 'Email', 'email')]},
+    service: { label: 'Service', plural: 'services', group: 'content', fields: [
+      ref('office', 'Offered by', ['office'], 'Services offered'),
+      f('hours', 'Opening hours', 'text'), f('phone', 'Phone', 'phone'), f('email', 'Email', 'email'),
+      f('link', 'Link', 'url')]},
+    building: { label: 'Building', plural: 'buildings', group: 'content', fields: [
+      f('address', 'Address', 'text'), f('lat', 'Latitude', 'number'), f('lng', 'Longitude', 'number'),
+      f('directions', 'Directions', 'textarea')]},
+    location: { label: 'Location', plural: 'locations', group: 'content', fields: [
+      ref('building', 'Building', ['building'], 'Locations'),
+      f('address', 'Address', 'text'), f('lat', 'Latitude', 'number'), f('lng', 'Longitude', 'number'),
+      f('directions', 'Directions', 'textarea')]},
+    // ---------- INFORMATION ----------
+    admission: { label: 'Admission', plural: 'admissions', group: 'info', fields: [
+      f('level', 'Level', 'select', { opts: ['Undergraduate', 'Postgraduate', 'Direct Entry', 'Other'] }),
+      f('deadline', 'Deadline', 'date'),
+      f('requirements', 'Requirements (one per line)', 'list'),
+      f('link', 'Link', 'url'), f('email', 'Email', 'email'), f('phone', 'Phone', 'phone'),
+      f('files', 'Documents', 'files')]},
+    fee: { label: 'School Fees', plural: 'fees', group: 'info', fields: [
+      f('session', 'Session', 'text'), f('amount', 'Amount', 'text'),
+      f('steps', 'How to pay (one step per line)', 'list'),
+      ref('office', 'Office', ['office'], 'Fees information'),
+      f('link', 'Link', 'url'),
+      f('files', 'Documents', 'files')]},
+    timetable: { label: 'Timetable', plural: 'timetables', group: 'info', fields: [
+      ref('department', 'Department', ['department'], 'Timetables'),
+      ref('course', 'Course', ['course'], 'Timetable'),
+      f('level', 'Level', 'text'), f('semester', 'Semester', 'text'),
+      f('slots', 'Slots (one per line: Day | Time | Course | Venue)', 'list'),
+      f('files', 'Documents', 'files')]},
+    calendar: { label: 'Academic Calendar', plural: 'calendars', group: 'info', fields: [
+      f('session', 'Session', 'text'),
+      f('entries', 'Entries (one per line: Date | Event)', 'list'),
+      f('files', 'Documents', 'files')]},
+    announcement: { label: 'Announcement', plural: 'announcements', group: 'info', fields: [
+      f('date', 'Date', 'date'), f('source', 'Author / source', 'text'),
+      f('priority', 'Priority', 'select', { opts: ['normal', 'important'] }),
+      f('link', 'Link', 'url'),
+      f('files', 'Documents', 'files')]},
+    event: { label: 'Event', plural: 'events', group: 'info', fields: [
+      f('date', 'Date', 'date'), f('startTime', 'Start time', 'time'), f('endTime', 'End time', 'time'),
+      f('venue', 'Venue', 'text'), f('organizer', 'Organizer', 'text'),
+      f('link', 'Registration link', 'url'), f('contact', 'Contact', 'text'),
+      ref('faculty', 'Faculty', ['faculty'], 'Events'),
+      ref('department', 'Department', ['department'], 'Events'),
+      f('files', 'Documents', 'files')]},
+    campaign: { label: 'Campaign', plural: 'campaigns', group: 'info', fields: [
+      f('startDate', 'Start date', 'date'), f('endDate', 'End date', 'date'),
+      f('organizer', 'Organizer', 'text'), f('link', 'Link', 'url'), f('contact', 'Contact', 'text'),
+      f('campaignStatus', 'Campaign status', 'select', { opts: ['Upcoming', 'Ongoing', 'Ended'] }),
+      f('files', 'Documents', 'files')]},
+    notice: { label: 'Important Notice', plural: 'notices', group: 'info', fields: [
+      f('date', 'Date', 'date'), f('source', 'Source', 'text'),
+      f('priority', 'Priority', 'select', { opts: ['normal', 'high', 'urgent'] }),
+      f('link', 'Link', 'url'),
+      f('files', 'Documents', 'files')]},
+    live: { label: 'Live Update', plural: 'live', group: 'info', fields: [
+      f('priority', 'Priority', 'select', { opts: ['normal', 'urgent'] }),
+      f('startsAt', 'Starts at (optional)', 'datetime')]}
+,
+    document: { label: 'Document', plural: 'documents', group: 'info', fields: [
+      f('category', 'Category', 'text'), f('docDate', 'Document date', 'date'),
+      f('file', 'File', 'file')]}
+  };
+
+  // ---------------------------------------------------------------------------------------------
+  // Live registry. BASE holds the built-in types; configure() layers the Editor-defined Custom
+  // Features and extra Custom Fields (data/source/features.json) on top. TYPES / TYPE_IDS / GROUPS
+  // are mutated in place so every module that holds a reference sees the change.
+  // ---------------------------------------------------------------------------------------------
+  var TYPES = {}, TYPE_IDS = [], GROUPS = [], FEATURES = [];
+  var BASE_GROUPS = [
+    { id: 'all', label: 'All', types: [] },
+    { id: 'offices', label: 'Offices', types: ['office'] },
+    { id: 'lecturers', label: 'Lecturers', types: ['lecturer'] },
+    { id: 'courses', label: 'Courses', types: ['course'] },
+    { id: 'departments', label: 'Departments', types: ['department'] },
+    { id: 'faculties', label: 'Faculties', types: ['faculty'] },
+    { id: 'services', label: 'Services', types: ['service'] },
+    { id: 'buildings', label: 'Buildings', types: ['building', 'location'] },
+    { id: 'information', label: 'Information', types: [] }
+  ];
+  var CATEGORY_IDS = BASE_GROUPS.slice(1).map(function (g) { return g.id; });
+  var RESERVED = ['data', 'editor', 'api', 'media', 'assets', 'css', 'js', 'img', 'doc', 'sw', 'index', 'custom', 'features', 'settings'];
+
+  // Field kinds offered by the Custom Field builder (and their internal representation).
+  var BUILDER_KINDS = [
+    ['text', 'Text'], ['textarea', 'Long text'], ['number', 'Number'], ['date', 'Date'], ['time', 'Time'],
+    ['phone', 'Phone'], ['email', 'Email'], ['url', 'URL'], ['website', 'Website'], ['location', 'Location'],
+    ['image', 'Image'], ['document', 'Document'], ['pdf', 'PDF'], ['select', 'Select / dropdown'],
+    ['checkbox', 'Checkbox'], ['link', 'Link (label + URL)'], ['related', 'Related record']
+  ];
+  // Kinds that can be switched between safely when records already hold data in the field.
+  var FAMILIES = [
+    ['text', 'textarea', 'phone', 'email', 'url', 'website', 'location', 'select'],
+    ['number'], ['date'], ['time'], ['image'], ['document', 'pdf'], ['checkbox'], ['link'], ['related']
+  ];
+  function safeKinds(kind, inUse) {
+    if (!inUse) return BUILDER_KINDS.map(function (k) { return k[0]; });
+    for (var i = 0; i < FAMILIES.length; i++) if (FAMILIES[i].indexOf(kind) >= 0) return FAMILIES[i].slice();
+    return [kind];
+  }
+
+  function normField(d, ownerLabel) {
+    var o = { k: d.k, l: d.l, t: d.t, kind: d.t, custom: true, req: !!d.req, pub: d.pub !== false, hidden: !!d.hidden };
+    if (d.t === 'website') o.t = 'url';
+    else if (d.t === 'document') { o.t = 'file'; o.accept = 'doc'; }
+    else if (d.t === 'pdf') { o.t = 'file'; o.accept = 'pdf'; }
+    else if (d.t === 'related') {
+      o.t = d.multi ? 'refs' : 'ref'; o.multi = !!d.multi;
+      o.to = d.to && d.to.length ? d.to.slice() : null;
+      o.rev = d.rev || ownerLabel || 'Related';
+    } else if (d.t === 'select') o.opts = (d.opts || []).slice();
+    return o;
+  }
+
+  function configure(cfg) {
+    cfg = cfg || {};
+    Object.keys(TYPES).forEach(function (k) { delete TYPES[k]; });
+    TYPE_IDS.length = 0; FEATURES.length = 0;
+    Object.keys(BASE).forEach(function (t) {
+      var b = BASE[t];
+      TYPES[t] = { label: b.label, plural: b.plural, group: b.group, fields: b.fields.slice() };
+      TYPE_IDS.push(t);
+    });
+    var ext = cfg.extend || {};
+    Object.keys(ext).forEach(function (t) {
+      if (!BASE[t]) return;
+      (ext[t] || []).forEach(function (d) { TYPES[t].fields.push(normField(d, BASE[t].label)); });
+    });
+    (cfg.features || []).forEach(function (ft) {
+      if (!ft || !ft.id || TYPES[ft.id]) return;
+      FEATURES.push(ft);
+      TYPES[ft.id] = {
+        label: ft.singular || ft.name, plural: ft.id, pluralLabel: ft.name, group: 'custom', feature: ft.id,
+        fields: (ft.fields || []).map(function (d) { return normField(d, ft.name); })
+      };
+      TYPE_IDS.push(ft.id);
+    });
+    GROUPS.length = 0;
+    BASE_GROUPS.forEach(function (g) { GROUPS.push({ id: g.id, label: g.label, types: g.types.slice() }); });
+    GROUPS[0].types = TYPE_IDS.slice();
+    GROUPS[8].types = TYPE_IDS.filter(function (t) { return TYPES[t].group === 'info'; });
+    FEATURES.forEach(function (ft) {
+      var g = GROUPS.filter(function (x) { return x.id === (CATEGORY_IDS.indexOf(ft.category) >= 0 ? ft.category : 'information'); })[0];
+      if (g.types.indexOf(ft.id) < 0) g.types.push(ft.id);
+    });
+  }
+  configure({});
+
+  function BASE_TYPE_IDS() { return Object.keys(BASE); }
+  function featureOf(type) { for (var i = 0; i < FEATURES.length; i++) if (FEATURES[i].id === type) return FEATURES[i]; return null; }
+  // A feature set to "hidden" keeps its data in the Editor but is left out of the public build.
+  function typeHidden(type) { var ft = featureOf(type); return !!ft && ft.status === 'hidden'; }
+  function typeSearchable(type) { var ft = featureOf(type); return !ft || ft.searchable !== false; }
+
+  function groupOf(type) {
+    for (var i = 1; i < GROUPS.length; i++) if (GROUPS[i].types.indexOf(type) >= 0) return GROUPS[i].id;
+    return 'information';
+  }
+
+  var STATUSES = ['draft', 'published', 'archived'];
+  var VERIFY = {
+    verified: 'Verified Information',
+    verified_staff: 'Verified Staff',
+    official_staff: 'Official Staff',
+    pending: 'Pending Verification',
+    unverified: 'Unverified'
+  };
+  var isVerified = function (s) { return s === 'verified' || s === 'verified_staff' || s === 'official_staff'; };
+
+  var EXPIRY_PRESETS = [
+    ['never', 'Never expires', null], ['5m', '5 minutes', 5], ['30m', '30 minutes', 30], ['1h', '1 hour', 60],
+    ['6h', '6 hours', 360], ['24h', '24 hours', 1440], ['3d', '3 days', 4320], ['7d', '7 days', 10080],
+    ['custom', 'Custom date/time', null]
+  ];
+  function expiryFromPreset(key, now) {
+    for (var i = 0; i < EXPIRY_PRESETS.length; i++) {
+      if (EXPIRY_PRESETS[i][0] === key && EXPIRY_PRESETS[i][2]) return new Date(now + EXPIRY_PRESETS[i][2] * 60000).toISOString();
+    }
+    return null;
+  }
+
+  var ID_RE = /^[a-z0-9]+(-[a-z0-9]+)*$/;
+  var DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
+  var TIME_RE = /^\d{2}:\d{2}$/;
+  var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  var IMG_KEY = /^img\/[a-z0-9][a-z0-9\/._-]{3,120}$/;
+  var DOC_KEY = /^doc\/[a-z0-9][a-z0-9\/._-]{3,140}$/;
+  var FIELD_KEY = /^c_[a-z0-9_]{1,30}$/;
+  var FEATURE_ID = /^[a-z][a-z0-9]*(-[a-z0-9]+)*$/;
+  // Upload rules shared by the Editor (pre-check) and the Worker (authoritative check).
+  var LIMITS = { imageMB: 3, thumbKB: 300, rawImageMB: 15, docMB: 15 };
+  var DOC_EXT = { pdf: 'application/pdf', doc: 'application/msword', docx: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', xls: 'application/vnd.ms-excel', xlsx: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', ppt: 'application/vnd.ms-powerpoint', pptx: 'application/vnd.openxmlformats-officedocument.presentationml.presentation' };
+  var isImageKey = function (v) { return typeof v === 'string' && IMG_KEY.test(v) && v.indexOf('..') < 0; };
+  var isDocKey = function (v) { return typeof v === 'string' && DOC_KEY.test(v) && v.indexOf('..') < 0; };
+  var isImageRef = function (v) { return isImageKey(v) || (typeof v === 'string' && isUrl(v)); };
+
+  function slugify(s) {
+    return String(s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      .replace(/&/g, ' and ').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+  }
+  function slugOf(rec) { return rec.id.slice(rec.type.length + 1); }
+
+  function refFields(type) {
+    return TYPES[type].fields.filter(function (x) { return x.t === 'ref' || x.t === 'refs'; });
+  }
+
+  function expiryMs(r) {
+    if (!r.expires) return null;
+    var t = Date.parse(r.expires);
+    return isNaN(t) ? null : t;
+  }
+  // draft | active | expiring | expired | archived
+  function lifecycle(r, now) {
+    if (r.status === 'archived') return 'archived';
+    if (r.status !== 'published') return 'draft';
+    var e = expiryMs(r);
+    if (e != null) {
+      if (e <= now) return 'expired';
+      if (e - now <= 3600000) return 'expiring';
+    }
+    return 'active';
+  }
+  function isPublic(r, now) {
+    var l = lifecycle(r, now);
+    return l === 'active' || l === 'expiring';
+  }
+
+  function isUrl(u) {
+    try { var x = new URL(u); return x.protocol === 'http:' || x.protocol === 'https:'; } catch (e) { return false; }
+  }
+  function validDate(s) {
+    return DATE_RE.test(s) && !isNaN(Date.parse(s + 'T00:00:00Z'));
+  }
+
+  // lookup(id) -> type string or undefined (omit to skip relationship checks)
+  function validateRecord(r, lookup) {
+    var e = [];
+    var T = r && TYPES[r.type];
+    if (!T) return ['Unknown record type "' + (r && r.type) + '"'];
+    if (!r.title || !String(r.title).trim()) e.push('Title is required');
+    if (!r.id || !ID_RE.test(r.id)) e.push('ID must use lowercase letters, numbers and hyphens only');
+    else if (r.id.indexOf(r.type + '-') !== 0) e.push('ID must start with "' + r.type + '-"');
+    else if (r.id.length === r.type.length + 1) e.push('ID is incomplete');
+    if (STATUSES.indexOf(r.status) < 0) e.push('Status must be draft, published or archived');
+    var v = r.verification || {};
+    var vs = v.status || 'unverified';
+    if (!VERIFY[vs]) e.push('Unknown verification status');
+    if (isVerified(vs) && !String(v.by || '').trim()) e.push('"Verified by" is required for verified records');
+    if (v.date && !validDate(v.date)) e.push('Verification date must be YYYY-MM-DD');
+    if (r.image && !isImageRef(r.image)) e.push('Image must be an uploaded image (img/…) or a valid http(s) URL');
+    if (r.expires != null && r.expires !== '' && isNaN(Date.parse(r.expires))) e.push('Expiration is not a valid date/time');
+    ['keywords', 'aliases', 'related'].forEach(function (k) {
+      if (r[k] != null && (!Array.isArray(r[k]) || r[k].some(function (x) { return typeof x !== 'string'; }))) e.push(k + ' must be a list of text values');
+    });
+    (r.related || []).forEach(function (id) {
+      if (lookup && !lookup(id)) e.push('Related record "' + id + '" does not exist');
+    });
+    T.fields.forEach(function (fd) {
+      var val = r[fd.k];
+      var empty = val == null || val === '' || (Array.isArray(val) && !val.length) || (fd.t === 'checkbox' && val === false && !fd.req);
+      if (fd.req && !fd.hidden && r.status === 'published' && (empty || (fd.t === 'checkbox' && val !== true))) { e.push(fd.l.replace(/ \(.*\)$/, '') + ' is required'); return; }
+      if (val == null || val === '' || (Array.isArray(val) && !val.length)) return;
+      var bad = function (m) { e.push(fd.l.replace(/ \(.*\)$/, '') + ': ' + m); };
+      var chkFile = function (o) {
+        if (!o || typeof o !== 'object' || !isDocKey(o.k)) { bad('invalid file reference'); return; }
+        if (o.n != null && (typeof o.n !== 'string' || o.n.length > 200)) bad('invalid file name');
+        if (o.dl != null && [0, 1, true, false].indexOf(o.dl) < 0) bad('invalid download permission');
+        if (fd.accept === 'pdf' && !/\.pdf$/i.test(o.k)) bad('only PDF files are allowed here');
+      };
+      switch (fd.t) {
+        case 'email': if (!EMAIL_RE.test(val)) bad('invalid email address'); break;
+        case 'phone': if (!/^[+()\-.\s\d]{7,25}$/.test(val) || String(val).replace(/\D/g, '').length < 7) bad('invalid phone number'); break;
+        case 'url': if (!isUrl(val)) bad('invalid link (must start with http:// or https://)'); break;
+        case 'date': if (!validDate(val)) bad('use the format YYYY-MM-DD'); break;
+        case 'time': if (!TIME_RE.test(val)) bad('use the format HH:MM'); break;
+        case 'number': if (!isFinite(Number(val))) bad('must be a number'); break;
+        case 'select': if ((fd.opts || []).indexOf(val) < 0) bad('invalid option'); break;
+        case 'list': if (!Array.isArray(val)) bad('must be a list'); break;
+        case 'datetime': if (isNaN(Date.parse(val))) bad('not a valid date/time'); break;
+        case 'location': if (typeof val !== 'string' || val.length > 300) bad('invalid location'); break;
+        case 'checkbox': if (typeof val !== 'boolean') bad('must be yes or no'); break;
+        case 'image': if (!isImageRef(val)) bad('invalid image'); break;
+        case 'file': chkFile(val); break;
+        case 'files': if (!Array.isArray(val) || val.length > 20) bad('invalid document list'); else val.forEach(chkFile); break;
+        case 'link': if (!val || typeof val !== 'object' || !isUrl(val.u) || (val.l != null && typeof val.l !== 'string')) bad('needs a valid web address'); break;
+        case 'ref':
+          if (typeof val !== 'string') { bad('invalid reference'); break; }
+          if (lookup) {
+            var t1 = lookup(val);
+            if (!t1) bad('record "' + val + '" does not exist');
+            else if (fd.to && fd.to.indexOf(t1) < 0) bad('"' + val + '" is a ' + t1 + ', expected ' + fd.to.join('/'));
+          }
+          break;
+        case 'refs':
+          if (!Array.isArray(val)) { bad('invalid reference list'); break; }
+          val.forEach(function (id) {
+            if (!lookup) return;
+            var t2 = lookup(id);
+            if (!t2) bad('record "' + id + '" does not exist');
+            else if (fd.to && fd.to.indexOf(t2) < 0) bad('"' + id + '" is a ' + t2 + ', expected ' + fd.to.join('/'));
+          });
+          break;
+      }
+    });
+    if (T.fields.some(function (x) { return x.k === 'lat'; })) {
+      if (r.lat !== '' && r.lat != null && Math.abs(Number(r.lat)) > 90) e.push('Latitude must be between -90 and 90');
+      if (r.lng !== '' && r.lng != null && Math.abs(Number(r.lng)) > 180) e.push('Longitude must be between -180 and 180');
+    }
+    return e;
+  }
+
+  // data: { office:[...], lecturer:[...], ... } -> { errors:[{id,type,msg}], warnings:[...] }
+  function validateAll(data, now) {
+    var errors = [], warnings = [];
+    var seen = {};
+    var types = {};
+    TYPE_IDS.forEach(function (t) {
+      (data[t] || []).forEach(function (r) { if (r && r.id) types[r.id] = r.type; });
+    });
+    var lookup = function (id) { return types[id]; };
+    (data.__orphans || []).forEach(function (r) { errors.push({ id: (r && r.id) || '?', type: (r && r.type) || '?', msg: 'Unknown record type "' + (r && r.type) + '" (its Custom Feature was removed)' }); });
+    TYPE_IDS.forEach(function (t) {
+      var arr = data[t] || [];
+      if (!Array.isArray(arr)) { errors.push({ id: '-', type: t, msg: 'File for ' + t + ' must be a list' }); return; }
+      arr.forEach(function (r, i) {
+        if (!r || typeof r !== 'object') { errors.push({ id: '#' + i, type: t, msg: 'Record is not an object' }); return; }
+        if (r.type !== t) errors.push({ id: r.id, type: t, msg: 'Record type "' + r.type + '" is stored in the ' + t + ' file' });
+        if (r.id) {
+          if (seen[r.id]) errors.push({ id: r.id, type: t, msg: 'Duplicate ID' });
+          seen[r.id] = 1;
+        }
+        validateRecord(r, lookup).forEach(function (m) { errors.push({ id: r.id || '#' + i, type: t, title: r.title, msg: m }); });
+        // Warn when a published record points at something that will not be public.
+        if (r.status === 'published') {
+          var chk = function (id) {
+            var tg = id && findRec(data, id);
+            if (tg && !isPublic(tg, now)) warnings.push({ id: r.id, type: t, title: r.title, msg: 'Links to "' + (tg.title || tg.id) + '", which is not public (' + lifecycle(tg, now) + ')' });
+          };
+          refFields(t).forEach(function (fd) { (fd.t === 'ref' ? [r[fd.k]] : (r[fd.k] || [])).forEach(chk); });
+          (r.related || []).forEach(chk);
+        }
+      });
+    });
+    return { errors: errors, warnings: warnings };
+  }
+
+  // cfg = { features: [...], extend: { office: [fieldDef,...] } }  -> array of message strings
+  function validateConfig(cfg) {
+    var e = [];
+    if (cfg == null) return e;
+    if (typeof cfg !== 'object' || Array.isArray(cfg)) return ['Features file must be an object'];
+    var feats = cfg.features || [], ext = cfg.extend || {};
+    if (!Array.isArray(feats) || feats.length > 100) return ['features must be a list of at most 100'];
+    var ids = {};
+    var kinds = BUILDER_KINDS.map(function (k) { return k[0]; });
+    var allIds = Object.keys(BASE).concat(feats.map(function (x) { return x && x.id; }));
+    var chkFields = function (owner, fields) {
+      if (!Array.isArray(fields) || fields.length > 40) { e.push(owner + ': fields must be a list of at most 40'); return; }
+      var seen = {};
+      fields.forEach(function (d, i) {
+        var w = owner + ' field ' + (i + 1) + ': ';
+        if (!d || typeof d !== 'object') { e.push(w + 'invalid'); return; }
+        if (!FIELD_KEY.test(d.k || '')) e.push(w + 'internal key must look like c_amount');
+        else if (seen[d.k]) e.push(w + 'duplicate key ' + d.k);
+        seen[d.k] = 1;
+        if (!d.l || !String(d.l).trim() || String(d.l).length > 80) e.push(w + 'needs a name (max 80 characters)');
+        if (kinds.indexOf(d.t) < 0) e.push(w + 'unknown field type "' + d.t + '"');
+        if (d.t === 'select' && (!Array.isArray(d.opts) || !d.opts.length || d.opts.some(function (o) { return typeof o !== 'string' || !o.trim(); }))) e.push(w + 'a dropdown needs at least one option');
+        if (d.t === 'related' && d.to && (!Array.isArray(d.to) || d.to.some(function (t) { return allIds.indexOf(t) < 0; }))) e.push(w + 'related record type does not exist');
+      });
+    };
+    feats.forEach(function (ft, i) {
+      var w = 'Feature ' + (i + 1) + (ft && ft.name ? ' (' + ft.name + ')' : '') + ': ';
+      if (!ft || typeof ft !== 'object') { e.push(w + 'invalid'); return; }
+      if (!FEATURE_ID.test(ft.id || '') || ft.id.length > 30) e.push(w + 'id must be lowercase letters, numbers and hyphens');
+      else if (BASE[ft.id] || RESERVED.indexOf(ft.id) >= 0) e.push(w + 'id "' + ft.id + '" is reserved');
+      else if (ids[ft.id]) e.push(w + 'duplicate id');
+      ids[ft.id] = 1;
+      if (!ft.name || !String(ft.name).trim() || String(ft.name).length > 80) e.push(w + 'needs a name');
+      if (['published', 'hidden'].indexOf(ft.status || 'published') < 0) e.push(w + 'status must be published or hidden');
+      if (ft.category && CATEGORY_IDS.indexOf(ft.category) < 0) e.push(w + 'unknown public category');
+      if (ft.sort != null && !isFinite(Number(ft.sort))) e.push(w + 'sort order must be a number');
+      if (ft.icon && !isImageRef(ft.icon)) e.push(w + 'invalid icon');
+      chkFields('Feature "' + ft.name + '"', ft.fields || []);
+    });
+    Object.keys(ext).forEach(function (t) {
+      if (!BASE[t]) { e.push('Custom fields: "' + t + '" is not a built-in record type'); return; }
+      chkFields('Fields of ' + BASE[t].label, ext[t]);
+    });
+    return e;
+  }
+
+  function findRec(data, id) {
+    for (var i = 0; i < TYPE_IDS.length; i++) {
+      var a = data[TYPE_IDS[i]] || [];
+      for (var j = 0; j < a.length; j++) if (a[j] && a[j].id === id) return a[j];
+    }
+    return null;
+  }
+
+  return {
+    TYPES: TYPES, TYPE_IDS: TYPE_IDS, GROUPS: GROUPS, FEATURES: FEATURES, BASE: BASE, configure: configure, validateConfig: validateConfig,
+    featureOf: featureOf, BASE_TYPE_IDS: BASE_TYPE_IDS, typeHidden: typeHidden, typeSearchable: typeSearchable, normField: normField, BUILDER_KINDS: BUILDER_KINDS,
+    safeKinds: safeKinds, LIMITS: LIMITS, DOC_EXT: DOC_EXT, isImageKey: isImageKey, isDocKey: isDocKey, isImageRef: isImageRef,
+    CATEGORY_IDS: CATEGORY_IDS, RESERVED: RESERVED, FIELD_KEY: FIELD_KEY, STATUSES: STATUSES, VERIFY: VERIFY,
+    EXPIRY_PRESETS: EXPIRY_PRESETS, groupOf: groupOf, isVerified: isVerified, expiryFromPreset: expiryFromPreset,
+    slugify: slugify, slugOf: slugOf, refFields: refFields, lifecycle: lifecycle, isPublic: isPublic,
+    expiryMs: expiryMs, isUrl: isUrl, validateRecord: validateRecord, validateAll: validateAll, findRec: findRec,
+    ID_RE: ID_RE
+  };
+});
+##### END FILE #####
+
+##### FILE: editor/editor.css #####
+:root{--bg:#090a1c;--s1:#10122f;--s2:#171a45;--line:#2a2e66;--tx:#eceeff;--mu:#a3a8d6;--pu:#8b5cf6;--pu2:#6d3fe0;--pu3:#b79cff;--red:#ff6b86;--ok:#7be0b0;--warn:#ffcb6b}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;-webkit-text-size-adjust:100%}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+a{color:var(--pu3)}
+:focus-visible{outline:2px solid var(--pu3);outline-offset:2px}
+.wrap{max-width:860px;margin:0 auto;padding:0 14px 90px}
+.bar{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line);padding:10px 14px}
+.bar .in{max-width:860px;margin:0 auto;display:flex;align-items:center;gap:10px}
+.bar h1{font-size:16px;margin:0;flex:1;letter-spacing:.02em}
+.bar h1 b{color:var(--pu3)}
+.btn{min-height:42px;padding:0 16px;border-radius:10px;border:1px solid var(--line);background:var(--s1);font-weight:600}
+.btn.p{background:var(--pu2);border-color:var(--pu2);color:#fff}
+.btn.d{border-color:#6b2a40;color:var(--red)}
+.btn.sm{min-height:34px;padding:0 12px;font-size:14px}
+.btn[disabled]{opacity:.5;cursor:not-allowed}
+.tabs{display:flex;gap:8px;overflow-x:auto;padding:10px 0 4px;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tabs button{flex:none;min-height:38px;padding:0 14px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--mu)}
+.tabs button[aria-pressed=true]{background:var(--pu2);border-color:var(--pu2);color:#fff}
+.tabs.g button{border-radius:8px;font-weight:600}
+.tabs.g button[aria-pressed=true]{background:var(--s2);border-color:var(--pu);color:var(--tx)}
+.tools{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0}
+.tools input[type=search]{grid-column:1/-1}
+input,select,textarea{width:100%;min-height:44px;padding:9px 12px;border-radius:10px;border:1px solid var(--line);background:var(--s1)}
+textarea{min-height:90px;resize:vertical}
+select{appearance:auto}
+.list{list-style:none;margin:10px 0;padding:0}
+.row{display:flex;gap:8px;align-items:stretch;margin-bottom:8px}
+.rowmain{flex:1;min-width:0;text-align:left;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--s1)}
+.rowmain b{display:block;overflow-wrap:anywhere}
+.rowmain small{display:block;color:var(--mu);overflow-wrap:anywhere}
+.rowact{display:flex;flex-direction:column;gap:6px;justify-content:center}
+.badges{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.bd{font-size:12px;padding:1px 8px;border-radius:999px;border:1px solid var(--line);color:var(--mu)}
+.bd.active{color:var(--ok);border-color:#2f6b52}.bd.draft{color:var(--warn);border-color:#6b5a2a}.bd.expiring{color:var(--warn);border-color:#6b5a2a}
+.bd.expired,.bd.archived{color:var(--red);border-color:#6b2a40}.bd.ver{color:var(--pu3);border-color:var(--pu2)}.bd.chg{color:#fff;background:var(--pu2);border-color:var(--pu2)}
+.empty{color:var(--mu);padding:24px 6px;text-align:center}
+.card{padding:14px;border:1px solid var(--line);border-radius:12px;background:var(--s1);margin:12px 0}
+.card h2{font-size:16px;margin:0 0 8px}
+.msg{padding:10px 12px;border-radius:10px;margin:10px 0;font-size:14px;overflow-wrap:anywhere}
+.msg.err{border:1px solid #6b2a40;background:#2a1020;color:#ffc2cf}
+.msg.ok{border:1px solid #2f6b52;background:#0f2a20;color:#bff3da}
+.msg.warn{border:1px solid #6b5a2a;background:#2a2410;color:#ffe4a6}
+.msg ul{margin:6px 0 0;padding-left:18px}
+.mu{color:var(--mu);font-size:14px}
+.sheet{position:fixed;inset:0;background:rgba(3,4,14,.8);z-index:20;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.sheet .box{max-width:720px;margin:0 auto;background:var(--bg);min-height:100%;padding:0 14px 30px;border-left:1px solid var(--line);border-right:1px solid var(--line)}
+.sheet .hd{position:sticky;top:0;background:var(--bg);padding:12px 0;border-bottom:1px solid var(--line);display:flex;gap:10px;align-items:center;z-index:2}
+.sheet .hd h2{flex:1;margin:0;font-size:17px}
+.fld{margin:14px 0}
+.fld label,.lbl{display:block;font-size:14px;color:var(--mu);margin-bottom:4px}
+.fld .hint{font-size:12px;color:var(--mu);margin-top:3px}
+.fld.err input,.fld.err select,.fld.err textarea{border-color:var(--red)}
+.sec{margin:22px 0 4px;font-size:13px;color:var(--pu3);border-bottom:1px solid var(--line);padding-bottom:4px}
+.pick{width:100%;text-align:left;min-height:44px;padding:9px 12px;border-radius:10px;border:1px dashed var(--pu2);background:var(--s1);overflow-wrap:anywhere}
+.preview{margin-top:8px;max-width:260px;border-radius:10px;overflow:hidden;border:1px solid var(--line)}
+.preview img{display:block;max-width:100%}
+.foot{position:sticky;bottom:0;background:var(--bg);border-top:1px solid var(--line);padding:10px 0;display:flex;gap:8px;flex-wrap:wrap}
+.foot .btn.p{flex:1}
+.pk{display:flex;gap:10px;align-items:center;padding:10px;border:1px solid var(--line);border-radius:10px;margin:6px 0;background:var(--s1)}
+.pk input{width:22px;min-height:22px;flex:none}
+.pk span{flex:1;overflow-wrap:anywhere}
+.pk small{display:block;color:var(--mu)}
+#toast{position:fixed;left:50%;transform:translateX(-50%);bottom:18px;background:var(--pu2);color:#fff;padding:10px 16px;border-radius:10px;z-index:40;max-width:90vw}
+table{border-collapse:collapse;width:100%;font-size:14px}th,td{padding:7px 8px;border-bottom:1px solid var(--line);text-align:left}
+.imgrow{display:flex;gap:10px;align-items:center}
+.imgrow img{width:72px;height:72px;object-fit:cover;border-radius:8px;flex:none;background:var(--s2)}
+.imgrow .tx{flex:1;min-width:0}
+.full{width:100%}
+.sheet.l2{z-index:30}
+code{background:var(--s2);padding:1px 5px;border-radius:5px}
+
+/* media widgets, feature builder, preview */
+.mw{border:1px dashed var(--pu2);border-radius:12px;padding:10px;background:var(--s1)}
+.mw .mrow{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:8px}
+.mw img.mp{width:84px;height:84px;object-fit:cover;border-radius:10px;background:var(--s2);flex:none}
+.mw .minfo{flex:1;min-width:140px;overflow-wrap:anywhere}
+.mw .mmsg{font-size:13px;margin-top:6px;color:var(--mu)}
+.mw .mmsg.bad{color:var(--red)}
+.mw details{margin-top:8px}
+.fc{border:1px solid var(--line);border-radius:12px;padding:10px;margin:10px 0;background:var(--s1)}
+.fc .fch{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.fc .fch span{display:flex;gap:6px}
+.fc input[type=text],.fc select,.fc textarea{margin:4px 0}
+.chk{display:inline-flex;align-items:center;gap:8px;margin:6px 14px 6px 0;font-size:14px;min-height:34px}
+.chk input{width:20px;min-height:20px}
+.pv{border:1px solid var(--line);border-radius:14px;padding:14px;background:#070816}
+.pv h3{margin:6px 0 2px;font-size:22px}
+.pv .kind{display:inline-block;color:var(--pu3);font-size:12px;border:1px solid var(--line);border-radius:999px;padding:0 10px}
+.pv dl{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:10px 0}
+.pv dl div{border:1px solid var(--line);border-radius:10px;padding:6px 10px}
+.pv dt{font-size:12px;color:var(--mu)}.pv dd{margin:0;font-weight:600;overflow-wrap:anywhere}
+.pv .doc{display:flex;justify-content:space-between;gap:8px;align-items:center;border:1px solid var(--line);border-radius:10px;padding:8px 10px;margin:6px 0}
+.pv img{max-width:100%;border-radius:10px;margin:8px 0}
+.stats{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+##### END FILE #####
+
+##### FILE: editor/config.js #####
+/*
+ * Campus Guide Editor configuration (this file is public once the Editor is deployed — never put secrets here).
+ *  API:  the URL of your deployed publishing Worker, e.g. "https://campus-guide-publish.your-name.workers.dev"
+ *  SITE: the public Campus Guide URL (only used for the "Open public site" link)
+ * You can also type the Worker URL on the Editor's connect screen; it is remembered on that device.
+ */
+window.CG_CONFIG = {
+  API: "",
+  SITE: ""
+};
+##### END FILE #####
+
+##### FILE: editor/_headers #####
+/*
+  X-Robots-Tag: noindex, nofollow
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: no-referrer
+  X-Frame-Options: DENY
+  Content-Security-Policy: default-src 'self'; img-src * data:; style-src 'self'; script-src 'self'; connect-src *; base-uri 'self'; form-action 'none'; frame-ancestors 'none'
+  Cache-Control: no-store
+##### END FILE #####
