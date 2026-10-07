@@ -1,0 +1,1496 @@
+{
+  "data/source/admissions.json": [
+    {
+      "id": "admission-admissions",
+      "type": "admission",
+      "title": "Admissions",
+      "subtitle": "Undergraduate admission 2026/2027",
+      "description": "Everything you need to know about applying to Greenfield University: requirements, application procedure, screening and acceptance.",
+      "keywords": [
+        "apply",
+        "application",
+        "jamb",
+        "utme",
+        "direct entry",
+        "screening",
+        "acceptance"
+      ],
+      "aliases": [
+        "admission",
+        "how to apply"
+      ],
+      "image": "",
+      "status": "published",
+      "verification": {
+        "status": "verified",
+        "by": "Registry Office",
+        "date": "2026-09-15",
+        "note": "Confirmed with the office."
+      },
+      "expires": null,
+      "university": "Greenfield University",
+      "campus": "Main Campus",
+      "related": [
+        "office-admissions-office",
+        "event-admission-screening",
+        "fee-school-fees"
+      ],
+      "updated": "2026-10-01T09:00:00.000Z",
+      "level": "Undergraduate",
+      "deadline": "2026-10-15",
+      "requirements": [
+        "Five O'Level credits including English and Mathematics",
+        "Valid UTME score at or above the cut-off mark",
+        "Birth certificate or declaration of age",
+        "Passport photograph"
+      ],
+      "link": "https://example.com/apply",
+      "email": "admissions@greenfield.edu.ng"
+    },
+    {
+      "id": "admission-admission-requirements",
+      "type": "admission",
+      "title": "Admission Requirements",
+      "subtitle": "Undergraduate and direct entry",
+      "description": "Minimum entry requirements for undergraduate and direct entry applicants.",
+      "keywords": [
+        "requirements",
+        "entry",
+        "o level",
+        "jamb"
+      ],
+      "aliases": [
+        "entry requirements"
+      ],
+      "image": "",
+      "status": "published",
+      "verification": {
+        "status": "verified",
+        "by": "Registry Office",
+        "date": "2026-09-15",
+        "note": "Confirmed with the office."
+      },
+      "expires": null,
+      "university": "Greenfield University",
+      "campus": "Main Campus",
+      "related": [
+        "admission-admissions"
+      ],
+      "updated": "2026-10-01T09:00:00.000Z",
+      "level": "Undergraduate",
+      "requirements": [
+        "Five O'Level credits",
+        "UTME score at or above the departmental cut-off",
+        "Direct entry: ND or A-Level results"
+      ]
+    },
+    {
+      "id": "admission-admission-screening",
+      "type": "admission",
+      "title": "Admission Screening",
+      "subtitle": "Screening process for candidates",
+      "description": "Candidates offered provisional admission must attend screening with original documents.",
+      "keywords": [
+        "screening",
+        "documents",
+        "verification"
+      ],
+      "aliases": [
+        "post utme screening"
+      ],
+      "image": "",
+      "status": "published",
+      "verification": {
+        "status": "verified",
+        "by": "Registry Office",
+        "date": "2026-09-15",
+        "note": "Confirmed with the office."
+      },
+      "expires": null,
+      "university": "Greenfield University",
+      "campus": "Main Campus",
+      "related": [
+        "office-admissions-office",
+        "event-admission-screening"
+      ],
+      "updated": "2026-10-01T09:00:00.000Z",
+      "level": "Undergraduate",
+      "deadline": "2026-10-15",
+      "requirements": [
+        "Original O'Level results",
+        "UTME result slip",
+        "Two passport photographs"
+      ]
+    }
+  ],
+  "data/source/announcements.json": [
+    {
+      "id": "announcement-registration-deadline-extended",
+      "type": "announcement",
+      "title": "Registration deadline extended",
+      "subtitle": "Course registration",
+      "description": "The deadline for 2026/2027 course registration has been extended to 15 October 2026. Students who have not registered should do so on the student portal before the deadline.",
+      "keywords": [
+        "registration",
+        "deadline",
+        "portal"
+      ],
+      "aliases": [
+        "course registration"
+      ],
+      "image": "https://picsum.photos/seed/registration/800/450",
+      "status": "published",
+      "verification": {
+        "status": "verified",
+        "by": "Registry Office",
+        "date": "2026-09-15",
+        "note": "Confirmed with the office."
+      },
+      "expires": null,
+      "university": "Greenfield University",
+      "campus": "Main Campus",
+      "related": [
+        "office-bursary"
+      ],
+      "updated": "2026-10-01T09:00:00.000Z",
+      "date": "2026-10-02",
+      "source": "Registry",
+      "priority": "important"
+    },
+    {
+      "id": "announcement-shuttle-service-update",
+      "type": "announcement",
+      "title": "Shuttle bus service update",
+      "subtitle": "Campus transport",
+      "description": "The campus shuttle is operating on the updated schedule. Pick-up points are at the Main Gate and beside the Library.",
+      "keywords": [
+        "shuttle",
+        "bus",
+        "transport"
+      ],
+      "aliases": [
+        "campus bus",
+        "shuttle schedule"
+      ],
+      "image": "https://picsum.photos/seed/shuttle/800/450",
+      "status": "published",
+      "verification": {
+        "status": "verified",
+        "by": "Transport Unit",
+        "date": "2026-09-15",
+        "note": "Confirmed with the office."
+      },
+      "expires": null,
+      "university": "Greenfield University",
+      "campus": "Main Campus",
+      "related": [
+        "location-main-gate"
+      ],
+      "updated": "2026-10-01T09:00:00.000Z",
+      "date": "2026-09-25",
+      "source": "Transport Unit",
+      "priority": "normal"
+    },
+    {
+      "id": "announcement-power-outage-notice",
+      "type": "announcement",
+      "title": "Power outage notice (expired sample)",
+      "subtitle": "Science Faculty",
+      "description": "Sample record used to test expiry: this expired in January 2026 and must not appear publicly.",
+      "keywords": [
+        "power",
+        "maintenance"
+      ],
+      "aliases": [],
+      "image": "",
+      "status": "published",
+      "verification": {
+        "status": "verified",
+        "by": "Registry Office",
+        "date": "2026-09-15",
+        "note": "Confirmed with the office."
+      },
+      "expires": "2026-01-15T18:00:00.000Z",
+      "university": "Greenfield University",
+      "campus": "Main Campus",
+      "related": [],
+      "updated": "2026-10-01T09:00:00.000Z",
+      "date": "2026-01-14",
+      "source": "Works Unit"
+    }
+  ],
+  "data/source/buildings.json": [
+    {
+      "id": "building-administration-building",
+      "type": "building",
+      "title": "Administration Building",
+      "subtitle": "Main administrative block",
+      "description": "The main administrative block of Greenfield University. It houses the Bursary, the Admissions Office and the Student Affairs Office.\nThe building is opposite the Main Gate.",
+      "keywords": [
+        "admin",
+        "administration",
+        "registry",
+        "offices"
+      ],
+      "aliases": [
+        "admin block",
+        "admin building",
+        "administrative block"
+      ],
+      "image": "https://picsum.photos/seed/admin-building/800/450",
+      "status": "published",
+      "verification": {
+        "status": "verified",
+        "by": "Registry Office",
+        "date": "2026-09-15",
+        "note": "Confirmed with the office."
+      },
+      "expires": null,
+      "university": "Greenfield University",
+      "campus": "Main Campus",
+      "related": [],
+      "updated": "2026-10-01T09:00:00.000Z",
+      "address": "Main Campus, opposite the Main Gate",
+      "directions": "From the Main Gate walk straight ahead for about 150 metres. The building is on your left."
+    },
+    {
+      "id": "building-library",
+      "type": "building",
+      "title": "Library",
+      "subtitle": "University Library",
+      "description": "The University Library offers reading halls, a computer room, journals and borrowing services. Open to all registered students.",
+      "keywords": [
+        "books",
+        "reading",
+        "study",
+        "journals"
+      ],
+      "aliases": [
+        "university library",
+        "reading room",
+        "e-library"
+      ],
+      "image": "https://images.invalid/library.jpg",
+      "status": "published",
+      "verification": {
+        "status": "verified",
+        "by": "Registry Office",
+        "date": "2026-09-15",
+        "note": "Confirmed with the office."
+      },
+      "expires": null,
+      "university": "Greenfield University",
+      "campus": "Main Campus",
+      "related": [],
+      "updated": "2026-10-01T09:00:00.000Z",
+      "address": "Main Campus, beside the Computing Complex",
+      "directions": "Follow the walkway from the Administration Building towards the Computing Complex. The library is on the right."
+    },
+    {
+      "id": "building-computing-complex",
+      "type": "building",
+      "title": "Computing Complex",
+      "subtitle": "Home of the Faculty of Computing",
+      "description": "Lecture theatres, laboratories and staff offices for the Faculty of Computing.",
+      "keywords": [
+        "computer",
+        "lab",
+        "faculty of computing",
+        "lecture theatre"
+      ],
+      "aliases": [
+        "computing building",
+        "cs building"
+      ],
+      "image": "https://picsum.photos/seed/computing-complex/800/450",
+      "status": "published",
+      "verification": {
+        "status": "verified",
+        "by": "Registry Office",
+        "date": "2026-09-15",
+        "note": "Confirmed with the office."
+      },
+      "expires": null,
+      "university": "Greenfield University",
+      "campus": "Main Campus",
+      "related": [],
+      "updated": "2026-10-01T09:00:00.000Z",
+      "address": "Main Campus, north wing",
+      "directions": "Take the north walkway from the Library. The Computing Complex is the glass-fronted building."
+    }
+  ],
+  "data/source/calendars.json": [
+    {
+      "id": "calendar-2026-2027",
+      "type": "calendar",
+      "title": "Academic Calendar 2026/2027",
+      "subtitle": "Key dates for the session",
+      "description": "Important dates for the 2026/2027 academic session.",
+      "keywords": [
+        "calendar",
+        "semester",
+        "dates",
+        "session",
+        "exams",
+        "resumption"
+      ],
+      "aliases": [
+        "academic calendar",
+        "school calendar",
+        "calendar"
+      ],
+      "image": "",
+      "status": "published",
+      "verification": {
+        "status": "verified",
+        "by": "Registry Office",
+        "date": "2026-09-15",
+        "note": "Confirmed with the office."
+      },
+      "expires": null,
+      "university": "Greenfield University",
+      "campus": "Main Campus",
+      "related": [],
+      "updated": "2026-10-01T09:00:00.000Z",
+      "session": "2026/2027",
+      "entries": [
+        "Oct 5, 2026 | Registration begins",
+        "Oct 15, 2026 | Admission screening deadline",
+        "Oct 17, 2026 | Matriculation ceremony",
+        "Nov 2, 2026 | First semester lectures begin",
+        "Jan 25, 2027 | First semester examinations begin",
+        "Mar 1, 2027 | Second semester begins"
+      ]
+    }
+  ],
+  "data/source/campaigns.json": [
+    {
+      "id": "campaign-health-awareness",
+      "type": "campaign",
+      "title": "Health Awareness Campaign",
+      "subtitle": "Student wellbeing",
+      "description": "A month-long campaign with free health checks, counselling sessions and wellbeing talks across campus.",
+      "keywords": [
+        "health",
+        "wellbeing",
+        "counselling",
+        "awareness"
+      ],
+      "aliases": [
+        "health week"
+      ],
+      "image": "https://picsum.photos/seed/health/800/450",
+      "status": "published",
+      "verification": {
+        "status": "verified",
+        "by": "Registry Office",
+        "date": "2026-09-15",
+        "note": "Confirmed with the office."
+      },
+      "expires": null,
+      "university": "Greenfield University",
+      "campus": "Main Campus",
+      "related": [
+        "office-student-affairs-office"
+      ],
+      "updated": "2026-10-01T09:00:00.000Z",
+      "startDate": "2026-09-28",
+      "endDate": "2026-11-30",
+      "organizer": "Student Affairs",
+      "campaignStatus": "Ongoing",
+      "contact": "studentaffairs@greenfield.edu.ng"
+    }
+  ],
+  "data/source/courses.json": [
+    {
+      "id": "course-csc-101",
+      "type": "course",
+      "title": "CSC 101",
+      "subtitle": "Introduction to Computer Science",
+      "description": "Introduction to Computer Science is a 100 level course offered by the Department of Computer Science.",
+      "keywords": [
+        "introduction to computer science",
+        "computer science",
+        "course"
+      ],
+      "aliases": [
+        "csc101"
+      ],
+      "image": "",
+      "status": "published",
+      "verification": {
+        "status": "verified",
+        "by": "Registry Office",
+        "date": "2026-09-15",
+        "note": "Confirmed with the office."
+      },
+      "expires": null,
+      "university": "Greenfield University",
+      "campus": "Main Campus",
+      "related": [],
+      "updated": "2026-10-01T09:00:00.000Z",
+      "department": "department-computer-science",
+      "level": "100 Level",
+      "semester": "First Semester",
+      "lecturers": [
+        "lecturer-prof-amina-bello"
+      ]
+    },
+    {
+      "id": "course-csc-201",
+      "type": "course",
+      "title": "CSC 201",
+      "subtitle": "Data Structures",
+      "description": "Data Structures is a 200 level course offered by the Department of Computer Science.",
+      "keywords": [
+        "data structures",
+        "computer science",
+        "course"
+      ],
+      "aliases": [
+        "csc201"
+      ],
+      "image": "",
+      "status": "published",
+      "verification": {
+        "status": "verified",
+        "by": "Registry Office",
+        "date": "2026-09-15",
+        "note": "Confirmed with the office."
+      },
+      "expires": null,
+      "university": "Greenfield University",
+      "campus": "Main Campus",
+      "related": [],
+      "updated": "2026-10-01T09:00:00.000Z",
+      "department": "department-computer-science",
+      "level": "200 Level",
+      "semester": "First Semester",
+      "lecturers": [
+        "lecturer-dr-john-okoro"
+      ]
+    },
+    {
+      "id": "course-csc-301",
+      "type": "course",
+      "title": "CSC 301",
+      "subtitle": "Software Engineering",
+      "description": "Software Engineering is a 300 level course offered by the Department of Computer Science.",
+      "keywords": [
+        "software engineering",
+        "computer science",
+        "course"
+      ],
+      "aliases": [
+        "csc301"
+      ],
+      "image": "",
+      "status": "published",
+      "verification": {
+        "status": "verified",
+        "by": "Registry Office",
+        "date": "2026-09-15",
+        "note": "Confirmed with the office."
+      },
+      "expires": null,
+      "university": "Greenfield University",
+      "campus": "Main Campus",
+      "related": [],
+      "updated": "2026-10-01T09:00:00.000Z",
+      "department": "department-computer-science",
+      "level": "300 Level",
+      "semester": "First Semester",
+      "lecturers": [
+        "lecturer-dr-john-okoro"
+      ]
+    },
+    {
+      "id": "course-csc-401",
+      "type": "course",
+      "title": "CSC 401",
+      "subtitle": "Artificial Intelligence",
+      "description": "Artificial Intelligence is a 400 level course offered by the Department of Computer Science.",
+      "keywords": [
+        "artificial intelligence",
+        "computer science",
+        "course"
+      ],
+      "aliases": [
+        "csc401"
+      ],
+      "image": "",
+      "status": "published",
+      "verification": {
+        "status": "verified",
+        "by": "Registry Office",
+        "date": "2026-09-15",
+        "note": "Confirmed with the office."
+      },
+      "expires": null,
+      "university": "Greenfield University",
+      "campus": "Main Campus",
+      "related": [],
+      "updated": "2026-10-01T09:00:00.000Z",
+      "department": "department-computer-science",
+      "level": "400 Level",
+      "semester": "Second Semester",
+      "lecturers": [
+        "lecturer-prof-amina-bello"
+      ]
+    },
+    {
+      "id": "course-mth-201",
+      "type": "course",
+      "title": "MTH 201",
+      "subtitle": "Linear Algebra",
+      "description": "Linear Algebra for 200 level students.",
+      "keywords": [
+        "linear algebra",
+        "maths"
+      ],
+      "aliases": [
+        "mth201"
+      ],
+      "image": "",
+      "status": "published",
+      "verification": {
+        "status": "unverified",
+        "by": "",
+        "date": "",
+        "note": ""
+      },
+      "expires": null,
+      "university": "Greenfield University",
+      "campus": "Main Campus",
+      "related": [],
+      "updated": "2026-10-01T09:00:00.000Z",
+      "department": "department-mathematics",
+      "level": "200 Level",
+      "semester": "First Semester",
+      "lecturers": [
+        "lecturer-dr-grace-eze"
+      ]
+    }
+  ],
+  "data/source/custom.json": [],
+  "data/source/departments.json": [
+    {
+      "id": "department-computer-science",
+      "type": "department",
+      "title": "Computer Science",
+      "subtitle": "Department of Computer Science",
+      "description": "The Department of Computer Science offers undergraduate and postgraduate programmes in algorithms, software engineering, databases and artificial intelligence.",
+      "keywords": [
+        "computing",
+        "programming",
+        "software",
+        "algorithms",
+        "csc"
+      ],
+      "aliases": [
+        "csc",
+        "cs",
+        "computer science department",
+        "department of computer science"
+      ],
+      "image": "",
+      "status": "published",
+      "verification": {
+        "status": "verified",
+        "by": "Registry Office",
+        "date": "2026-09-15",
+        "note": "Confirmed with the office."
+      },
+      "expires": null,
+      "university": "Greenfield University",
+      "campus": "Main Campus",
+      "related": [],
+      "updated": "2026-10-01T09:00:00.000Z",
+      "faculty": "faculty-computing",
+      "hod": "lecturer-prof-amina-bello",
+      "office": "office-cs-dept-office",
+      "email": "csc@greenfield.edu.ng",
+      "phone": "+234 812 345 6790"
+    },
+    {
+      "id": "department-mathematics",
+      "type": "department",
+      "title": "Mathematics",
+      "subtitle": "Department of Mathematics",
+      "description": "Pure and applied mathematics, statistics and mathematical modelling.",
+      "keywords": [
+        "maths",
+        "statistics",
+        "mth"
+      ],
+      "aliases": [
+        "mth",
+        "maths",
+        "mathematics department"
+      ],
+      "image": "",
+      "status": "published",
+      "verification": {
+        "status": "verified",
+        "by": "Registry Office",
+        "date": "2026-09-15",
+        "note": "Confirmed with the office."
+      },
+      "expires": null,
+      "university": "Greenfield University",
+      "campus": "Main Campus",
+      "related": [],
+      "updated": "2026-10-01T09:00:00.000Z",
+      "faculty": "faculty-science"
+    }
+  ],
+  "data/source/events.json": [
+    {
+      "id": "event-admission-screening",
+      "type": "event",
+      "title": "Admission Screening",
+      "subtitle": "Registration now open",
+      "description": "Get ready for the screening process. Visit the Admissions Office for more details and bring all original documents.",
+      "keywords": [
+        "screening",
+        "admission",
+        "documents"
+      ],
+      "aliases": [
+        "screening exercise"
+      ],
+      "image": "https://picsum.photos/seed/screening/800/450",
+      "status": "published",
+      "verification": {
+        "status": "verified",
+        "by": "Registry Office",
+        "date": "2026-09-15",
+        "note": "Confirmed with the office."
+      },
+      "expires": null,
+      "university": "Greenfield University",
+      "campus": "Main Campus",
+      "related": [
+        "office-admissions-office",
+        "admission-admission-screening"
+      ],
+      "updated": "2026-10-01T09:00:00.000Z",
+      "date": "2026-10-10",
+      "startTime": "09:00",
+      "endTime": "16:00",
+      "venue": "Main Auditorium",
+      "organizer": "Admissions Office",
+      "contact": "admissions@greenfield.edu.ng"
+    },
+    {
+      "id": "event-matriculation-ceremony",
+      "type": "event",
+      "title": "Matriculation Ceremony",
+      "subtitle": "New students induction",
+      "description": "The matriculation ceremony for newly admitted students of the 2026/2027 session.",
+      "keywords": [
+        "matriculation",
+        "freshers",
+        "new students",
+        "induction"
+      ],
+      "aliases": [
+        "matric ceremony"
+      ],
+      "image": "https://picsum.photos/seed/matric/800/450",
+      "status": "published",
+      "verification": {
+        "status": "verified",
+        "by": "Registry Office",
+        "date": "2026-09-15",
+        "note": "Confirmed with the office."
+      },
+      "expires": null,
+      "university": "Greenfield University",
+      "campus": "Main Campus",
+      "related": [],
+      "updated": "2026-10-01T09:00:00.000Z",
+      "date": "2026-10-17",
+      "startTime": "10:00",
+      "endTime": "13:00",
+      "venue": "Main Auditorium",
+      "organizer": "Registry",
+      "link": "https://example.com/matric",
+      "faculty": "faculty-computing"
+    },
+    {
+      "id": "event-old-orientation-2025",
+      "type": "event",
+      "title": "Old Orientation 2025 (archived sample)",
+      "subtitle": "",
+      "description": "Archived sample record that must not appear publicly.",
+      "keywords": [],
+      "aliases": [],
+      "image": "",
+      "status": "archived",
+      "verification": {
+        "status": "verified",
+        "by": "Registry Office",
+        "date": "2026-09-15",
+        "note": "Confirmed with the office."
+      },
+      "expires": null,
+      "university": "Greenfield University",
+      "campus": "Main Campus",
+      "related": [],
+      "updated": "2026-10-01T09:00:00.000Z",
+      "date": "2025-10-01"
+    }
+  ],
+  "data/source/faculties.json": [
+    {
+      "id": "faculty-computing",
+      "type": "faculty",
+      "title": "Faculty of Computing",
+      "subtitle": "Computing and information sciences",
+      "description": "The Faculty of Computing teaches computer science, software engineering and information systems.",
+      "keywords": [
+        "computing",
+        "computer",
+        "software",
+        "it"
+      ],
+      "aliases": [
+        "computing faculty",
+        "faculty of computing"
+      ],
+      "image": "",
+      "status": "published",
+      "verification": {
+        "status": "verified",
+        "by": "Registry Office",
+        "date": "2026-09-15",
+        "note": "Confirmed with the office."
+      },
+      "expires": null,
+      "university": "Greenfield University",
+      "campus": "Main Campus",
+      "related": [],
+      "updated": "2026-10-01T09:00:00.000Z",
+      "dean": "lecturer-prof-amina-bello",
+      "email": "computing@greenfield.edu.ng",
+      "phone": "+234 812 345 6700"
+    },
+    {
+      "id": "faculty-science",
+      "type": "faculty",
+      "title": "Faculty of Science",
+      "subtitle": "Natural and mathematical sciences",
+      "description": "The Faculty of Science covers mathematics, physics, chemistry and biology.",
+      "keywords": [
+        "science",
+        "mathematics",
+        "physics",
+        "chemistry"
+      ],
+      "aliases": [
+        "science faculty"
+      ],
+      "image": "",
+      "status": "published",
+      "verification": {
+        "status": "verified",
+        "by": "Registry Office",
+        "date": "2026-09-15",
+        "note": "Confirmed with the office."
+      },
+      "expires": null,
+      "university": "Greenfield University",
+      "campus": "Main Campus",
+      "related": [],
+      "updated": "2026-10-01T09:00:00.000Z",
+      "email": "science@greenfield.edu.ng"
+    }
+  ],
+  "data/source/features.json": {
+    "features": [],
+    "extend": {}
+  },
+  "data/source/fees.json": [
+    {
+      "id": "fee-school-fees",
+      "type": "fee",
+      "title": "School Fees",
+      "subtitle": "2026/2027 session",
+      "description": "School fees for the 2026/2027 session must be paid through the approved payment channels. Keep your receipt and present it to the Bursary for clearance.",
+      "keywords": [
+        "tuition",
+        "payment",
+        "fees",
+        "charges",
+        "pay"
+      ],
+      "aliases": [
+        "school fee",
+        "tuition fees",
+        "fees"
+      ],
+      "image": "",
+      "status": "published",
+      "verification": {
+        "status": "verified",
+        "by": "Registry Office",
+        "date": "2026-09-15",
+        "note": "Confirmed with the office."
+      },
+      "expires": null,
+      "university": "Greenfield University",
+      "campus": "Main Campus",
+      "related": [
+        "service-school-fees-payment"
+      ],
+      "updated": "2026-10-01T09:00:00.000Z",
+      "session": "2026/2027",
+      "amount": "Varies by programme - see faculty fee schedule",
+      "steps": [
+        "Generate your payment invoice on the student portal",
+        "Pay at any approved bank or online channel",
+        "Take your receipt to the Bursary for clearance"
+      ],
+      "office": "office-bursary",
+      "link": "https://example.com/pay"
+    }
+  ],
+  "data/source/lecturers.json": [
+    {
+      "id": "lecturer-dr-john-okoro",
+      "type": "lecturer",
+      "title": "Dr. John Okoro",
+      "subtitle": "Senior Lecturer",
+      "description": "Dr. John Okoro is a lecturer in the Department of Computer Science.",
+      "keywords": [
+        "computer science",
+        "data structures",
+        "software engineering"
+      ],
+      "aliases": [
+        "john okoro",
+        "dr okoro",
+        "okoro",
+        "dr john"
+      ],
+      "image": "https://picsum.photos/seed/okoro/400/400",
+      "status": "published",
+      "verification": {
+        "status": "verified_staff",
+        "by": "Computer Science Department",
+        "date": "2026-09-15",
+        "note": "Confirmed with the office."
+      },
+      "expires": null,
+      "university": "Greenfield University",
+      "campus": "Main Campus",
+      "related": [],
+      "updated": "2026-10-01T09:00:00.000Z",
+      "bio": "Dr. John Okoro is a lecturer in the Department of Computer Science. He specialises in Software Engineering, Data Structures and Artificial Intelligence.",
+      "department": "department-computer-science",
+      "role": "Senior Lecturer",
+      "office": "office-cs-dept-office",
+      "courses": [
+        "course-csc-201",
+        "course-csc-301"
+      ],
+      "email": "jokoro@greenfield.edu.ng",
+      "phone": "+234 812 345 6789"
+    },
+    {
+      "id": "lecturer-prof-amina-bello",
+      "type": "lecturer",
+      "title": "Prof. Amina Bello",
+      "subtitle": "Head of Department",
+      "description": "Professor Amina Bello heads the Department of Computer Science and is Dean of the Faculty of Computing.",
+      "keywords": [
+        "hod",
+        "dean",
+        "programming"
+      ],
+      "aliases": [
+        "amina bello",
+        "prof bello",
+        "hod computer science"
+      ],
+      "image": "",
+      "status": "published",
+      "verification": {
+        "status": "official_staff",
+        "by": "Registry Office",
+        "date": "2026-09-15",
+        "note": "Confirmed with the office."
+      },
+      "expires": null,
+      "university": "Greenfield University",
+      "campus": "Main Campus",
+      "related": [],
+      "updated": "2026-10-01T09:00:00.000Z",
+      "bio": "Professor Bello researches machine learning and computing education.",
+      "department": "department-computer-science",
+      "role": "Professor and HOD",
+      "office": "office-cs-dept-office",
+      "courses": [
+        "course-csc-101",
+        "course-csc-401"
+      ],
+      "email": "abello@greenfield.edu.ng"
+    },
+    {
+      "id": "lecturer-dr-grace-eze",
+      "type": "lecturer",
+      "title": "Dr. Grace Eze",
+      "subtitle": "Lecturer",
+      "description": "Lecturer in the Department of Mathematics.",
+      "keywords": [
+        "maths",
+        "calculus",
+        "statistics"
+      ],
+      "aliases": [
+        "grace eze",
+        "dr eze"
+      ],
+      "image": "",
+      "status": "published",
+      "verification": {
+        "status": "unverified",
+        "by": "",
+        "date": "",
+        "note": ""
+      },
+      "expires": null,
+      "university": "Greenfield University",
+      "campus": "Main Campus",
+      "related": [],
+      "updated": "2026-10-01T09:00:00.000Z",
+      "department": "department-mathematics",
+      "role": "Lecturer",
+      "courses": [
+        "course-mth-201"
+      ],
+      "email": "geze@greenfield.edu.ng"
+    }
+  ],
+  "data/source/live.json": [
+    {
+      "id": "live-shuttle-operating",
+      "type": "live",
+      "title": "Shuttle is currently operating on campus.",
+      "subtitle": "Transport",
+      "description": "The campus shuttle is running between the Main Gate, the Library and the Computing Complex.",
+      "keywords": [
+        "shuttle",
+        "bus"
+      ],
+      "aliases": [
+        "shuttle"
+      ],
+      "image": "",
+      "status": "published",
+      "verification": {
+        "status": "verified",
+        "by": "Transport Unit",
+        "date": "2026-09-15",
+        "note": "Confirmed with the office."
+      },
+      "expires": "2026-12-31T23:59:00.000Z",
+      "university": "Greenfield University",
+      "campus": "Main Campus",
+      "related": [],
+      "updated": "2026-10-01T09:00:00.000Z",
+      "priority": "normal"
+    },
+    {
+      "id": "live-registration-portal-open",
+      "type": "live",
+      "title": "Registration portal is currently open.",
+      "subtitle": "Registry",
+      "description": "The course registration portal is open. Complete registration before the deadline.",
+      "keywords": [
+        "registration",
+        "portal"
+      ],
+      "aliases": [
+        "portal"
+      ],
+      "image": "",
+      "status": "published",
+      "verification": {
+        "status": "verified",
+        "by": "Registry Office",
+        "date": "2026-09-15",
+        "note": "Confirmed with the office."
+      },
+      "expires": "2026-12-31T23:59:00.000Z",
+      "university": "Greenfield University",
+      "campus": "Main Campus",
+      "related": [],
+      "updated": "2026-10-01T09:00:00.000Z",
+      "priority": "normal"
+    }
+  ],
+  "data/source/locations.json": [
+    {
+      "id": "location-main-gate",
+      "type": "location",
+      "title": "Main Gate",
+      "subtitle": "Primary campus entrance",
+      "description": "The primary entrance to the campus. Security and visitor registration are at the gate house.",
+      "keywords": [
+        "entrance",
+        "gate",
+        "security",
+        "visitors"
+      ],
+      "aliases": [
+        "front gate",
+        "campus gate"
+      ],
+      "image": "",
+      "status": "published",
+      "verification": {
+        "status": "verified",
+        "by": "Registry Office",
+        "date": "2026-09-15",
+        "note": "Confirmed with the office."
+      },
+      "expires": null,
+      "university": "Greenfield University",
+      "campus": "Main Campus",
+      "related": [],
+      "updated": "2026-10-01T09:00:00.000Z",
+      "address": "Main Campus entrance",
+      "directions": "The Main Gate faces the main road. Shuttle buses stop right outside."
+    }
+  ],
+  "data/source/notices.json": [
+    {
+      "id": "notice-exam-registration-deadline",
+      "type": "notice",
+      "title": "Exam registration deadline",
+      "subtitle": "Important notice",
+      "description": "Students must complete examination registration before 1 December 2026 to be allowed into the examination hall.",
+      "keywords": [
+        "exam",
+        "examination",
+        "registration",
+        "deadline"
+      ],
+      "aliases": [
+        "examination registration"
+      ],
+      "image": "",
+      "status": "published",
+      "verification": {
+        "status": "verified",
+        "by": "Examinations Office",
+        "date": "2026-09-15",
+        "note": "Confirmed with the office."
+      },
+      "expires": "2026-12-01T00:00:00.000Z",
+      "university": "Greenfield University",
+      "campus": "Main Campus",
+      "related": [],
+      "updated": "2026-10-01T09:00:00.000Z",
+      "date": "2026-10-01",
+      "source": "Examinations Office",
+      "priority": "high"
+    },
+    {
+      "id": "notice-hostel-allocation-draft",
+      "type": "notice",
+      "title": "Hostel allocation (draft sample)",
+      "subtitle": "",
+      "description": "Draft sample record that must not appear publicly.",
+      "keywords": [],
+      "aliases": [],
+      "image": "",
+      "status": "draft",
+      "verification": {
+        "status": "verified",
+        "by": "Registry Office",
+        "date": "2026-09-15",
+        "note": "Confirmed with the office."
+      },
+      "expires": null,
+      "university": "Greenfield University",
+      "campus": "Main Campus",
+      "related": [],
+      "updated": "2026-10-01T09:00:00.000Z",
+      "date": "2026-10-03",
+      "priority": "normal"
+    }
+  ],
+  "data/source/offices.json": [
+    {
+      "id": "office-bursary",
+      "type": "office",
+      "title": "Bursary",
+      "subtitle": "Finance office",
+      "description": "The Bursary handles all financial matters including school fees, payments, refunds, receipts and financial enquiries.",
+      "keywords": [
+        "finance",
+        "money",
+        "fees",
+        "payment",
+        "school finance",
+        "receipt",
+        "refund"
+      ],
+      "aliases": [
+        "burs",
+        "bursary office",
+        "finance office"
+      ],
+      "image": "https://picsum.photos/seed/bursary-office/800/450",
+      "status": "published",
+      "verification": {
+        "status": "verified",
+        "by": "Registry Office",
+        "date": "2026-09-15",
+        "note": "Confirmed with the office."
+      },
+      "expires": null,
+      "university": "Greenfield University",
+      "campus": "Main Campus",
+      "related": [
+        "fee-school-fees",
+        "announcement-registration-deadline-extended"
+      ],
+      "updated": "2026-10-01T09:00:00.000Z",
+      "building": "building-administration-building",
+      "floor": "Ground Floor",
+      "room": "G04",
+      "hours": "Mon - Fri, 8:00 AM - 4:00 PM",
+      "phone": "+234 812 345 6789",
+      "email": "bursary@greenfield.edu.ng",
+      "services": [
+        "service-school-fees-payment"
+      ],
+      "bring": [
+        "Student ID",
+        "Payment receipt",
+        "Matric number"
+      ],
+      "directions": "Enter the Administration Building and turn right. The Bursary is the third door on the ground floor."
+    },
+    {
+      "id": "office-admissions-office",
+      "type": "office",
+      "title": "Admissions Office",
+      "subtitle": "Admission enquiries and screening",
+      "description": "Handles applications, admission screening, document verification and admission letters.",
+      "keywords": [
+        "admission",
+        "apply",
+        "screening",
+        "application",
+        "jamb",
+        "utme"
+      ],
+      "aliases": [
+        "admission office",
+        "admissions"
+      ],
+      "image": "",
+      "status": "published",
+      "verification": {
+        "status": "verified",
+        "by": "Registry Office",
+        "date": "2026-09-15",
+        "note": "Confirmed with the office."
+      },
+      "expires": null,
+      "university": "Greenfield University",
+      "campus": "Main Campus",
+      "related": [
+        "admission-admissions",
+        "admission-admission-requirements"
+      ],
+      "updated": "2026-10-01T09:00:00.000Z",
+      "building": "building-administration-building",
+      "floor": "First Floor",
+      "room": "112",
+      "hours": "Mon - Fri, 8:30 AM - 3:30 PM",
+      "phone": "+234 812 345 0001",
+      "email": "admissions@greenfield.edu.ng",
+      "bring": [
+        "Admission letter",
+        "O'Level results",
+        "Valid ID"
+      ],
+      "directions": "Take the stairs on your left inside the Administration Building. Room 112 is the first door."
+    },
+    {
+      "id": "office-student-affairs-office",
+      "type": "office",
+      "title": "Student Affairs Office",
+      "subtitle": "Welfare, ID cards and counselling",
+      "description": "Supports students with welfare, ID cards, accommodation queries and counselling.",
+      "keywords": [
+        "welfare",
+        "id card",
+        "counselling",
+        "hostel",
+        "accommodation"
+      ],
+      "aliases": [
+        "student affairs",
+        "dean of students"
+      ],
+      "image": "",
+      "status": "published",
+      "verification": {
+        "status": "verified",
+        "by": "Registry Office",
+        "date": "2026-09-15",
+        "note": "Confirmed with the office."
+      },
+      "expires": null,
+      "university": "Greenfield University",
+      "campus": "Main Campus",
+      "related": [],
+      "updated": "2026-10-01T09:00:00.000Z",
+      "building": "building-administration-building",
+      "floor": "First Floor",
+      "room": "118",
+      "hours": "Mon - Fri, 9:00 AM - 4:00 PM",
+      "phone": "+234 812 345 0002",
+      "email": "studentaffairs@greenfield.edu.ng",
+      "services": [
+        "service-student-affairs"
+      ],
+      "bring": [
+        "Student ID or admission letter"
+      ],
+      "directions": "First floor of the Administration Building, at the end of the corridor."
+    },
+    {
+      "id": "office-cs-dept-office",
+      "type": "office",
+      "title": "Computer Science Department Office",
+      "subtitle": "Department secretary and records",
+      "description": "The Computer Science departmental office handles course registration support, results queries and lecturer appointments.",
+      "keywords": [
+        "computer science",
+        "csc",
+        "department office"
+      ],
+      "aliases": [
+        "cs office",
+        "csc office",
+        "cs dept office"
+      ],
+      "image": "https://picsum.photos/seed/cs-office/800/450",
+      "status": "published",
+      "verification": {
+        "status": "verified",
+        "by": "Registry Office",
+        "date": "2026-09-15",
+        "note": "Confirmed with the office."
+      },
+      "expires": null,
+      "university": "Greenfield University",
+      "campus": "Main Campus",
+      "related": [],
+      "updated": "2026-10-01T09:00:00.000Z",
+      "building": "building-computing-complex",
+      "floor": "Third Floor",
+      "room": "312",
+      "hours": "Mon - Fri, 9:00 AM - 3:00 PM",
+      "phone": "+234 812 345 6790",
+      "email": "csc@greenfield.edu.ng",
+      "directions": "Take the lift to the third floor of the Computing Complex and turn left. Room 312."
+    }
+  ],
+  "data/source/services.json": [
+    {
+      "id": "service-school-fees-payment",
+      "type": "service",
+      "title": "School Fees Payment",
+      "subtitle": "Pay tuition and other charges",
+      "description": "Information about how students pay tuition and other charges, collect receipts and request payment clearance.",
+      "keywords": [
+        "pay",
+        "tuition",
+        "payment",
+        "receipt",
+        "clearance"
+      ],
+      "aliases": [
+        "pay school fees",
+        "fee payment"
+      ],
+      "image": "",
+      "status": "published",
+      "verification": {
+        "status": "verified",
+        "by": "Registry Office",
+        "date": "2026-09-15",
+        "note": "Confirmed with the office."
+      },
+      "expires": null,
+      "university": "Greenfield University",
+      "campus": "Main Campus",
+      "related": [
+        "fee-school-fees"
+      ],
+      "updated": "2026-10-01T09:00:00.000Z",
+      "office": "office-bursary",
+      "hours": "Mon - Fri, 8:00 AM - 4:00 PM"
+    },
+    {
+      "id": "service-student-affairs",
+      "type": "service",
+      "title": "Student Affairs",
+      "subtitle": "Student welfare and support",
+      "description": "Student welfare services including ID card issuance, counselling referrals and hostel enquiries.",
+      "keywords": [
+        "welfare",
+        "counselling",
+        "id card",
+        "support",
+        "hostel"
+      ],
+      "aliases": [
+        "student welfare"
+      ],
+      "image": "",
+      "status": "published",
+      "verification": {
+        "status": "verified",
+        "by": "Registry Office",
+        "date": "2026-09-15",
+        "note": "Confirmed with the office."
+      },
+      "expires": null,
+      "university": "Greenfield University",
+      "campus": "Main Campus",
+      "related": [],
+      "updated": "2026-10-01T09:00:00.000Z",
+      "office": "office-student-affairs-office",
+      "hours": "Mon - Fri, 9:00 AM - 4:00 PM",
+      "phone": "+234 812 345 0002"
+    },
+    {
+      "id": "service-library-borrowing",
+      "type": "service",
+      "title": "Library Borrowing",
+      "subtitle": "Borrow books and journals",
+      "description": "Registered students can borrow up to three books at a time for two weeks. Bring your student ID to the circulation desk.",
+      "keywords": [
+        "books",
+        "borrow",
+        "loan",
+        "journals"
+      ],
+      "aliases": [
+        "borrow books",
+        "library loans"
+      ],
+      "image": "",
+      "status": "published",
+      "verification": {
+        "status": "verified",
+        "by": "Registry Office",
+        "date": "2026-09-15",
+        "note": "Confirmed with the office."
+      },
+      "expires": null,
+      "university": "Greenfield University",
+      "campus": "Main Campus",
+      "related": [
+        "building-library"
+      ],
+      "updated": "2026-10-01T09:00:00.000Z",
+      "hours": "Mon - Sat, 8:00 AM - 8:00 PM"
+    }
+  ],
+  "data/source/settings.json": {
+    "university": "Greenfield University",
+    "campus": "Main Campus",
+    "mapSuffix": "Greenfield University, Main Campus"
+  },
+  "data/source/timetables.json": [
+    {
+      "id": "timetable-csc-300-level-first-semester",
+      "type": "timetable",
+      "title": "CSC 300 Level Timetable",
+      "subtitle": "First semester, 2026/2027",
+      "description": "Lecture timetable for 300 level Computer Science students, first semester.",
+      "keywords": [
+        "timetable",
+        "lectures",
+        "schedule",
+        "300 level"
+      ],
+      "aliases": [
+        "csc timetable",
+        "computer science timetable"
+      ],
+      "image": "",
+      "status": "published",
+      "verification": {
+        "status": "verified",
+        "by": "Registry Office",
+        "date": "2026-09-15",
+        "note": "Confirmed with the office."
+      },
+      "expires": null,
+      "university": "Greenfield University",
+      "campus": "Main Campus",
+      "related": [],
+      "updated": "2026-10-01T09:00:00.000Z",
+      "department": "department-computer-science",
+      "level": "300 Level",
+      "semester": "First Semester",
+      "slots": [
+        "Mon | 8:00 - 10:00 | CSC 301 | LT1",
+        "Tue | 10:00 - 12:00 | CSC 305 | LT2",
+        "Wed | 8:00 - 10:00 | MTH 302 | LT1",
+        "Thu | 2:00 - 4:00 | CSC 301 Lab | Lab 3",
+        "Fri | 10:00 - 12:00 | GST 302 | Main Hall"
+      ],
+      "course": "course-csc-301"
+    },
+    {
+      "id": "timetable-csc-200-level-first-semester",
+      "type": "timetable",
+      "title": "CSC 200 Level Timetable",
+      "subtitle": "First semester, 2026/2027",
+      "description": "Lecture timetable for 200 level Computer Science students, first semester.",
+      "keywords": [
+        "timetable",
+        "lectures",
+        "200 level"
+      ],
+      "aliases": [
+        "csc 200 timetable"
+      ],
+      "image": "",
+      "status": "published",
+      "verification": {
+        "status": "verified",
+        "by": "Registry Office",
+        "date": "2026-09-15",
+        "note": "Confirmed with the office."
+      },
+      "expires": null,
+      "university": "Greenfield University",
+      "campus": "Main Campus",
+      "related": [],
+      "updated": "2026-10-01T09:00:00.000Z",
+      "department": "department-computer-science",
+      "course": "course-csc-201",
+      "level": "200 Level",
+      "semester": "First Semester",
+      "slots": [
+        "Mon | 10:00 - 12:00 | CSC 201 | LT2",
+        "Wed | 12:00 - 2:00 | CSC 201 | LT2",
+        "Thu | 8:00 - 10:00 | MTH 201 | LT1"
+      ]
+    }
+  ]
+}
