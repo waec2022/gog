@@ -1,0 +1,453 @@
+/* =========================================================
+   CAMPUS GUIDE EDITOR — styles.css
+   Neutral admin aesthetic — deliberately distinct from the
+   public site's dark navy/purple brand.
+   ========================================================= */
+
+:root {
+  --bg: #f4f5f7;
+  --panel: #ffffff;
+  --border: #e3e5ea;
+  --text: #1a1d27;
+  --text-soft: #5b6072;
+  --text-muted: #8a8f9f;
+  --accent: #2563eb;
+  --accent-soft: #eaf0fe;
+  --green: #16a34a;
+  --orange: #d97706;
+  --red: #dc2626;
+  --radius-sm: 7px;
+  --radius-md: 11px;
+  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+}
+
+a { text-decoration: none; color: inherit; }
+button { font-family: inherit; cursor: pointer; }
+input, select, textarea { font-family: inherit; }
+
+.editor-shell {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* ---------------- Sidebar ---------------- */
+
+.sidebar {
+  width: 220px;
+  flex-shrink: 0;
+  background: var(--panel);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+}
+
+.sidebar__brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 18px 16px;
+  font-weight: 800;
+  font-size: 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.sidebar__brand small {
+  display: block;
+  font-weight: 600;
+  color: var(--text-muted);
+  font-size: 10.5px;
+}
+
+.sidenav {
+  flex: 1;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sidenav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text-soft);
+}
+
+.sidenav-item:hover {
+  background: var(--bg);
+}
+
+.sidenav-item--active {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.sidebar__footer {
+  padding: 14px 16px;
+  font-size: 11px;
+  color: var(--text-muted);
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--orange);
+  flex-shrink: 0;
+}
+
+/* ---------------- Main area ---------------- */
+
+.editor-main {
+  flex: 1;
+  padding: 24px 28px 60px;
+  max-width: 760px;
+}
+
+.view-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  gap: 12px;
+}
+
+.view-header h1 {
+  font-size: 19px;
+  margin: 0;
+}
+
+/* ---------------- Stat grid ---------------- */
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.stat-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 16px;
+}
+
+.stat-card__value {
+  display: block;
+  font-size: 24px;
+  font-weight: 800;
+}
+
+.stat-card__label {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.stat-card--green .stat-card__value { color: var(--green); }
+.stat-card--orange .stat-card__value { color: var(--orange); }
+.stat-card--red .stat-card__value { color: var(--red); }
+
+/* ---------------- Panel ---------------- */
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 18px;
+  margin-bottom: 16px;
+}
+
+.panel__title {
+  font-size: 14px;
+  margin: 0 0 12px;
+}
+
+.activity-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.activity-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 13px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+.activity-item:last-child { border-bottom: none; padding-bottom: 0; }
+.activity-item__time { color: var(--text-muted); white-space: nowrap; }
+.activity-item--empty { color: var(--text-muted); }
+
+/* ---------------- Buttons ---------------- */
+
+.btn-primary, .btn-secondary, .btn-small {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  border: none;
+  white-space: nowrap;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+  padding: 11px 18px;
+  font-size: 13.5px;
+}
+
+.btn-secondary {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 11px 18px;
+  font-size: 13.5px;
+}
+
+.btn-small {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--text-soft);
+  padding: 6px 12px;
+  font-size: 12px;
+}
+
+.btn-small--danger {
+  color: var(--red);
+}
+
+/* ---------------- Forms ---------------- */
+
+.record-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.form-field__label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-soft);
+}
+
+.form-field input,
+.form-field select,
+.form-field textarea,
+.image-loader input,
+#manageSearch,
+#customExpirationInput {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  font-size: 13.5px;
+  color: var(--text);
+  background: var(--panel);
+}
+
+.form-section {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.radio-pill-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.radio-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 7px 12px;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.radio-pill input { margin: 0; }
+
+.checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-soft);
+}
+
+.checkbox-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 10px;
+}
+
+.image-loader {
+  display: flex;
+  gap: 8px;
+}
+
+.image-loader input {
+  flex: 1;
+}
+
+.image-preview img {
+  max-width: 160px;
+  border-radius: var(--radius-sm);
+  display: block;
+}
+
+.field-hint {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.form-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+/* ---------------- Filter chips / search (manage) ---------------- */
+
+.search-input {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 11px 14px;
+  font-size: 13.5px;
+  margin-bottom: 12px;
+  background: var(--panel);
+  color: var(--text);
+}
+
+.filter-chips {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 6px;
+  margin-bottom: 14px;
+}
+
+.filter-chip {
+  flex-shrink: 0;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  color: var(--text-soft);
+  font-size: 12.5px;
+  font-weight: 700;
+  padding: 7px 14px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.filter-chip--active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+/* ---------------- Record list ---------------- */
+
+.record-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.record-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+}
+
+.record-row__main {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.record-row__title {
+  font-size: 13.5px;
+  font-weight: 700;
+}
+
+.record-row__meta {
+  font-size: 11.5px;
+  color: var(--text-muted);
+}
+
+.record-row__actions {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.empty-state {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 13px;
+  padding: 30px;
+}
+
+/* ---------------- Responsive ---------------- */
+
+@media (max-width: 760px) {
+  .editor-shell { flex-direction: column; }
+  .sidebar { width: 100%; height: auto; position: static; }
+  .sidenav { flex-direction: row; overflow-x: auto; }
+  .sidenav-item { flex-shrink: 0; }
+  .editor-main { padding: 18px 16px 48px; max-width: none; }
+}
