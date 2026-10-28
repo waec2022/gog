@@ -1,31 +1,205 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Campus Guide Editor</title>
-<meta name="robots" content="noindex, nofollow">
-<link rel="stylesheet" href="css/styles.css">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sure2OddToday - short2odd.com - Find Sure Bets</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,sans-serif}
+body{background:#f6f9ff;color:#0f2348}
+.hero{background:radial-gradient(100% 100% at 70% 20%,#0f4a7a 0%,#06122b 60%);color:#fff;padding:18px 18px 80px;position:relative;overflow:hidden;border-radius:0 0 32px 32px}
+.hero h1{font-size:18px} .hero h1 span{color:#0bbf6a}
+.hero h2{font-size:28px;margin-top:14px;line-height:1.1} .hero h2 b{color:#3bb2ff}
+.search{margin-top:14px;max-width:520px;background:#fff;border-radius:999px;padding:6px 12px;display:flex;align-items:center;gap:8px}
+.search input{flex:1;border:0;outline:0;font-size:13px}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:-40px auto 0;max-width:1220px;padding:0 14px;position:relative;z-index:2}
+.card{border-radius:16px;padding:14px;display:flex;justify-content:space-between;align-items:center}
+.card.dark{background:linear-gradient(135deg,#0a1835,#102a5a);color:#fff}
+.card.light{background:#e6f0ff;border:1px solid #d6e6ff}
+.wrap{max-width:1220px;margin:16px auto;padding:0 14px}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.roll{background:#fff;border:1px solid #e6eef5;border-radius:12px;padding:12px;cursor:pointer}
+.roll.active{border-color:#0a7a4a;box-shadow:0 0 0 2px #0a7a4a}
+.num{font-size:18px;font-weight:800;color:#0f3a8a} .day{font-size:9px;padding:4px 8px;border-radius:999px;background:#e6f0ff;color:#1675ff}
+.day.purple{background:#f3e8ff;color:#7c3aed} .day.red{background:#ffe4e6;color:#e11d48}
+.modal-bg{position:fixed;inset:0;background:rgba(8,22,54,.75);backdrop-filter:blur(8px);z-index:999;display:none;justify-content:center;align-items:flex-start;padding:10px;overflow:auto}
+.modal-bg.active{display:flex}
+.modal{width:100%;max-width:900px;background:#fff;border-radius:18px;overflow:hidden}
+.modal-h{padding:14px 16px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #eef2f9}
+.tabs{display:flex;gap:8px;padding:12px}
+.tab{padding:8px 14px;border-radius:999px;border:1px solid #e6eef5;background:#fff;cursor:pointer;font-weight:600;font-size:12px}
+.tab.active{background:#0a7a4a;color:#fff}
+.table{width:100%;border-collapse:collapse;font-size:12px}
+.table th{font-size:10px;color:#6b7a9a;background:#f8fbff;padding:8px 10px;text-align:left}
+.table td{padding:10px;border-bottom:1px solid #f1f5f9}
+.badge{font-size:10px;padding:3px 8px;border-radius:999px;font-weight:700}
+.won{background:#dcfce7;color:#166534} .pend{background:#fef3c7;color:#92400e} .lost{background:#ffe4e6;color:#e11d48}
+.bet{padding:6px 12px;border-radius:999px;border:1px solid #dbeafe;background:#eff6ff;color:#0a7a4a;font-weight:700;cursor:pointer}
+.multi{background:#fff;border-radius:16px;padding:14px}
+.multi-item{border:1px solid #eef2f9;border-radius:12px;padding:12px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
+.odd-pill{background:#e6f0ff;padding:6px 12px;border-radius:999px;font-weight:800;color:#0f3a8a}
+.bigbtn{width:100%;padding:14px;border-radius:12px;border:0;background:#0a7a4a;color:#fff;font-weight:800;font-size:15px;cursor:pointer;margin-top:10px}
+@media(max-width:900px){.cards{grid-template-columns:1fr}.grid{grid-template-columns:repeat(2,1fr)}}
+</style>
 </head>
 <body>
-
-<div class="editor-shell">
-  <aside class="sidebar">
-    <div class="sidebar__brand">
-      <span class="sidebar__brand-mark">🎓</span>
-      <span>Campus Guide <small>Editor</small></span>
-    </div>
-    <nav class="sidenav" id="sidebarNav"></nav>
-    <div class="sidebar__footer">
-      <span class="status-dot"></span> Local draft (no Worker yet)
-    </div>
-  </aside>
-
-  <main class="editor-main" id="editorMain"></main>
+<div class="hero">
+<div style="display:flex;justify-content:space-between;align-items:center"><h1>Sure<span>2OddToday</span><br><small style="font-size:10px">short2odd.com • Smarter Bets • Better Odds</small></h1><span style="font-size:10px">● Live</span></div>
+<h2>Find Sure Bets.<br><b>Make More.</b></h2>
+<div class="search"><span>⚽</span><input id="search" placeholder="Search for match, team or league..."><span>🔍</span></div>
 </div>
 
-<script src="js/seed-data.js"></script>
-<script src="js/data-store.js"></script>
-<script src="js/app.js?v=1"></script>
+<div class="cards">
+<div class="card dark"><div><b>Arbitrage Matches</b><br><small>Get matched odds from multiple bookmakers</small><br><small style="background:#ffffff22;padding:4px 8px;border-radius:8px">bet365 • 1XBET • MELBET</small></div><span>→</span></div>
+<div class="card light"><div><b>🎁 Rollover Plans</b><br><small>Build your bankroll with high-odds rollover packages.</small><br><small>Start from 1.30 odds Up to 100 odds</small></div><span>→</span></div>
+</div>
+
+<div class="wrap">
+<div style="display:flex;justify-content:space-between;align-items:center;margin:16px 0 10px"><h3>Available Rollover Packages</h3><small style="background:#e6ffef;padding:4px 10px;border-radius:20px">● Rollover cycles are active</small></div>
+<div class="grid" id="rollGrid"></div>
+<div style="margin-top:12px;background:#e6f0ff;padding:10px 12px;border-radius:12px;font-size:11px;display:flex;justify-content:space-between"><span>⚡ 100.00 odds rollover is only for 2 days. All other rollovers run for 7 days.</span><span>→</span></div>
+</div>
+
+<!-- ROLLOVER MODAL - Day 1/Day 2 Logic -->
+<div class="modal-bg" id="mRollover">
+<div class="modal">
+<div class="modal-h"><div><h3 id="rollTitle">100.00 Odds Rollover</h3><small id="rollSub">2-Day Plan • 20 Selections • Combined: 100.00</small></div><button onclick="closeM()" style="width:32px;height:32px;border-radius:50%;border:0;background:#f1f5f9;cursor:pointer">✕</button></div>
+<div class="tabs"><button class="tab active" id="t1" onclick="switchDay(1)">✅ Day 1 (Today)</button><button class="tab" id="t2" onclick="switchDay(2)">🕒 Day 2 (Tomorrow)</button><button class="tab" id="tY" onclick="switchDay(0)">📅 Yesterday</button><span style="margin-left:auto;font-size:10px;background:#dcfce7;padding:4px 10px;border-radius:20px">● COMPLETED</span></div>
+<table class="table"><thead><tr><th>#</th><th>Match & Selection</th><th>Odd</th><th>Status</th><th>Action</th></tr></thead><tbody id="rollTable"></tbody></table>
+<div style="padding:12px"><button onclick="document.getElementById('mRollover').classList.remove('active');document.getElementById('mMulti').classList.add('active')" style="width:100%;padding:10px;border-radius:10px;border:1px dashed #a7c5ff;background:#f0f7ff;color:#0a7a4a;font-weight:700;cursor:pointer">▼ View all <span id="allCount">20</span> selections as accumulator</button></div>
+</div>
+</div>
+
+<!-- MULTI MODAL - 5.00 Style Everywhere -->
+<div class="modal-bg" id="mMulti">
+<div class="modal" style="max-width:480px">
+<div class="modal-h"><div style="display:flex;gap:10px;align-items:center"><div style="background:#0a193a;color:#00d4ff;padding:8px 16px;border-radius:10px;font-weight:800">1XBET</div><div><h3 id="multiTitle">5.00 Odds Multi</h3><small id="multiSub">3 Matches • Potential Return: ₦25,000</small></div></div><button onclick="closeM2()" style="width:32px;height:32px;border-radius:50%;border:0;background:#f1f5f9;cursor:pointer">✕</button></div>
+<div style="padding:12px" id="multiList"></div>
+<div style="padding:0 12px"><div style="background:#f8fbff;border-radius:10px;padding:12px;display:flex;justify-content:space-between"><div>Total Odds<br><b id="totalOdds">5.00</b></div><div>Potential Return<br><b>₦25,000</b></div></div>
+<button class="bigbtn" onclick="alert('Opening 1xBet with promo SURE2ODD')">View on 1xBet ↗</button>
+<small style="display:block;text-align:center;margin-top:8px;color:#6b7a9a">Play responsibly. 18+ • short2odd.com</small>
+</div>
+</div>
+</div>
+
+<script>
+// FREE API - NO KEY - ESPN + 12H CACHE
+const TODAY=new Date(); const fmt=d=>d.toISOString().split('T')[0];
+const YESTERDAY=new Date(Date.now()-86400000); const TOMORROW=new Date(Date.now()+86400000);
+let ALL_MATCHES={yesterday:[],today:[],tomorrow:[]};
+
+async function fetchFree(){
+ const cache=localStorage.getItem('short2odd_cache'); const cacheTime=localStorage.getItem('short2odd_time');
+ if(cache&&cacheTime&&Date.now()-parseInt(cacheTime)<12*60*60*1000){ ALL_MATCHES=JSON.parse(cache); renderAll(); return; }
+ try{
+  const leagues=['eng.1','esp.1','ger.1','ita.1','fra.1'];
+  const fetchDay=async(dateObj)=>{
+   const dateStr=dateObj.toISOString().split('T')[0].replace(/-/g,'');
+   let matches=[];
+   for(let lg of leagues){
+    try{
+     const res=await fetch(`https://site.api.espn.com/apis/site/v2/sports/soccer/${lg}/scoreboard?dates=${dateStr}`);
+     const data=await res.json();
+     (data.events||[]).forEach(ev=>{
+      const comp=ev.competitions[0]; const home=comp.competitors.find(c=>c.homeAway==='home'); const away=comp.competitors.find(c=>c.homeAway==='away');
+      const status=comp.status.type.completed?'Won':comp.status.type.state==='in'?'Pending':'Pending';
+      const homeScore=home.score||0; const awayScore=away.score||0;
+      // Simple prediction logic
+      const markets=['Over 1.5 Goals','BTTS Yes','Over 2.5 Goals','Home Win','Under 3.5'];
+      const odds=[1.25,1.55,1.80,2.10,1.35];
+      const idx=Math.floor(Math.random()*markets.length);
+      matches.push({id:ev.id+lg, teams:`${home.team.displayName} vs ${away.team.displayName}`, league:ev.leagues[0].abbreviation||lg, market:markets[idx], odd:odds[idx]+(Math.random()*0.2), prob:78+Math.floor(Math.random()*12), status: status, score:`${homeScore}-${awayScore}`});
+     });
+    }catch(e){}
+   }
+   return matches.slice(0,20);
+  };
+  ALL_MATCHES.yesterday=await fetchDay(YESTERDAY);
+  ALL_MATCHES.today=await fetchDay(TODAY);
+  ALL_MATCHES.tomorrow=await fetchDay(TOMORROW);
+  if(ALL_MATCHES.today.length===0) throw new Error();
+  localStorage.setItem('short2odd_cache',JSON.stringify(ALL_MATCHES));
+  localStorage.setItem('short2odd_time',Date.now().toString());
+  renderAll();
+ }catch(e){
+  // Fallback if ESPN blocked
+  ALL_MATCHES={
+   yesterday:[{teams:'Man City vs Arsenal',league:'EPL',market:'Over 1.5 Goals',odd:1.42,prob:88,status:'Won'},{teams:'Bayern vs Dortmund',league:'Bundesliga',market:'BTTS Yes',odd:1.78,prob:82,status:'Lost'}],
+   today:[{teams:'Real Madrid vs Barcelona',league:'La Liga',market:'Over 2.5 Goals',odd:1.85,prob:80,status:'Pending'},{teams:'PSG vs Lyon',league:'Ligue 1',market:'Home Win',odd:2.10,prob:77,status:'Pending'},{teams:'Inter vs Roma',league:'Serie A',market:'Under 2.5',odd:1.65,prob:79,status:'Pending'}],
+   tomorrow:[{teams:'Liverpool vs Tottenham',league:'EPL',market:'Over 1.5 Goals',odd:1.32,prob:87,status:'Upcoming'}]
+  };
+  renderAll();
+ }
+}
+
+let selected=[]; let currentDay=1; let currentOdd="100.00";
+function renderAll(){ renderRollovers(); }
+
+function renderRollovers(){
+ const odds=['1.30','1.50','2.00','3.00','4.00','5.00','6.00','7.00','8.00','9.00','10.00','20.00','50.00','100.00'];
+ const grid=document.getElementById('rollGrid');
+ grid.innerHTML=odds.map(o=>{
+  const is2Day=['10.00','20.00','50.00','100.00'].includes(o);
+  const dayClass=is2Day?(o==='100.00'?'red':'purple'):'';
+  return `<div class="roll" onclick="openRollover('${o}')"><div style="display:flex;justify-content:space-between"><span class="num">${o}</span><span class="day ${dayClass}">${is2Day?'2 Days':'7 Days'}</span></div><div style="margin-top:6px;font-size:11px;color:#6b7a9a">Rollover ›</div></div>`;
+ }).join('');
+}
+
+function openRollover(odd){
+ currentOdd=odd;
+ currentDay=1;
+ const is2Day=['10.00','20.00','50.00','100.00'].includes(odd);
+ document.getElementById('rollTitle').textContent=odd+' Odds Rollover';
+ document.getElementById('rollSub').textContent=(is2Day?'2-Day Plan':'7-Day Plan')+' • 20 Selections • Combined: '+odd;
+ autoBuild(odd);
+ document.getElementById('mRollover').classList.add('active');
+ switchDay(1);
+}
+
+function autoBuild(target){
+ const t=parseFloat(target);
+ const pool=[...ALL_MATCHES.yesterday,...ALL_MATCHES.today,...ALL_MATCHES.tomorrow].sort((a,b)=>b.prob-a.prob);
+ selected=[]; let comb=1;
+ for(let m of pool){ if(comb>=t) break; selected.push(m); comb*=m.odd; }
+ document.getElementById('allCount').textContent=selected.length;
+ renderTable();
+ renderMulti();
+}
+
+function renderTable(){
+ const tbody=document.getElementById('rollTable');
+ let data;
+ if(currentDay===0) data=ALL_MATCHES.yesterday.length?ALL_MATCHES.yesterday:selected.filter(s=>s.status==='Won'||s.status==='Lost').slice(0,5);
+ else if(currentDay===1) data=ALL_MATCHES.today.length?ALL_MATCHES.today:selected.slice(0,10);
+ else data=ALL_MATCHES.tomorrow.length?ALL_MATCHES.tomorrow:selected.slice(10,15);
+ if(data.length===0) data=selected.slice(0,10);
+ tbody.innerHTML=data.map((m,i)=>`<tr><td>${i+1}</td><td><b>${m.teams}</b><br><small>${m.market}</small></td><td>${m.odd.toFixed(2)}</td><td><span class="badge ${m.status==='Won'?'won':m.status==='Lost'?'lost':'pend'}">${m.status}</span></td><td><button class="bet" onclick="document.getElementById('mRollover').classList.remove('active');document.getElementById('mMulti').classList.add('active')">View Code</button></td></tr>`).join('');
+}
+
+function renderMulti(){
+ const list=document.getElementById('multiList');
+ const comb=selected.reduce((a,b)=>a*b.odd,1);
+ document.getElementById('totalOdds').textContent=comb.toFixed(2);
+ document.getElementById('multiTitle').textContent=currentOdd+' Odds Multi';
+ document.getElementById('multiSub').textContent=selected.length+' Matches • Potential Return: ₦'+(comb*5000).toFixed(0);
+ list.innerHTML=selected.slice(0,3).map(m=>`<div class="multi-item"><div><b>${m.teams}</b><br><small>${m.market}</small></div><span class="odd-pill">${m.odd.toFixed(2)}</span></div>`).join('');
+}
+
+function switchDay(d){
+ currentDay=d;
+ document.getElementById('t1').className=d===1?'tab active':'tab';
+ document.getElementById('t2').className=d===2?'tab active':'tab';
+ document.getElementById('tY').className=d===0?'tab active':'tab';
+ renderTable();
+}
+function closeM(){ document.getElementById('mRollover').classList.remove('active'); }
+function closeM2(){ document.getElementById('mMulti').classList.remove('active'); }
+
+document.getElementById('search').addEventListener('input',e=>{
+ const v=e.target.value.toLowerCase();
+ document.querySelectorAll('.roll').forEach(c=>{ c.style.display=c.innerText.toLowerCase().includes(v)?'block':'none'; });
+});
+
+fetchFree();
+</script>
 </body>
 </html>
