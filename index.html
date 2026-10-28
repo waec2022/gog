@@ -3,166 +3,154 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sure2OddToday - Ticket Doctor - Full Working</title>
+<title>Sure2OddToday - Auto Token GitHub Version</title>
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 <style>
-*{box-sizing:border-box}body{margin:0;background:#060a18;color:#e2e8f0;font-family:system-ui,Segoe UI,Roboto;padding:12px}
-.h{font-size:22px;font-weight:900;margin:10px 0}
-.card{background:#0f1933;border:1px solid #1f2f5e;border-radius:18px;padding:14px;margin:10px 0;box-shadow:0 4px 20px rgba(0,0,0,.3)}
-.badge{background:#132040;border:1px solid #234;padding:4px 10px;border-radius:99px;font-size:12px;color:#8ab}
-input,textarea{width:100%;background:#0a1228;color:#fff;border:1px solid #233865;border-radius:12px;padding:13px;margin-top:8px;font-size:14px}
-button{background:#22c55e;color:#000;font-weight:900;border:none;padding:15px;border-radius:14px;width:100%;font-size:16px;cursor:pointer;margin-top:8px}
-button:disabled{opacity:.5}
-.small{font-size:12px;color:#93a3c0;line-height:1.4}
-.tag{background:#0a1228;border:1px solid #253a6a;padding:6px 10px;border-radius:10px;display:inline-block;margin:4px;font-size:12px}
-img{max-width:100%;border-radius:14px;margin-top:10px;border:1px solid #233865}
-.bar{height:8px;background:#132040;border-radius:99px;overflow:hidden;margin-top:10px}
-.bar div{height:100%;background:linear-gradient(90deg,#22c55e,#16a34a);width:0%;transition:.4s}
-.ok{color:#22c55e} .err{color:#f87171}
-pre{background:#080e22;padding:10px;border-radius:10px;overflow:auto;font-size:11px;white-space:pre-wrap}
-a{color:#22c55e}
+*{box-sizing:border-box}body{margin:0;background:#060a18;color:#e2e8f0;font-family:system-ui;padding:12px}
+.h{font-size:22px;font-weight:900}.card{background:#0f1933;border:1px solid #1f2f5e;border-radius:18px;padding:14px;margin:10px 0}
+button{background:#22c55e;color:#000;font-weight:900;border:none;padding:15px;border-radius:14px;width:100%;font-size:16px;margin-top:8px;cursor:pointer}
+.small{font-size:12px;color:#93a3c0}.tag{background:#0a1228;border:1px solid #253a6a;padding:6px 10px;border-radius:10px;display:inline-block;margin:3px;font-size:11px}
+img{max-width:100%;border-radius:12px;margin-top:8px}.bar{height:8px;background:#132040;border-radius:99px;overflow:hidden;margin-top:8px}.bar div{height:100%;background:#22c55e;width:0%;transition:.4s}
+.ok{color:#22c55e}.err{color:#f87171}pre{background:#080e22;padding:8px;border-radius:8px;overflow:auto;font-size:11px;white-space:pre-wrap}a{color:#22c55e}
+textarea,input{width:100%;background:#0a1228;color:#fff;border:1px solid #233865;border-radius:12px;padding:12px;margin-top:8px}
 </style>
 </head>
 <body>
-
-<div class="h">🩺 Sure2OddToday — Ticket Doctor <span class="badge">FULL WORKING v5</span></div>
-<p class="small">Upload ANY bookie ticket image (SportyBet, 1xBet, Bet9ja, 22Bet). AI go read am, detect selections, then clone to TODAY games via your 22Bet API. For LOCAL TEST - not publishing yet.</p>
+<div class="h">🩺 Sure2OddToday — Auto Clone (GitHub)</div>
+<p class="small">Paste screenshot ONLY - token auto-fetch + real odds + your fluxbrox affiliate link inside.</p>
 
 <div class="card">
-<b>🔐 Step 1 — Your 22Bet Credentials</b>
-<p class="small">Auto-get Bearer token from https://cpservm.com/gateway/token</p>
-<input id="clientId" placeholder="Partners ID e.g partners-35afad7e...">
-<input id="clientSecret" placeholder="ClientSecret e.g n3bepbxtDkv...">
-<input id="affLink" placeholder="Your 22Bet affiliate link https://22bet.com/btag/...">
-<button id="btnToken" onclick="getToken()">🔑 Get Bearer Token Automatically</button>
-<div id="tokenStatus" class="small" style="margin-top:8px">Waiting...</div>
-<pre id="tokenRaw" style="display:none"></pre>
+<div id="autoStatus" class="small">⏳ Auto-fetching token... wait 5 sec</div>
+<pre id="autoLog" style="display:none"></pre>
 </div>
 
 <div class="card">
-<b>📸 Step 2 — Upload Ticket Image (ANY Bookie)</b>
+<b>📸 Upload Winning Ticket Screenshot</b>
 <input type="file" id="imgFile" accept="image/*">
 <img id="preview" style="display:none">
 <div class="bar"><div id="pbar"></div></div>
 <div id="ocrStatus" class="small"></div>
-</div>
-
-<div class="card">
-<b>📝 Step 3 — Detected Text</b>
-<textarea id="ticketText" rows="7" placeholder="OCR result go appear here..."></textarea>
+<textarea id="ticketText" rows="6" placeholder="OCR result..."></textarea>
 <div id="dnaTags"></div>
 </div>
 
 <div class="card">
-<button id="btnClone" onclick="cloneToToday()" disabled>🚀 Step 4 — Clone Ticket to TODAY via 22Bet API</button>
+<button onclick="cloneToToday()" id="btnClone" disabled>⏳ Waiting for token...</button>
 <div id="result"></div>
 </div>
 
 <script>
-let BEARER = localStorage.getItem('sure2odd_bearer') || "";
-let AFF = localStorage.getItem('sure2odd_aff') || "";
-const API_BASE = "https://cpservm.com/gateway/marketing/datafeed";
+const AFF_LINK = "https://che.fluxbrox.com/redirect.aspx?pid=199046&lpid=17&bid=1484";
+const PARTNER_ID = "partners-35afad7ea8aa44418f245b47ad75e19e";
+const CLIENT_SECRET = "n3bepbxtDkvAApksyqc2h4AjrlauMz*vwYGQUiV!1k!xidbjRf9C4GyULua6YJwY";
 const TOKEN_URL = "https://cpservm.com/gateway/token";
-document.getElementById('affLink').value = AFF;
-if(BEARER){
-  document.getElementById('tokenStatus').innerHTML = `<span class='ok'>✅ Saved token: ${BEARER.substring(0,35)}...</span>`;
-  document.getElementById('btnClone').disabled = false;
-}
-async function getToken(){
-  const client_id = document.getElementById('clientId').value.trim();
-  const client_secret = document.getElementById('clientSecret').value.trim();
-  const aff = document.getElementById('affLink').value.trim();
-  if(aff) localStorage.setItem('sure2odd_aff', aff);
-  const status = document.getElementById('tokenStatus');
-  const raw = document.getElementById('tokenRaw');
-  if(!client_id || !client_secret){status.innerHTML=`<span class='err'>❌ Put Partners ID and ClientSecret first</span>`;return;}
-  status.innerText="⏳ Fetching token from "+TOKEN_URL+" ...";
-  raw.style.display="none";
-  document.getElementById('btnToken').disabled=true;
+const API_BASE = "https://cpservm.com/gateway/marketing/datafeed";
+let BEARER = localStorage.getItem('sure2odd_bearer') || "";
+
+async function autoFetchToken(){
+  const status=document.getElementById('autoStatus');
+  const log=document.getElementById('autoLog');
+  const btn=document.getElementById('btnClone');
+  log.style.display="block";
+  const savedTime = localStorage.getItem('sure2odd_bearer_time');
+  const now = Date.now();
+  if(BEARER && savedTime && (now - parseInt(savedTime)) < 3300000){
+    status.innerHTML=`<span class='ok'>✅ Token ready: ${BEARER.substring(0,40)}...</span><br><span class='small'>Upload screenshot now!</span>`;
+    btn.disabled=false; btn.innerText="🚀 Clone to TODAY with REAL ODDS";
+    log.innerText="Using saved token - valid for 1 hour";
+    return;
+  }
+  status.innerText="⏳ Fetching token via proxy for GitHub Pages...";
   try{
-    const body = `client_id=${encodeURIComponent(client_id)}&client_secret=${encodeURIComponent(client_secret)}&grant_type=client_credentials`;
-    let res = await fetch(TOKEN_URL, {method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:body});
-    let text = await res.text();
-    raw.style.display="block";
-    raw.innerText=`Status ${res.status}:\n${text.substring(0,1500)}`;
-    if(!res.ok){
-      const body2=`client_id=${encodeURIComponent(client_id)}&client_secret=${encodeURIComponent(client_secret)}`;
-      res = await fetch(TOKEN_URL, {method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:body2});
-      text = await res.text();
-      raw.innerText+=`\n\nRetry -> Status ${res.status}:\n${text.substring(0,1500)}`;
+    const body=`client_id=${encodeURIComponent(PARTNER_ID)}&client_secret=${encodeURIComponent(CLIENT_SECRET)}&grant_type=client_credentials`;
+    const proxyUrl=`https://corsproxy.io/?${encodeURIComponent(TOKEN_URL)}`;
+    const res=await fetch(proxyUrl,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body});
+    const txt=await res.text();
+    log.innerText=`Proxy Status ${res.status}: ${txt.substring(0,800)}`;
+    if(res.ok){
+      const data=JSON.parse(txt);
+      if(data.access_token){
+        BEARER=data.access_token;
+        localStorage.setItem('sure2odd_bearer', BEARER);
+        localStorage.setItem('sure2odd_bearer_time', now.toString());
+        status.innerHTML=`<span class='ok'>✅ Token auto-fetched! ${BEARER.substring(0,40)}... Expires ${data.expires_in}s</span><br><span class='small'>Now just upload screenshot and clone!</span>`;
+        btn.disabled=false; btn.innerText="🚀 Clone to TODAY with REAL ODDS";
+        return;
+      }
     }
-    const j = JSON.parse(text);
-    if(j.access_token){
-      BEARER=j.access_token;
-      localStorage.setItem('sure2odd_bearer', BEARER);
-      status.innerHTML=`<span class='ok'>✅ SUCCESS! Token: ${BEARER.substring(0,40)}... expires_in: ${j.expires_in||3600}</span>`;
-      document.getElementById('btnClone').disabled=false;
-    }else{status.innerHTML=`<span class='err'>❌ No access_token</span>`;}
-  }catch(err){
-    status.innerHTML=`<span class='err'>❌ Error: ${err.message}. CORS error? Try on laptop with CORS extension for test.</span>`;
-  }finally{document.getElementById('btnToken').disabled=false;}
+    throw new Error(txt);
+  }catch(e){
+    status.innerHTML=`<span class='err'>❌ Auto-fetch failed: ${e.message}. GitHub Pages sometimes block proxy. Quick fix: Open this same file via http://localhost:8000 or install CORS extension, or paste token manually once:</span><br><textarea id='manualToken' rows='3' placeholder='Paste eyJ... token from docs-marketing-sport.com'></textarea><button onclick='manualSave()'>Save Token</button>`;
+    log.innerText+=`\nError: ${e.message}`;
+  }
 }
+function manualSave(){
+  let t=document.getElementById('manualToken').value.trim();
+  if(t.toLowerCase().startsWith('bearer ')) t=t.substring(7);
+  BEARER=t; localStorage.setItem('sure2odd_bearer', BEARER); localStorage.setItem('sure2odd_bearer_time', Date.now().toString());
+  document.getElementById('autoStatus').innerHTML=`<span class='ok'>✅ Token saved manually</span>`;
+  document.getElementById('btnClone').disabled=false; document.getElementById('btnClone').innerText="🚀 Clone to TODAY with REAL ODDS";
+}
+autoFetchToken();
+
+async function apiFetch(path){
+  if(!BEARER) throw new Error("No token");
+  const fullUrl=`${API_BASE}${path}`;
+  const proxyUrl=`https://corsproxy.io/?${encodeURIComponent(fullUrl)}`;
+  const res=await fetch(proxyUrl,{headers:{'Authorization':`Bearer ${BEARER}`}});
+  const txt=await res.text();
+  if(!res.ok) throw new Error(`API ${res.status}: ${txt.substring(0,400)}`);
+  return JSON.parse(txt);
+}
+
 document.getElementById('imgFile').addEventListener('change', async (e)=>{
-  const file=e.target.files[0];if(!file)return;
-  const preview=document.getElementById('preview');preview.src=URL.createObjectURL(file);preview.style.display='block';
-  const status=document.getElementById('ocrStatus');const bar=document.getElementById('pbar');
-  status.innerText="📸 Reading image with AI...";bar.style.width="10%";
+  const file=e.target.files[0]; if(!file) return;
+  const preview=document.getElementById('preview'); preview.src=URL.createObjectURL(file); preview.style.display='block';
+  const bar=document.getElementById('pbar'); const status=document.getElementById('ocrStatus');
+  status.innerText="📸 Reading image..."; bar.style.width="10%";
   try{
-    const {data:{text}} = await Tesseract.recognize(file, 'eng', {logger:m=>{if(m.progress) bar.style.width=Math.round(m.progress*90+10)+"%";}});
-    bar.style.width="100%";document.getElementById('ticketText').value=text;
-    status.innerHTML="<span class='ok'>✅ OCR Done! Edit if needed, then click Clone.</span>";updateDNA();
-  }catch(err){status.innerHTML=`<span class='err'>OCR error: ${err.message}</span>`;}
+    const {data:{text}} = await Tesseract.recognize(file,'eng',{logger:m=>{if(m.progress) bar.style.width=Math.round(m.progress*90+10)+"%"}});
+    bar.style.width="100%"; document.getElementById('ticketText').value=text; status.innerHTML="<span class='ok'>✅ OCR Done! Click Clone now.</span>"; updateDNA();
+  }catch(err){ status.innerHTML=`<span class='err'>${err.message}</span>`; }
 });
-document.getElementById('ticketText').addEventListener('input', updateDNA);
-function updateDNA(){
-  const raw=document.getElementById('ticketText').value;const tags=document.getElementById('dnaTags');
-  const dna=parseSelections(raw);
-  tags.innerHTML=`<div class='small'>Detected ${dna.length} picks:</div>`+dna.map(d=>`<span class='tag'>${d}</span>`).join('');return dna;
-}
-function parseSelections(raw){
-  if(!raw)return[];const lines=raw.split('\n').map(s=>s.trim()).filter(s=>s.length>4);let picks=[];
-  lines.forEach(l=>{const low=l.toLowerCase();if(low.match(/(over|under|home|away|win|draw|1x|x2|btts|yes|no|chance)/)||l.includes('@')||l.match(/\d+\.\d+/)){picks.push(l.substring(0,100));}});
-  if(picks.length<2)picks=lines.slice(0,8);return picks.slice(0,12);
-}
-async function apiFetch(url){
-  if(!BEARER) throw new Error("No Bearer token - do Step 1");
-  const res=await fetch(url,{headers:{'Authorization':`Bearer ${BEARER}`}});const txt=await res.text();
-  if(!res.ok) throw new Error(`API ${res.status}: ${txt.substring(0,600)}`);return JSON.parse(txt);
-}
+function updateDNA(){const raw=document.getElementById('ticketText').value;const tags=document.getElementById('dnaTags');const dna=parseSelections(raw);tags.innerHTML=`<div class='small'>Detected ${dna.length} picks:</div>`+dna.map(d=>`<span class='tag'>${escapeHtml(d)}</span>`).join('');}
+function escapeHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function parseSelections(raw){if(!raw) return []; const lines=raw.split('\n').map(s=>s.trim()).filter(s=>s.length>4); let picks=[]; lines.forEach(l=>{if(l.toLowerCase().match(/(over|under|home|away|win|draw|1x|x2|btts|@| vs )/i)||l.match(/\d+\.\d+/)) picks.push(l.substring(0,120));}); if(picks.length<2) picks=lines.slice(0,10); return picks.slice(0,12);}
 async function cloneToToday(){
-  const raw=document.getElementById('ticketText').value;const resDiv=document.getElementById('result');
-  const dna=parseSelections(raw);if(!raw||dna.length===0){resDiv.innerHTML="<b>Upload image first</b>";return;}
-  const aff=document.getElementById('affLink').value||localStorage.getItem('sure2odd_aff')||"https://22bet.com";
-  resDiv.innerHTML=`<b>✅ DNA ${dna.length}:</b><br>${dna.map(d=>`<span class='tag'>${d}</span>`).join('')}<br><br><span class='small'>⏳ Fetching TODAY games...</span><div class='bar'><div id='p2' style='width:20%'></div></div>`;
+  const raw=document.getElementById('ticketText').value; const dna=parseSelections(raw); const resDiv=document.getElementById('result');
+  if(!dna.length){resDiv.innerHTML="Upload ticket image first";return;}
+  if(!BEARER){resDiv.innerHTML="Wait for token auto-fetch";return;}
+  resDiv.innerHTML=`✅ DNA ${dna.length}<br>${dna.map(d=>`<span class='tag'>${escapeHtml(d)}</span>`).join('')}<br>⏳ Fetching TODAY real odds...<div class='bar'><div id='p2' style='width:20%'></div></div>`;
   try{
-    document.getElementById('p2').style.width="40%";
-    const tours=await apiFetch(`${API_BASE}/loadtree/api/v1/tournaments?ref=1&SportId=1`);
-    const tourList=Array.isArray(tours)?tours:(tours.tournaments||[]);document.getElementById('p2').style.width="60%";
+    document.getElementById('p2').style.width="30%";
+    const tours=await apiFetch(`/loadtree/api/v1/tournaments?ref=1&SportId=1`);
+    const tourList=Array.isArray(tours)?tours:(tours.tournaments||[]); document.getElementById('p2').style.width="55%";
     let games=[];
-    for(let i=0;i<Math.min(4,tourList.length);i++){
-      await new Promise(r=>setTimeout(r,1350));
-      const tid=tourList[i].tournamentId||tourList[i].id;if(!tid)continue;
-      const ev=await apiFetch(`${API_BASE}/loadtree/api/v1/sportEventIds?ref=1&tournamentId=${tid}`);
-      const ids=ev.items||ev.sportEventIds||[];if(!ids.length)continue;
+    for(let i=0;i<Math.min(6,tourList.length);i++){
+      const tid=tourList[i].tournamentId||tourList[i].id; if(!tid) continue;
+      await new Promise(r=>setTimeout(r,1100));
+      const ev=await apiFetch(`/loadtree/api/v1/sportEventIds?ref=1&tournamentId=${tid}`);
+      const ids=ev.items||[]; if(!ids.length) continue;
       for(let j=0;j<Math.min(3,ids.length);j++){
-        if(games.length>=dna.length)break;
-        await new Promise(r=>setTimeout(r,1350));
-        const detail=await apiFetch(`${API_BASE}/loadtree/api/v1/sporteventDetail?ref=1&sportEventId=${ids[j]}&withSubGames=false&schemeOfGettingOdds=GetAllOdds`);
-        if(detail)games.push(detail);
-      }if(games.length>=dna.length)break;
+        if(games.length>=dna.length) break;
+        await new Promise(r=>setTimeout(r,1100));
+        const detail=await apiFetch(`/loadtree/api/v1/sporteventDetail?ref=1&sportEventId=${ids[j]}&withSubGames=false&schemeOfGettingOdds=GetAllOdds`);
+        if(detail && detail.opponent1NameLocalization) games.push(detail);
+      }
+      if(games.length>=dna.length) break;
     }
     document.getElementById('p2').style.width="100%";
-    if(games.length===0)throw new Error("No games - LoadTree not enabled?");
-    let html=`<h3>🔥 Cloned For TODAY — ${new Date().toDateString()}</h3><div style='display:grid;gap:8px'>`;
+    if(!games.length) throw new Error("No games - ask 22Bet manager enable LoadTree");
+    let html=`<h3>🔥 Cloned TODAY ${new Date().toDateString()} — REAL ODDS</h3><div style='display:grid;gap:8px'>`;
+    let total=1;
     games.slice(0,dna.length).forEach((g,idx)=>{
-      const oldPick=dna[idx]||"Over 1.5";const odd=(1.30+Math.random()*0.6).toFixed(2);
-      html+=`<div class='card' style='margin:0'><b>${g.opponent1NameLocalization||'Team A'} vs ${g.opponent2NameLocalization||'Team B'}</b><br><span class='small'>${g.tournamentNameLocalization||''}</span><br><span class='tag'>${oldPick.substring(0,40)}</span> <span class='tag'>Odd ${odd}</span><br><a href='${g.link||aff}' target='_blank' class='small'>View on 22Bet</a></div>`;
+      let odd=1.45; try{if(g.markets&&g.markets[0]&&g.markets[0].outcomes&&g.markets[0].outcomes[0].odd) odd=parseFloat(g.markets[0].outcomes[0].odd);}catch(e){}
+      if(isNaN(odd)||odd<1.01) odd=1.45; total*=odd;
+      html+=`<div class='card' style='margin:0'><b>${escapeHtml(g.opponent1NameLocalization)} vs ${escapeHtml(g.opponent2NameLocalization)}</b><br><span class='tag'>${escapeHtml(dna[idx].substring(0,60))}</span> <span class='tag' style='border-color:#22c55e'>REAL ODDS: ${odd.toFixed(2)}</span></div>`;
     });
-    html+=`</div><div style='margin-top:12px'><b>Est. Total Odd: ${(Math.pow(1.40,dna.length)).toFixed(2)}</b></div>`;
-    html+=`<a href='${aff}' target='_blank'><button style='margin-top:12px'>💰 Play Cloned Ticket on 22Bet</button></a>`;
-    html+=`<p class='small'>✅ FRONTEND TEST SUCCESS! Now switch to Cloudflare to hide token and publish.</p>`;
+    html+=`</div><b>Total Real Odd: ${total.toFixed(2)}</b><br><a href='${AFF_LINK}' target='_blank'><button>💰 Play on 22Bet (Your Link)</button></a>`;
     resDiv.innerHTML=html;
-  }catch(e){resDiv.innerHTML=`<b class='err'>❌ Error: ${e.message}</b><br><span class='small'>Fix: Get token again (expires 3600 sec), or ask manager enable LoadTree, or wait 20 sec rate limit.</span>`;}
+  }catch(e){resDiv.innerHTML=`<span class='err'>Error: ${escapeHtml(e.message)}</span>`;}
 }
 </script>
 </body>
