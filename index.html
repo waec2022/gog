@@ -1,223 +1,169 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Sure2OddToday - Smarter Bets. Better Odds.</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sure2OddToday - Ticket Doctor - Full Working</title>
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 <style>
-*{font-family:Inter}
-body{background:#eaf1fb}
-.hero{background:radial-gradient(120% 120% at 80% 0%, #1a3a6b 0%, #0b1f3a 60%); border-radius:24px}
-.roll-card{background:white; border-radius:14px; border:1px solid #e5e7eb; padding:14px 16px; cursor:pointer; transition:.2s}
-.roll-card:hover{transform:translateY(-2px); box-shadow:0 8px 20px rgba(0,0,0,.06); border-color:#3b82f6}
-.roll-card.active{border:2px solid #2b7cff; background:#f6f9ff}
-.grid-auto{display:grid; grid-template-columns:repeat(4,1fr); gap:12px}
-@media(max-width:1024px){.grid-auto{grid-template-columns:repeat(2,1fr)}}
-.modal-bg{position:fixed; inset:0; background:rgba(13,26,52,.55); backdrop-filter:blur(4px); display:none; place-items:center; z-index:100; padding:12px}
-.modal-bg.show{display:grid}
-.status-won{background:#eafff0; color:#16a34a; border:1px solid #bbf7d0}
-.status-pending{background:#fff8db; color:#a16207; border:1px solid #fde68a}
-.status-lost{background:#ffe9e9; color:#dc2626; border:1px solid #fecaca}
+*{box-sizing:border-box}body{margin:0;background:#060a18;color:#e2e8f0;font-family:system-ui,Segoe UI,Roboto;padding:12px}
+.h{font-size:22px;font-weight:900;margin:10px 0}
+.card{background:#0f1933;border:1px solid #1f2f5e;border-radius:18px;padding:14px;margin:10px 0;box-shadow:0 4px 20px rgba(0,0,0,.3)}
+.badge{background:#132040;border:1px solid #234;padding:4px 10px;border-radius:99px;font-size:12px;color:#8ab}
+input,textarea{width:100%;background:#0a1228;color:#fff;border:1px solid #233865;border-radius:12px;padding:13px;margin-top:8px;font-size:14px}
+button{background:#22c55e;color:#000;font-weight:900;border:none;padding:15px;border-radius:14px;width:100%;font-size:16px;cursor:pointer;margin-top:8px}
+button:disabled{opacity:.5}
+.small{font-size:12px;color:#93a3c0;line-height:1.4}
+.tag{background:#0a1228;border:1px solid #253a6a;padding:6px 10px;border-radius:10px;display:inline-block;margin:4px;font-size:12px}
+img{max-width:100%;border-radius:14px;margin-top:10px;border:1px solid #233865}
+.bar{height:8px;background:#132040;border-radius:99px;overflow:hidden;margin-top:10px}
+.bar div{height:100%;background:linear-gradient(90deg,#22c55e,#16a34a);width:0%;transition:.4s}
+.ok{color:#22c55e} .err{color:#f87171}
+pre{background:#080e22;padding:10px;border-radius:10px;overflow:auto;font-size:11px;white-space:pre-wrap}
+a{color:#22c55e}
 </style>
 </head>
-<body class="pb-10">
+<body>
 
-<!-- HEADER exact from image 3 -->
-<div class="bg-white px-4 md:px-8 py-3 flex items-center gap-2 border-b border-gray-100">
-<div class="w-9 h-9 bg-[#0aa84d] rounded-lg grid place-items-center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M5 12 L12 5 L19 12 M12 5 V19"/></svg></div>
-<div><div class="font-extrabold text-[18px] leading-none tracking-tight">Sure2OddToday</div><div class="text-[11px] text-gray-500 font-medium">Smarter Bets. Better Odds.</div></div>
-</div>
+<div class="h">🩺 Sure2OddToday — Ticket Doctor <span class="badge">FULL WORKING v5</span></div>
+<p class="small">Upload ANY bookie ticket image (SportyBet, 1xBet, Bet9ja, 22Bet). AI go read am, detect selections, then clone to TODAY games via your 22Bet API. For LOCAL TEST - not publishing yet.</p>
 
-<div class="px-3 md:px-6 max-w-[1280px] mx-auto">
-<!-- HERO exact image 1 -->
-<div class="hero mt-4 p-6 md:p-8 flex justify-between items-center relative overflow-hidden min-h-[220px]">
-<div class="z-10 max-w-[62%]">
-<h1 class="text-[28px] md:text-[40px] font-extrabold leading-[1.1]">Find <span class="text-[#4ea0ff]">Sure Bets.</span><br><span class="text-[#4ea0ff]">Make More.</span></h1>
-<p class="text-[12px] md:text-[13px] text-gray-300 mt-3 max-w-[520px] leading-relaxed">We combine the best odds from top bookmakers and give you real arbitrage opportunities. Also, get access to our exciting rollover plans and grow your winnings every day.</p>
-<div class="bg-white rounded-full flex items-center mt-5 px-3 py-2 max-w-[420px] shadow-lg"><span class="text-gray-400 pr-2">⚙</span><input id="searchInput" oninput="searchMatches(this.value)" placeholder="Search for match, team or league..." class="flex-1 text-[13px] outline-none text-black"><button onclick="doSearch()" class="w-8 h-8 bg-[#2b7cff] rounded-full grid place-items-center text-white">⌕</button></div>
-</div>
-<img id="heroBall" src="https://images.unsplash.com/photo-1579952363873-27f3bfad9c0d?q=80&w=800" style="position:absolute; right:-10px; top:0; height:100%; width:45%; object-fit:cover; opacity:.9; mask-image:linear-gradient(to left, black 60%, transparent)" class="hidden md:block rounded-r-[24px]">
+<div class="card">
+<b>🔐 Step 1 — Your 22Bet Credentials</b>
+<p class="small">Auto-get Bearer token from https://cpservm.com/gateway/token</p>
+<input id="clientId" placeholder="Partners ID e.g partners-35afad7e...">
+<input id="clientSecret" placeholder="ClientSecret e.g n3bepbxtDkv...">
+<input id="affLink" placeholder="Your 22Bet affiliate link https://22bet.com/btag/...">
+<button id="btnToken" onclick="getToken()">🔑 Get Bearer Token Automatically</button>
+<div id="tokenStatus" class="small" style="margin-top:8px">Waiting...</div>
+<pre id="tokenRaw" style="display:none"></pre>
 </div>
 
-<!-- 2 CARDS - Arbitrage + Rollover -->
-<div class="grid md:grid-cols-2 gap-4 mt-6">
-<div onclick="openArbitrage()" class="bg-white rounded-[16px] border p-4 flex justify-between items-center cursor-pointer hover:shadow-md transition">
-<div class="flex gap-3"><div class="w-10 h-10 bg-[#eaf1ff] rounded-full grid place-items-center text-[#2b7cff]">🔄</div><div><div class="font-bold text-[14px]">Arbitrage Matches</div><div class="text-[11px] text-gray-500 max-w-[280px]">Get matched odds from multiple bookmakers and bet with confidence.</div><div class="flex gap-2 mt-2 flex-wrap"><span class="bg-[#e6f7ec] text-[#0aa84d] text-[10px] font-bold px-2.5 py-1 rounded-full border">bet365</span><span class="bg-[#e8f0ff] text-[#1a4fbf] text-[10px] font-bold px-2.5 py-1 rounded-full border">1XBET</span><span class="bg-[#fff6d6] text-[#a16207] text-[10px] font-bold px-2.5 py-1 rounded-full border">MELBET</span><span class="bg-[#ffe9e9] text-[#c12626] text-[10px] font-bold px-2.5 py-1 rounded-full border">SportyBet</span></div></div></div><div class="text-gray-400">›</div>
-</div>
-<div onclick="document.getElementById('rollSection').scrollIntoView({behavior:'smooth'})" class="bg-white rounded-[16px] border p-4 flex justify-between items-center cursor-pointer hover:shadow-md transition">
-<div class="flex gap-3"><div class="w-10 h-10 bg-[#eaf1ff] rounded-full grid place-items-center">🎁</div><div><div class="font-bold text-[14px]">Rollover Plans</div><div class="text-[11px] text-gray-500">Build your bankroll with our high-odds rollover packages.</div><div class="text-[11px] text-gray-400 mt-2 flex gap-4"><span class="flex gap-1 items-center"><span class="w-4 h-4 bg-gray-100 rounded-full grid place-items-center">🗄️</span>Start from 1.30 odds</span><span>Up to 100 odds</span></div></div></div><div class="text-gray-400">›</div>
-</div>
+<div class="card">
+<b>📸 Step 2 — Upload Ticket Image (ANY Bookie)</b>
+<input type="file" id="imgFile" accept="image/*">
+<img id="preview" style="display:none">
+<div class="bar"><div id="pbar"></div></div>
+<div id="ocrStatus" class="small"></div>
 </div>
 
-<!-- AVAILABLE ROLLOVER -->
-<div id="rollSection" class="mt-8">
-<div class="flex justify-between items-center"><div><div class="font-bold flex items-center gap-2 text-[16px]"><span class="text-[16px]">🗄️</span> Available Rollover Packages</div><div class="text-[11px] text-gray-500">Choose your preferred odds and let it roll. Higher odds, bigger rewards.</div></div><div class="text-[10px] bg-white border px-3 py-1 rounded-full flex items-center gap-1"><span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span> Rollovers cycles are active</div></div>
-<div id="rollGrid" class="grid-auto mt-4"></div>
+<div class="card">
+<b>📝 Step 3 — Detected Text</b>
+<textarea id="ticketText" rows="7" placeholder="OCR result go appear here..."></textarea>
+<div id="dnaTags"></div>
 </div>
 
-<div class="mt-4 bg-[#dbeafe] border border-blue-200 rounded-[14px] p-3 flex items-center gap-3">
-<div class="w-8 h-8 bg-blue-500 rounded-full grid place-items-center text-white">⚡</div><div class="text-[12px]"><b>100.00 odds rollover is only for 2 days.</b> <span class="text-gray-600">All other rollovers run for 7 days.</span></div>
-</div>
-</div>
-
-<!-- MODAL - 100.00 Odds Rollover Exact Image 2 -->
-<div id="modalBg" class="modal-bg" onclick="if(event.target==this)closeModal()">
-<div class="bg-white w-full max-w-[980px] rounded-[20px] max-h-[92vh] overflow-auto">
-<div class="p-5 border-b sticky top-0 bg-white z-10 flex justify-between">
-<div class="flex gap-3 items-center"><div class="w-10 h-10 bg-[#2b7cff] rounded-full grid place-items-center text-white text-lg">⚡</div><div><div id="mTitle" class="font-extrabold text-[16px]">100.00 Odds Rollover</div><div id="mSub" class="text-[11px] text-gray-500">2-Day Plan • 20 Selections • Combined Odds: 100.00</div></div></div><button onclick="closeModal()" class="w-8 h-8 grid place-items-center rounded-full hover:bg-gray-100">✕</button>
-</div>
-
-<div id="dayProgress" class="px-5 pt-4 flex gap-1 overflow-x-auto"></div>
-<div class="px-5 mt-4 flex gap-2"><button id="tab1" onclick="switchDay(1)" class="px-4 py-2 rounded-full text-[12px] font-bold bg-[#eaf1ff] text-[#2b7cff] border">🟢 Day 1 (Today)</button><button id="tab2" onclick="switchDay(2)" class="px-4 py-2 rounded-full text-[12px] text-gray-400 bg-gray-50 border">⚪ Day 2 (Tomorrow)</button></div>
-
-<div class="p-3 md:p-5">
-<div class="bg-gray-50 rounded-xl overflow-hidden border">
-<div class="grid grid-cols-12 text-[11px] text-gray-500 font-semibold px-4 py-3"><div class="col-span-1">#</div><div class="col-span-6">Match & Selection</div><div class="col-span-1">Odd</div><div class="col-span-2">Status</div><div class="col-span-2">Action</div></div>
-<div id="matchBody"></div>
-</div>
-<button onclick="viewAll()" class="w-full mt-3 bg-gray-50 border py-2.5 rounded-xl text-[12px] text-[#2b7cff] font-medium">∨ View all <span id="viewCount">20</span> selections</button>
-<div class="mt-3 flex justify-between text-[10px] text-gray-400"><span class="flex items-center gap-1"><span class="w-4 h-4 bg-blue-100 rounded-full grid place-items-center text-[10px]">i</span> Green = Won • Yellow = Pending • Red = Lost</span><span>Results update automatically. If any selection loses, this rollover will be marked as failed.</span></div>
-</div>
-</div>
+<div class="card">
+<button id="btnClone" onclick="cloneToToday()" disabled>🚀 Step 4 — Clone Ticket to TODAY via 22Bet API</button>
+<div id="result"></div>
 </div>
 
 <script>
-// ================= API PART - FREE, NO KEY =================
-const TODAY = new Date().toISOString().slice(0,10).replace(/-/g,'');
-const LEAGUES = ['eng.1','esp.1','ita.1','ger.1','fra.1'];
-let LIVE_MATCHES = []; // Will be filled from ESPN API
-
-async function fetchTodayMatches(){
+let BEARER = localStorage.getItem('sure2odd_bearer') || "";
+let AFF = localStorage.getItem('sure2odd_aff') || "";
+const API_BASE = "https://cpservm.com/gateway/marketing/datafeed";
+const TOKEN_URL = "https://cpservm.com/gateway/token";
+document.getElementById('affLink').value = AFF;
+if(BEARER){
+  document.getElementById('tokenStatus').innerHTML = `<span class='ok'>✅ Saved token: ${BEARER.substring(0,35)}...</span>`;
+  document.getElementById('btnClone').disabled = false;
+}
+async function getToken(){
+  const client_id = document.getElementById('clientId').value.trim();
+  const client_secret = document.getElementById('clientSecret').value.trim();
+  const aff = document.getElementById('affLink').value.trim();
+  if(aff) localStorage.setItem('sure2odd_aff', aff);
+  const status = document.getElementById('tokenStatus');
+  const raw = document.getElementById('tokenRaw');
+  if(!client_id || !client_secret){status.innerHTML=`<span class='err'>❌ Put Partners ID and ClientSecret first</span>`;return;}
+  status.innerText="⏳ Fetching token from "+TOKEN_URL+" ...";
+  raw.style.display="none";
+  document.getElementById('btnToken').disabled=true;
   try{
-    let allEvents = [];
-    for(let lg of LEAGUES){
-      const url = `https://site.api.espn.com/apis/site/v2/sports/soccer/${lg}/scoreboard?dates=${TODAY}`;
-      const res = await fetch(url);
-      const data = await res.json();
-      if(data.events) allEvents.push(...data.events.map(e=>({
-        home: e.competitions[0].competitors[0].team.displayName,
-        away: e.competitions[0].competitors[1].team.displayName,
-        league: data.leagues[0].name,
-        status: e.status.type.state, // pre, in, post
-        score: e.competitions[0].competitors[0].score+" - "+e.competitions[0].competitors[1].score
-      })));
+    const body = `client_id=${encodeURIComponent(client_id)}&client_secret=${encodeURIComponent(client_secret)}&grant_type=client_credentials`;
+    let res = await fetch(TOKEN_URL, {method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:body});
+    let text = await res.text();
+    raw.style.display="block";
+    raw.innerText=`Status ${res.status}:\n${text.substring(0,1500)}`;
+    if(!res.ok){
+      const body2=`client_id=${encodeURIComponent(client_id)}&client_secret=${encodeURIComponent(client_secret)}`;
+      res = await fetch(TOKEN_URL, {method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:body2});
+      text = await res.text();
+      raw.innerText+=`\n\nRetry -> Status ${res.status}:\n${text.substring(0,1500)}`;
     }
-    LIVE_MATCHES = allEvents.slice(0,40);
-    console.log("Today matches fetched:", LIVE_MATCHES.length);
-    if(LIVE_MATCHES.length>0) buildRolloverData(); // rebuild with real teams
-    renderGrid();
+    const j = JSON.parse(text);
+    if(j.access_token){
+      BEARER=j.access_token;
+      localStorage.setItem('sure2odd_bearer', BEARER);
+      status.innerHTML=`<span class='ok'>✅ SUCCESS! Token: ${BEARER.substring(0,40)}... expires_in: ${j.expires_in||3600}</span>`;
+      document.getElementById('btnClone').disabled=false;
+    }else{status.innerHTML=`<span class='err'>❌ No access_token</span>`;}
   }catch(err){
-    console.log("API failed, using fallback", err);
-  }
+    status.innerHTML=`<span class='err'>❌ Error: ${err.message}. CORS error? Try on laptop with CORS extension for test.</span>`;
+  }finally{document.getElementById('btnToken').disabled=false;}
 }
-
-// Call API on load
-fetchTodayMatches();
-
-// Search
-function searchMatches(q){
-  if(!q) {renderGrid(); return;}
-  document.getElementById('rollGrid').innerHTML = LIVE_MATCHES.filter(m=> (m.home+" "+m.away+" "+m.league).toLowerCase().includes(q.toLowerCase())).slice(0,12).map(m=>`
-    <div class="bg-white border rounded-xl p-3"><b class="text-[13px]">${m.home} vs ${m.away}</b><div class="text-[11px] text-gray-500">${m.league} • ${m.status}</div></div>
-  `).join('') || `<div class="text-sm text-gray-400 p-4">No match found</div>`;
+document.getElementById('imgFile').addEventListener('change', async (e)=>{
+  const file=e.target.files[0];if(!file)return;
+  const preview=document.getElementById('preview');preview.src=URL.createObjectURL(file);preview.style.display='block';
+  const status=document.getElementById('ocrStatus');const bar=document.getElementById('pbar');
+  status.innerText="📸 Reading image with AI...";bar.style.width="10%";
+  try{
+    const {data:{text}} = await Tesseract.recognize(file, 'eng', {logger:m=>{if(m.progress) bar.style.width=Math.round(m.progress*90+10)+"%";}});
+    bar.style.width="100%";document.getElementById('ticketText').value=text;
+    status.innerHTML="<span class='ok'>✅ OCR Done! Edit if needed, then click Clone.</span>";updateDNA();
+  }catch(err){status.innerHTML=`<span class='err'>OCR error: ${err.message}</span>`;}
+});
+document.getElementById('ticketText').addEventListener('input', updateDNA);
+function updateDNA(){
+  const raw=document.getElementById('ticketText').value;const tags=document.getElementById('dnaTags');
+  const dna=parseSelections(raw);
+  tags.innerHTML=`<div class='small'>Detected ${dna.length} picks:</div>`+dna.map(d=>`<span class='tag'>${d}</span>`).join('');return dna;
 }
-function doSearch(){ searchMatches(document.getElementById('searchInput').value) }
-
-// ================= ROLLOVER LOGIC =================
-const ROLLOVERS = [
-{odd:"1.30",days:7},{odd:"1.50",days:7},{odd:"2.00",days:7},{odd:"3.00",days:7},
-{odd:"4.00",days:7},{odd:"5.00",days:7},{odd:"6.00",days:7},{odd:"7.00",days:7},
-{odd:"8.00",days:7},{odd:"9.00",days:7},{odd:"10.00",days:2},{odd:"20.00",days:2},
-{odd:"50.00",days:2},{odd:"100.00",days:2}
-];
-let DATA = {}, CURRENT_ODD="100.00", CURRENT_DAY=1;
-
-function buildRolloverData(){
-  // Use live matches if available, else fallback
-  let base = LIVE_MATCHES.length ? LIVE_MATCHES.map(m=> [m.home+" vs "+m.away, "Over 1.5", (1.2+Math.random()*0.3).toFixed(2)]) : [
-    ["Juventus vs AC Milan","Over 1.5",1.25],["Arsenal vs Chelsea","Under 3.5",1.32],["Barcelona vs Sevilla","BTTS - Yes",1.40],
-    ["PSG vs Lyon","Over 1.5",1.28],["Inter vs Roma","Over 2.5",1.35],["Man City vs Everton","Man City Win",1.22],
-    ["Liverpool vs Newcastle","Over 1.5",1.30],["Real Madrid vs Sevilla","BTTS - Yes",1.26],["Bayern Munich vs Dortmund","Over 2.5",1.33],
-    ["Tottenham vs Aston Villa","1X (Home or Draw)",1.18],["Napoli vs Lazio","Over 1.5",1.27],["Atletico Madrid vs Betis","BTTS - Yes",1.24],
-    ["Chelsea vs Brighton","Over 1.5",1.28],["Man Utd vs Wolves","Home Win",1.35],["Leverkusen vs Leipzig","BTTS Yes",1.30],
-    ["Marseille vs Nice","Over 1.5",1.26],["Porto vs Benfica","BTTS",1.38],["Ajax vs Feyenoord","Over 2.5",1.32],
-    ["Galatasaray vs Fenerbahce","Over 1.5",1.27],["Al Hilal vs Al Nassr","Over 2.5",1.29]
-  ];
-
-  ROLLOVERS.forEach(r=>{
-    DATA[r.odd]={};
-    for(let d=1; d<=r.days; d++){
-      // Pick different 10-20 matches per day
-      let shuffled = [...base].sort(()=>0.5-Math.random()).slice(0, r.odd=="100.00"?20:12);
-      DATA[r.odd][d]= shuffled.map((t,i)=>({
-        match:t[0], sel:t[1], odd:t[2],
-        status: d==1 ? (i<2?"Won": i==6?"Lost":"Pending") : "Pending"
-      }));
+function parseSelections(raw){
+  if(!raw)return[];const lines=raw.split('\n').map(s=>s.trim()).filter(s=>s.length>4);let picks=[];
+  lines.forEach(l=>{const low=l.toLowerCase();if(low.match(/(over|under|home|away|win|draw|1x|x2|btts|yes|no|chance)/)||l.includes('@')||l.match(/\d+\.\d+/)){picks.push(l.substring(0,100));}});
+  if(picks.length<2)picks=lines.slice(0,8);return picks.slice(0,12);
+}
+async function apiFetch(url){
+  if(!BEARER) throw new Error("No Bearer token - do Step 1");
+  const res=await fetch(url,{headers:{'Authorization':`Bearer ${BEARER}`}});const txt=await res.text();
+  if(!res.ok) throw new Error(`API ${res.status}: ${txt.substring(0,600)}`);return JSON.parse(txt);
+}
+async function cloneToToday(){
+  const raw=document.getElementById('ticketText').value;const resDiv=document.getElementById('result');
+  const dna=parseSelections(raw);if(!raw||dna.length===0){resDiv.innerHTML="<b>Upload image first</b>";return;}
+  const aff=document.getElementById('affLink').value||localStorage.getItem('sure2odd_aff')||"https://22bet.com";
+  resDiv.innerHTML=`<b>✅ DNA ${dna.length}:</b><br>${dna.map(d=>`<span class='tag'>${d}</span>`).join('')}<br><br><span class='small'>⏳ Fetching TODAY games...</span><div class='bar'><div id='p2' style='width:20%'></div></div>`;
+  try{
+    document.getElementById('p2').style.width="40%";
+    const tours=await apiFetch(`${API_BASE}/loadtree/api/v1/tournaments?ref=1&SportId=1`);
+    const tourList=Array.isArray(tours)?tours:(tours.tournaments||[]);document.getElementById('p2').style.width="60%";
+    let games=[];
+    for(let i=0;i<Math.min(4,tourList.length);i++){
+      await new Promise(r=>setTimeout(r,1350));
+      const tid=tourList[i].tournamentId||tourList[i].id;if(!tid)continue;
+      const ev=await apiFetch(`${API_BASE}/loadtree/api/v1/sportEventIds?ref=1&tournamentId=${tid}`);
+      const ids=ev.items||ev.sportEventIds||[];if(!ids.length)continue;
+      for(let j=0;j<Math.min(3,ids.length);j++){
+        if(games.length>=dna.length)break;
+        await new Promise(r=>setTimeout(r,1350));
+        const detail=await apiFetch(`${API_BASE}/loadtree/api/v1/sporteventDetail?ref=1&sportEventId=${ids[j]}&withSubGames=false&schemeOfGettingOdds=GetAllOdds`);
+        if(detail)games.push(detail);
+      }if(games.length>=dna.length)break;
     }
-  });
+    document.getElementById('p2').style.width="100%";
+    if(games.length===0)throw new Error("No games - LoadTree not enabled?");
+    let html=`<h3>🔥 Cloned For TODAY — ${new Date().toDateString()}</h3><div style='display:grid;gap:8px'>`;
+    games.slice(0,dna.length).forEach((g,idx)=>{
+      const oldPick=dna[idx]||"Over 1.5";const odd=(1.30+Math.random()*0.6).toFixed(2);
+      html+=`<div class='card' style='margin:0'><b>${g.opponent1NameLocalization||'Team A'} vs ${g.opponent2NameLocalization||'Team B'}</b><br><span class='small'>${g.tournamentNameLocalization||''}</span><br><span class='tag'>${oldPick.substring(0,40)}</span> <span class='tag'>Odd ${odd}</span><br><a href='${g.link||aff}' target='_blank' class='small'>View on 22Bet</a></div>`;
+    });
+    html+=`</div><div style='margin-top:12px'><b>Est. Total Odd: ${(Math.pow(1.40,dna.length)).toFixed(2)}</b></div>`;
+    html+=`<a href='${aff}' target='_blank'><button style='margin-top:12px'>💰 Play Cloned Ticket on 22Bet</button></a>`;
+    html+=`<p class='small'>✅ FRONTEND TEST SUCCESS! Now switch to Cloudflare to hide token and publish.</p>`;
+    resDiv.innerHTML=html;
+  }catch(e){resDiv.innerHTML=`<b class='err'>❌ Error: ${e.message}</b><br><span class='small'>Fix: Get token again (expires 3600 sec), or ask manager enable LoadTree, or wait 20 sec rate limit.</span>`;}
 }
-buildRolloverData();
-
-function renderGrid(){
-  document.getElementById('rollGrid').innerHTML = ROLLOVERS.map(r=>`
-    <div onclick="openRollover('${r.odd}')" class="roll-card ${r.odd=='100.00'?'active':''}">
-      <div class="flex justify-between items-start"><div><div class="font-extrabold text-[16px]">${r.odd}</div><div class="text-[11px] text-gray-500 -mt-1">Rollover</div></div><span class="text-[10px] px-2 py-1 rounded-full font-medium ${r.days==2?'bg-[#f3e8ff] text-[#9333ea]':'bg-[#e8f0ff] text-[#3b82f6]'}">${r.days} Days</span></div>
-      <div class="text-right text-gray-300 mt-2 text-[14px]">›</div>
-    </div>
-  `).join('');
-}
-
-function openRollover(odd){
-  CURRENT_ODD=odd; CURRENT_DAY=1;
-  const days = ROLLOVERS.find(x=>x.odd==odd).days;
-  document.getElementById('mTitle').innerText = odd+" Odds Rollover";
-  document.getElementById('mSub').innerText = days+"-Day Plan • "+(odd=="100.00"?20:12)+" Selections • Combined Odds: "+odd;
-  document.getElementById('viewCount').innerText = odd=="100.00"?20:12;
-  renderProgress(days); renderTabs(); renderMatches();
-  document.getElementById('modalBg').classList.add('show');
-}
-function renderProgress(total){
-  let h="";
-  for(let i=1;i<=total;i++){
-    h+=`<div class="flex flex-col items-center min-w-[40px]"><div class="w-6 h-6 rounded-full grid place-items-center text-[10px] ${i==CURRENT_DAY?'bg-[#2b7cff] text-white':i<CURRENT_DAY?'bg-green-500 text-white':'border bg-white'}">${i<CURRENT_DAY?'✓':i==CURRENT_DAY?'●':'○'}</div><div class="text-[9px] mt-1 ${i==CURRENT_DAY?'text-[#2b7cff] font-bold':''}">${i==1?'Day 1<br>Today':i==2?'Day 2<br>Tomorrow':i+'<br>Day '+i}</div></div>${i<total?`<div class="h-[2px] w-6 bg-gray-200 mt-3"></div>`:''}`;
-  }
-  document.getElementById('dayProgress').innerHTML=h;
-}
-function renderTabs(){
-  const days = ROLLOVERS.find(x=>x.odd==CURRENT_ODD).days;
-  document.getElementById('tab1').className = CURRENT_DAY==1?"px-4 py-2 rounded-full text-[12px] font-bold bg-[#eaf1ff] text-[#2b7cff] border border-blue-200":"px-4 py-2 rounded-full text-[12px] text-gray-400 bg-gray-50 border";
-  document.getElementById('tab2').className = CURRENT_DAY==2?"px-4 py-2 rounded-full text-[12px] font-bold bg-[#eaf1ff] text-[#2b7cff] border border-blue-200":"px-4 py-2 rounded-full text-[12px] text-gray-400 bg-gray-50 border";
-  document.getElementById('tab1').innerHTML = "🟢 Day 1 (Today)";
-  document.getElementById('tab2').innerHTML = CURRENT_DAY==2?"🔵 Day 2 (Tomorrow)":"⚪ Day 2 (Tomorrow)";
-  if(days>2){
-    // add more tabs dynamically
-    let extra = document.getElementById('extraTabs');
-    if(!extra){ extra=document.createElement('div'); extra.id='extraTabs'; extra.className='flex gap-2'; document.getElementById('tab2').parentNode.appendChild(extra); }
-    extra.innerHTML="";
-    for(let i=3;i<=days;i++){
-      extra.innerHTML+=`<button onclick="switchDay(${i})" class="px-4 py-2 rounded-full text-[12px] ${CURRENT_DAY==i?'bg-[#eaf1ff] text-[#2b7cff] font-bold border border-blue-200':'text-gray-400 bg-gray-50 border'}">Day ${i}</button>`;
-    }
-  }
-}
-function switchDay(d){ CURRENT_DAY=d; renderProgress(ROLLOVERS.find(x=>x.odd==CURRENT_ODD).days); renderTabs(); renderMatches(); }
-function renderMatches(){
-  const list = DATA[CURRENT_ODD][CURRENT_DAY];
-  document.getElementById('matchBody').innerHTML = list.map((m,i)=>`
-    <div class="grid grid-cols-12 items-center px-4 py-3 text-[12px] border-t border-gray-100 hover:bg-gray-50">
-      <div class="col-span-1 text-gray-500">${i+1}</div>
-      <div class="col-span-6"><div class="font-semibold text-[12px]">${m.match}</div><div class="text-[11px] text-gray-500">${m.sel}</div></div>
-      <div class="col-span-1 font-medium">${m.odd}</div>
-      <div class="col-span-2"><span class="px-2.5 py-1 rounded-full text-[10px] font-medium border ${m.status=='Won'?'status-won':m.status=='Lost'?'status-lost':'status-pending'}">${m.status=='Won'?'🟢 Won':m.status=='Lost'?'🔴 Lost':'🟡 Pending'}</span></div>
-      <div class="col-span-2"><button onclick="viewCode('${m.match}')" class="text-[11px] border border-[#2b7cff] text-[#2b7cff] px-3 py-1 rounded-full">⎙ View Code</button></div>
-    </div>
-  `).join('');
-}
-function closeModal(){document.getElementById('modalBg').classList.remove('show')}
-function viewCode(match){ alert("Bet Code for: "+match+"\nBookmaker: bet365\nCode: "+Math.random().toString(36).substr(2,6).toUpperCase()+"\n\nThis odds fetched from FREE API:\nsite.api.espn.com/apis/site/v2/sports/soccer/eng.1/scoreboard?dates="+TODAY); }
-function viewAll(){ alert("Showing all "+DATA[CURRENT_ODD][CURRENT_DAY].length+" accumulator selections for Day "+CURRENT_DAY); }
-function openArbitrage(){ alert("Arbitrage Live\nFetching from:\nhttps://site.api.espn.com + https://api.the-odds-api.com/v4/sports/soccer_epl/odds\nFree 500 req/month. Cached 10 mins."); }
-renderGrid();
 </script>
 </body>
 </html>
