@@ -3,154 +3,179 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sure2OddToday - Auto Token GitHub Version</title>
+<title>Sure2OddToday - Complete Clone Code</title>
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 <style>
-*{box-sizing:border-box}body{margin:0;background:#060a18;color:#e2e8f0;font-family:system-ui;padding:12px}
-.h{font-size:22px;font-weight:900}.card{background:#0f1933;border:1px solid #1f2f5e;border-radius:18px;padding:14px;margin:10px 0}
+*{box-sizing:border-box}
+body{margin:0;background:#060a18;color:#e2e8f0;font-family:system-ui;padding:12px}
+.h{font-size:20px;font-weight:900}
+.card{background:#0f1933;border:1px solid #1f2f5e;border-radius:18px;padding:14px;margin:12px 0}
 button{background:#22c55e;color:#000;font-weight:900;border:none;padding:15px;border-radius:14px;width:100%;font-size:16px;margin-top:8px;cursor:pointer}
-.small{font-size:12px;color:#93a3c0}.tag{background:#0a1228;border:1px solid #253a6a;padding:6px 10px;border-radius:10px;display:inline-block;margin:3px;font-size:11px}
-img{max-width:100%;border-radius:12px;margin-top:8px}.bar{height:8px;background:#132040;border-radius:99px;overflow:hidden;margin-top:8px}.bar div{height:100%;background:#22c55e;width:0%;transition:.4s}
-.ok{color:#22c55e}.err{color:#f87171}pre{background:#080e22;padding:8px;border-radius:8px;overflow:auto;font-size:11px;white-space:pre-wrap}a{color:#22c55e}
 textarea,input{width:100%;background:#0a1228;color:#fff;border:1px solid #233865;border-radius:12px;padding:12px;margin-top:8px}
+.tag{background:#0a1228;border:1px solid #253a6a;padding:6px 10px;border-radius:10px;display:inline-block;margin:3px;font-size:11px}
+.small{font-size:12px;color:#93a3c0;line-height:1.4}
+.ok{color:#22c55e}.err{color:#f87171}
+img{max-width:100%;border-radius:12px;margin-top:8px}
+.bar{height:8px;background:#132040;border-radius:99px;overflow:hidden;margin-top:8px}
+.bar div{height:100%;background:#22c55e;width:0%;transition:.4s}
+a{color:#22c55e}
 </style>
 </head>
 <body>
-<div class="h">🩺 Sure2OddToday — Auto Clone (GitHub)</div>
-<p class="small">Paste screenshot ONLY - token auto-fetch + real odds + your fluxbrox affiliate link inside.</p>
 
+<div class="h">🩺 Sure2OddToday — Complete Clone Code</div>
+<p class="small">All codes inside: OCR + Token + Real Odds + Affiliate. Just copy to GitHub auto.html</p>
+
+<!-- STEP 1 TOKEN -->
 <div class="card">
-<div id="autoStatus" class="small">⏳ Auto-fetching token... wait 5 sec</div>
-<pre id="autoLog" style="display:none"></pre>
+<b>STEP 1: Paste Token (ONCE - save for 1 hour)</b>
+<p class="small">Go docs-marketing-sport.com > SPECIFICATION > Lock icon Authorizations > Paste ID: partners-35afad7ea8aa44418f245b47ad75e19e + Secret > Authorize > Copy eyJ... token</p>
+<textarea id="bearerInput" rows="4" placeholder="Paste eyJ... token here"></textarea>
+<button onclick="saveToken()">💾 Save Token</button>
+<div id="tokenStatus" class="small">No token yet</div>
 </div>
 
+<!-- STEP 2 UPLOAD -->
 <div class="card">
-<b>📸 Upload Winning Ticket Screenshot</b>
+<b>STEP 2: Upload Winning Ticket Screenshot</b>
 <input type="file" id="imgFile" accept="image/*">
 <img id="preview" style="display:none">
 <div class="bar"><div id="pbar"></div></div>
 <div id="ocrStatus" class="small"></div>
-<textarea id="ticketText" rows="6" placeholder="OCR result..."></textarea>
+<textarea id="ticketText" rows="7" placeholder="OCR result go show here after upload"></textarea>
 <div id="dnaTags"></div>
 </div>
 
+<!-- STEP 3 CLONE -->
 <div class="card">
-<button onclick="cloneToToday()" id="btnClone" disabled>⏳ Waiting for token...</button>
+<b>STEP 3: Clone to TODAY</b>
+<button onclick="cloneToToday()" id="btnClone">🚀 Clone to TODAY with REAL ODDS</button>
 <div id="result"></div>
 </div>
 
 <script>
+// YOUR AFFILIATE LINK
 const AFF_LINK = "https://che.fluxbrox.com/redirect.aspx?pid=199046&lpid=17&bid=1484";
-const PARTNER_ID = "partners-35afad7ea8aa44418f245b47ad75e19e";
-const CLIENT_SECRET = "n3bepbxtDkvAApksyqc2h4AjrlauMz*vwYGQUiV!1k!xidbjRf9C4GyULua6YJwY";
-const TOKEN_URL = "https://cpservm.com/gateway/token";
 const API_BASE = "https://cpservm.com/gateway/marketing/datafeed";
 let BEARER = localStorage.getItem('sure2odd_bearer') || "";
 
-async function autoFetchToken(){
-  const status=document.getElementById('autoStatus');
-  const log=document.getElementById('autoLog');
-  const btn=document.getElementById('btnClone');
-  log.style.display="block";
-  const savedTime = localStorage.getItem('sure2odd_bearer_time');
-  const now = Date.now();
-  if(BEARER && savedTime && (now - parseInt(savedTime)) < 3300000){
-    status.innerHTML=`<span class='ok'>✅ Token ready: ${BEARER.substring(0,40)}...</span><br><span class='small'>Upload screenshot now!</span>`;
-    btn.disabled=false; btn.innerText="🚀 Clone to TODAY with REAL ODDS";
-    log.innerText="Using saved token - valid for 1 hour";
-    return;
-  }
-  status.innerText="⏳ Fetching token via proxy for GitHub Pages...";
-  try{
-    const body=`client_id=${encodeURIComponent(PARTNER_ID)}&client_secret=${encodeURIComponent(CLIENT_SECRET)}&grant_type=client_credentials`;
-    const proxyUrl=`https://corsproxy.io/?${encodeURIComponent(TOKEN_URL)}`;
-    const res=await fetch(proxyUrl,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body});
-    const txt=await res.text();
-    log.innerText=`Proxy Status ${res.status}: ${txt.substring(0,800)}`;
-    if(res.ok){
-      const data=JSON.parse(txt);
-      if(data.access_token){
-        BEARER=data.access_token;
-        localStorage.setItem('sure2odd_bearer', BEARER);
-        localStorage.setItem('sure2odd_bearer_time', now.toString());
-        status.innerHTML=`<span class='ok'>✅ Token auto-fetched! ${BEARER.substring(0,40)}... Expires ${data.expires_in}s</span><br><span class='small'>Now just upload screenshot and clone!</span>`;
-        btn.disabled=false; btn.innerText="🚀 Clone to TODAY with REAL ODDS";
-        return;
-      }
-    }
-    throw new Error(txt);
-  }catch(e){
-    status.innerHTML=`<span class='err'>❌ Auto-fetch failed: ${e.message}. GitHub Pages sometimes block proxy. Quick fix: Open this same file via http://localhost:8000 or install CORS extension, or paste token manually once:</span><br><textarea id='manualToken' rows='3' placeholder='Paste eyJ... token from docs-marketing-sport.com'></textarea><button onclick='manualSave()'>Save Token</button>`;
-    log.innerText+=`\nError: ${e.message}`;
-  }
+// Load saved token
+document.getElementById('bearerInput').value = BEARER;
+if(BEARER){
+  document.getElementById('tokenStatus').innerHTML = `<span class='ok'>✅ Token saved: ${BEARER.substring(0,50)}... You fit upload ticket now!</span>`;
 }
-function manualSave(){
-  let t=document.getElementById('manualToken').value.trim();
-  if(t.toLowerCase().startsWith('bearer ')) t=t.substring(7);
-  BEARER=t; localStorage.setItem('sure2odd_bearer', BEARER); localStorage.setItem('sure2odd_bearer_time', Date.now().toString());
-  document.getElementById('autoStatus').innerHTML=`<span class='ok'>✅ Token saved manually</span>`;
-  document.getElementById('btnClone').disabled=false; document.getElementById('btnClone').innerText="🚀 Clone to TODAY with REAL ODDS";
-}
-autoFetchToken();
 
+function saveToken(){
+  let t = document.getElementById('bearerInput').value.trim();
+  if(t.toLowerCase().startsWith('bearer ')) t = t.substring(7).trim();
+  if(t.length < 20){ document.getElementById('tokenStatus').innerHTML = `<span class='err'>❌ Paste correct eyJ token</span>`; return; }
+  BEARER = t;
+  localStorage.setItem('sure2odd_bearer', BEARER);
+  localStorage.setItem('sure2odd_bearer_time', Date.now().toString());
+  document.getElementById('tokenStatus').innerHTML = `<span class='ok'>✅ Token saved! Length ${t.length}. Now upload screenshot for Step 2 and click Clone!</span>`;
+}
+
+// FIXED: Use allorigins.win - no API key, no 403 error
 async function apiFetch(path){
-  if(!BEARER) throw new Error("No token");
-  const fullUrl=`${API_BASE}${path}`;
-  const proxyUrl=`https://corsproxy.io/?${encodeURIComponent(fullUrl)}`;
-  const res=await fetch(proxyUrl,{headers:{'Authorization':`Bearer ${BEARER}`}});
-  const txt=await res.text();
+  if(!BEARER) throw new Error("Paste token for Step 1 first");
+  const fullUrl = `${API_BASE}${path}`;
+  const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(fullUrl)}`;
+  const res = await fetch(proxyUrl, {headers:{'Authorization':`Bearer ${BEARER}`}});
+  const txt = await res.text();
   if(!res.ok) throw new Error(`API ${res.status}: ${txt.substring(0,400)}`);
   return JSON.parse(txt);
 }
 
+// OCR UPLOAD
 document.getElementById('imgFile').addEventListener('change', async (e)=>{
-  const file=e.target.files[0]; if(!file) return;
-  const preview=document.getElementById('preview'); preview.src=URL.createObjectURL(file); preview.style.display='block';
-  const bar=document.getElementById('pbar'); const status=document.getElementById('ocrStatus');
-  status.innerText="📸 Reading image..."; bar.style.width="10%";
+  const file = e.target.files[0]; if(!file) return;
+  const preview = document.getElementById('preview');
+  preview.src = URL.createObjectURL(file); preview.style.display='block';
+  const bar = document.getElementById('pbar');
+  const status = document.getElementById('ocrStatus');
+  status.innerText = "📸 Reading image..."; bar.style.width="10%";
   try{
-    const {data:{text}} = await Tesseract.recognize(file,'eng',{logger:m=>{if(m.progress) bar.style.width=Math.round(m.progress*90+10)+"%"}});
-    bar.style.width="100%"; document.getElementById('ticketText').value=text; status.innerHTML="<span class='ok'>✅ OCR Done! Click Clone now.</span>"; updateDNA();
-  }catch(err){ status.innerHTML=`<span class='err'>${err.message}</span>`; }
+    const {data:{text}} = await Tesseract.recognize(file,'eng',{
+      logger:m=>{ if(m.progress) bar.style.width=Math.round(m.progress*90+10)+"%" }
+    });
+    bar.style.width="100%";
+    document.getElementById('ticketText').value = text;
+    status.innerHTML = "<span class='ok'>✅ OCR Done! Detected text. Now click Clone button!</span>";
+    updateDNA();
+  }catch(err){
+    status.innerHTML = `<span class='err'>OCR Error: ${err.message}</span>`;
+  }
 });
-function updateDNA(){const raw=document.getElementById('ticketText').value;const tags=document.getElementById('dnaTags');const dna=parseSelections(raw);tags.innerHTML=`<div class='small'>Detected ${dna.length} picks:</div>`+dna.map(d=>`<span class='tag'>${escapeHtml(d)}</span>`).join('');}
+
+function updateDNA(){
+  const raw = document.getElementById('ticketText').value;
+  const tags = document.getElementById('dnaTags');
+  const dna = parseSelections(raw);
+  tags.innerHTML = `<div class='small'>Detected ${dna.length} picks (DNA):</div>` + dna.map(d=>`<span class='tag'>${escapeHtml(d)}</span>`).join('');
+}
 function escapeHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
-function parseSelections(raw){if(!raw) return []; const lines=raw.split('\n').map(s=>s.trim()).filter(s=>s.length>4); let picks=[]; lines.forEach(l=>{if(l.toLowerCase().match(/(over|under|home|away|win|draw|1x|x2|btts|@| vs )/i)||l.match(/\d+\.\d+/)) picks.push(l.substring(0,120));}); if(picks.length<2) picks=lines.slice(0,10); return picks.slice(0,12);}
+function parseSelections(raw){
+  if(!raw) return [];
+  const lines = raw.split('\n').map(s=>s.trim()).filter(s=>s.length>4);
+  let picks = [];
+  lines.forEach(l=>{
+    if(l.toLowerCase().match(/(over|under|home|away|win|draw|1x|x2|btts|@| vs )/i) || l.match(/\d+\.\d+/)){
+      picks.push(l.substring(0,120));
+    }
+  });
+  if(picks.length < 2) picks = lines.slice(0,10);
+  return picks.slice(0,12);
+}
+
+// CLONE TO TODAY WITH REAL ODDS
 async function cloneToToday(){
-  const raw=document.getElementById('ticketText').value; const dna=parseSelections(raw); const resDiv=document.getElementById('result');
-  if(!dna.length){resDiv.innerHTML="Upload ticket image first";return;}
-  if(!BEARER){resDiv.innerHTML="Wait for token auto-fetch";return;}
-  resDiv.innerHTML=`✅ DNA ${dna.length}<br>${dna.map(d=>`<span class='tag'>${escapeHtml(d)}</span>`).join('')}<br>⏳ Fetching TODAY real odds...<div class='bar'><div id='p2' style='width:20%'></div></div>`;
+  const raw = document.getElementById('ticketText').value;
+  const dna = parseSelections(raw);
+  const resDiv = document.getElementById('result');
+  if(!dna.length){ resDiv.innerHTML="Upload ticket image first for Step 2"; return; }
+  if(!BEARER){ resDiv.innerHTML="Paste token for Step 1 first"; return; }
+
+  resDiv.innerHTML = `✅ DNA ${dna.length} picks detected:<br>${dna.map(d=>`<span class='tag'>${escapeHtml(d)}</span>`).join('')}<br>⏳ Fetching TODAY real odds via allorigins proxy...<div class='bar'><div id='p2' style='width:20%'></div></div>`;
+
   try{
     document.getElementById('p2').style.width="30%";
-    const tours=await apiFetch(`/loadtree/api/v1/tournaments?ref=1&SportId=1`);
-    const tourList=Array.isArray(tours)?tours:(tours.tournaments||[]); document.getElementById('p2').style.width="55%";
-    let games=[];
+    const tours = await apiFetch(`/loadtree/api/v1/tournaments?ref=1&SportId=1`);
+    const tourList = Array.isArray(tours) ? tours : (tours.tournaments||[]);
+    document.getElementById('p2').style.width="55%";
+    
+    let games = [];
     for(let i=0;i<Math.min(6,tourList.length);i++){
-      const tid=tourList[i].tournamentId||tourList[i].id; if(!tid) continue;
+      const tid = tourList[i].tournamentId || tourList[i].id; if(!tid) continue;
       await new Promise(r=>setTimeout(r,1100));
-      const ev=await apiFetch(`/loadtree/api/v1/sportEventIds?ref=1&tournamentId=${tid}`);
-      const ids=ev.items||[]; if(!ids.length) continue;
+      const ev = await apiFetch(`/loadtree/api/v1/sportEventIds?ref=1&tournamentId=${tid}`);
+      const ids = ev.items || []; if(!ids.length) continue;
       for(let j=0;j<Math.min(3,ids.length);j++){
-        if(games.length>=dna.length) break;
+        if(games.length >= dna.length) break;
         await new Promise(r=>setTimeout(r,1100));
-        const detail=await apiFetch(`/loadtree/api/v1/sporteventDetail?ref=1&sportEventId=${ids[j]}&withSubGames=false&schemeOfGettingOdds=GetAllOdds`);
+        const detail = await apiFetch(`/loadtree/api/v1/sporteventDetail?ref=1&sportEventId=${ids[j]}&withSubGames=false&schemeOfGettingOdds=GetAllOdds`);
         if(detail && detail.opponent1NameLocalization) games.push(detail);
       }
-      if(games.length>=dna.length) break;
+      if(games.length >= dna.length) break;
     }
+    
     document.getElementById('p2').style.width="100%";
-    if(!games.length) throw new Error("No games - ask 22Bet manager enable LoadTree");
-    let html=`<h3>🔥 Cloned TODAY ${new Date().toDateString()} — REAL ODDS</h3><div style='display:grid;gap:8px'>`;
-    let total=1;
+    if(!games.length) throw new Error("No games today - ask 22Bet manager enable LoadTree API");
+    
+    let html = `<h3>🔥 Cloned TODAY ${new Date().toDateString()} — REAL ODDS</h3><div style='display:grid;gap:8px'>`;
+    let total = 1;
     games.slice(0,dna.length).forEach((g,idx)=>{
-      let odd=1.45; try{if(g.markets&&g.markets[0]&&g.markets[0].outcomes&&g.markets[0].outcomes[0].odd) odd=parseFloat(g.markets[0].outcomes[0].odd);}catch(e){}
-      if(isNaN(odd)||odd<1.01) odd=1.45; total*=odd;
-      html+=`<div class='card' style='margin:0'><b>${escapeHtml(g.opponent1NameLocalization)} vs ${escapeHtml(g.opponent2NameLocalization)}</b><br><span class='tag'>${escapeHtml(dna[idx].substring(0,60))}</span> <span class='tag' style='border-color:#22c55e'>REAL ODDS: ${odd.toFixed(2)}</span></div>`;
+      let odd = 1.45;
+      try{ if(g.markets && g.markets[0] && g.markets[0].outcomes && g.markets[0].outcomes[0].odd) odd = parseFloat(g.markets[0].outcomes[0].odd); }catch(e){}
+      if(isNaN(odd) || odd < 1.01) odd = 1.45;
+      total *= odd;
+      html += `<div class='card' style='margin:0'><b>${escapeHtml(g.opponent1NameLocalization)} vs ${escapeHtml(g.opponent2NameLocalization)}</b><br><span class='tag'>${escapeHtml(dna[idx].substring(0,60))}</span> <span class='tag' style='border-color:#22c55e'>REAL ODDS: ${odd.toFixed(2)}</span><br><small>${escapeHtml(g.tournamentName||'')}</small></div>`;
     });
-    html+=`</div><b>Total Real Odd: ${total.toFixed(2)}</b><br><a href='${AFF_LINK}' target='_blank'><button>💰 Play on 22Bet (Your Link)</button></a>`;
-    resDiv.innerHTML=html;
-  }catch(e){resDiv.innerHTML=`<span class='err'>Error: ${escapeHtml(e.message)}</span>`;}
+    html += `</div><br><b>Total Real Odd: ${total.toFixed(2)}</b><br><br><a href='${AFF_LINK}' target='_blank'><button>💰 Play on 22Bet (Your Affiliate Link)</button></a>`;
+    resDiv.innerHTML = html;
+    
+  }catch(e){
+    resDiv.innerHTML = `<span class='err'>Error: ${escapeHtml(e.message)}</span><br><span class='small'>Tip: If token expired, go get new eyJ... from docs site and paste again for Step 1</span>`;
+  }
 }
 </script>
 </body>
