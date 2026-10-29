@@ -1,182 +1,1004 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sure2OddToday - Complete Clone Code</title>
-<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SureArb | Arbitrage • Rollovers • Bigger Wins</title>
+<meta name="description" content="Compare bookmaker odds, check possible arbitrage opportunities and follow rollover packages.">
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PGNpcmNsZSBjeD0iMzIiIGN5PSIzMiIgcj0iMjkiIGZpbGw9IiMwNjEzMzAiIHN0cm9rZT0iIzFlOTBmZiIgc3Ryb2tlLXdpZHRoPSI0Ii8+PGNpcmNsZSBjeD0iMzIiIGN5PSIzMiIgcj0iMTkiIGZpbGw9IiNmZmYiLz48cG9seWdvbiBwb2ludHM9IjMyLDIyIDQwLDI4IDM3LDM4IDI3LDM4IDI0LDI4IiBmaWxsPSIjMDYxMzMwIi8+PGcgc3Ryb2tlPSIjMDYxMzMwIiBzdHJva2Utd2lkdGg9IjIiPjxwYXRoIGQ9Ik0zMiAyMlYxNE00MCAyOGw3LTNNMzcgMzhsNSA2TTI3IDM4bC01IDZNMjQgMjhsLTctMyIvPjwvZz48L3N2Zz4K">
 <style>
+:root{--navy:#061330;--navy2:#0b2250;--blue:#0a6cff;--sky:#1e90ff;--bg:#f1f5fb;--card:#fff;--line:#dce6f4;--ink:#0b1b3b;--mut:#5b6b8a;--green:#12a150;--gbg:#e3f6ea;--yel:#b87500;--ybg:#fff1cc;--red:#e5484d;--rbg:#fde7e8;--r:14px}
 *{box-sizing:border-box}
-body{margin:0;background:#060a18;color:#e2e8f0;font-family:system-ui;padding:12px}
-.h{font-size:20px;font-weight:900}
-.card{background:#0f1933;border:1px solid #1f2f5e;border-radius:18px;padding:14px;margin:12px 0}
-button{background:#22c55e;color:#000;font-weight:900;border:none;padding:15px;border-radius:14px;width:100%;font-size:16px;margin-top:8px;cursor:pointer}
-textarea,input{width:100%;background:#0a1228;color:#fff;border:1px solid #233865;border-radius:12px;padding:12px;margin-top:8px}
-.tag{background:#0a1228;border:1px solid #253a6a;padding:6px 10px;border-radius:10px;display:inline-block;margin:3px;font-size:11px}
-.small{font-size:12px;color:#93a3c0;line-height:1.4}
-.ok{color:#22c55e}.err{color:#f87171}
-img{max-width:100%;border-radius:12px;margin-top:8px}
-.bar{height:8px;background:#132040;border-radius:99px;overflow:hidden;margin-top:8px}
-.bar div{height:100%;background:#22c55e;width:0%;transition:.4s}
-a{color:#22c55e}
+html{scroll-behavior:smooth}
+body{margin:0;font:16px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;color:var(--ink);background:var(--bg);overflow-x:hidden}
+body.noscroll{overflow:hidden}
+img,svg{max-width:100%}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+a{color:var(--blue)}
+:focus-visible{outline:3px solid #7fb4ff;outline-offset:2px}
+[hidden]{display:none!important}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.wrap{max-width:1180px;margin:0 auto;padding:0 16px}
+#banner{background:#ffe9a8;color:#5c4300;text-align:center;font-size:13px;padding:6px 12px}
+/* hero */
+.hero{position:relative;color:#fff;background:#061330 var(--heroimg,url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNjAwIDcwMCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ieE1pZFlNaWQgc2xpY2UiPjxkZWZzPjxsaW5lYXJHcmFkaWVudCBpZD0ic2t5IiB4MT0iMCIgeTE9IjAiIHgyPSIwIiB5Mj0iMSI+PHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjMDYxMzMwIi8+PHN0b3Agb2Zmc2V0PSIuNiIgc3RvcC1jb2xvcj0iIzBhMmE2NiIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzBkM2I4YSIvPjwvbGluZWFyR3JhZGllbnQ+PGxpbmVhckdyYWRpZW50IGlkPSJwaXRjaCIgeDE9IjAiIHkxPSIwIiB4Mj0iMCIgeTI9IjEiPjxzdG9wIG9mZnNldD0iMCIgc3RvcC1jb2xvcj0iIzFjNmIzYSIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzBjM2ExZSIvPjwvbGluZWFyR3JhZGllbnQ+PHJhZGlhbEdyYWRpZW50IGlkPSJsMSI+PHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjZmZmIiBzdG9wLW9wYWNpdHk9Ii45NSIvPjxzdG9wIG9mZnNldD0iLjI1IiBzdG9wLWNvbG9yPSIjOGNjNGZmIiBzdG9wLW9wYWNpdHk9Ii41Ii8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjMWU5MGZmIiBzdG9wLW9wYWNpdHk9IjAiLz48L3JhZGlhbEdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0iMTYwMCIgaGVpZ2h0PSI3MDAiIGZpbGw9InVybCgjc2t5KSIvPjxnIGZpbGw9IiMwYTFmNGEiIG9wYWNpdHk9Ii45Ij48cGF0aCBkPSJNMCAzMzBDMzAwIDI3MCA2MDAgMjUwIDgwMCAyNTBTMTMwMCAyNzAgMTYwMCAzMzBWNDcwSDB6Ii8+PC9nPjxnIGZpbGw9IiMxMjMwNmUiIG9wYWNpdHk9Ii44Ij48cGF0aCBkPSJNMCAzODBDMzAwIDMzMCA2MDAgMzEwIDgwMCAzMTBTMTMwMCAzMzAgMTYwMCAzODBWNDcwSDB6Ii8+PC9nPjxnIGZpbGw9IiMzYjc4ZDgiIG9wYWNpdHk9Ii4zNSI+PGNpcmNsZSBjeD0iMTIwIiBjeT0iMzYwIiByPSIzIi8+PGNpcmNsZSBjeD0iNDIwIiBjeT0iMzQ1IiByPSIzIi8+PGNpcmNsZSBjeD0iNzAwIiBjeT0iMzM1IiByPSIzIi8+PGNpcmNsZSBjeD0iMTAwMCIgY3k9IjMzOCIgcj0iMyIvPjxjaXJjbGUgY3g9IjEyODAiIGN5PSIzNTAiIHI9IjMiLz48Y2lyY2xlIGN4PSIxNTAwIiBjeT0iMzY1IiByPSIzIi8+PC9nPjxjaXJjbGUgY3g9IjExODAiIGN5PSIxMjAiIHI9IjE1MCIgZmlsbD0idXJsKCNsMSkiLz48Y2lyY2xlIGN4PSIxNDAwIiBjeT0iOTAiIHI9IjExMCIgZmlsbD0idXJsKCNsMSkiLz48Y2lyY2xlIGN4PSI4ODAiIGN5PSIxNDAiIHI9IjkwIiBmaWxsPSJ1cmwoI2wxKSIvPjxjaXJjbGUgY3g9IjEwMTAiIGN5PSI2MCIgcj0iNzAiIGZpbGw9InVybCgjbDEpIiBvcGFjaXR5PSIuNyIvPjxyZWN0IHk9IjQ1MCIgd2lkdGg9IjE2MDAiIGhlaWdodD0iMjUwIiBmaWxsPSJ1cmwoI3BpdGNoKSIvPjxnIHN0cm9rZT0iIzJlOGE0ZiIgc3Ryb2tlLXdpZHRoPSI0MCIgb3BhY2l0eT0iLjI1Ij48cGF0aCBkPSJNMCA1MjBIMTYwME0wIDYwMEgxNjAwTTAgNjgwSDE2MDAiLz48L2c+PC9zdmc+Cg==)) center/cover;border-radius:0 0 50% 50%/0 0 44px 44px;overflow:hidden;contain:paint;padding-bottom:26px}
+.hero::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(6,19,48,.95) 0,rgba(6,19,48,.72) 48%,rgba(6,19,48,.15) 100%)}
+.hero .wrap{position:relative;z-index:2}
+.brand{display:inline-flex;align-items:center;gap:12px;color:#fff;text-decoration:none;padding-top:18px}
+.brand img{width:52px;height:52px}
+.brand b{font-size:30px;letter-spacing:-.5px;display:block;line-height:1}
+.brand small{font-size:12px;opacity:.8;display:block;margin-top:4px}
+.hero-copy{max-width:560px;padding:22px 0 10px}
+.hero h1{font-size:clamp(34px,6vw,56px);line-height:1.02;margin:0 0 14px;letter-spacing:-1px}
+.hero h1 span{color:var(--sky)}
+.hero p.lead{margin:0 0 20px;font-size:16px;color:#dbe7ff;max-width:480px}
+.hero-ball{position:absolute;right:-3%;top:40px;width:min(34vw,380px);z-index:1;pointer-events:none}
+.hero-note{position:absolute;right:26%;top:70px;z-index:1;font-style:italic;font-size:20px;line-height:1.2;transform:rotate(-8deg);color:#e6f0ff;margin:0;white-space:pre-line}
+#searchForm{position:relative;display:flex;background:#fff;border-radius:999px;padding:6px 6px 6px 18px;align-items:center;max-width:520px;box-shadow:0 6px 24px rgba(0,0,0,.25)}
+#searchForm input{flex:1;min-width:0;border:0;outline:0;background:none;color:var(--ink);padding:10px 8px;font-size:16px}
+#searchForm button{border:0;background:var(--blue);color:#fff;width:46px;height:46px;border-radius:50%;display:grid;place-items:center}
+#results{position:absolute;left:0;right:0;top:calc(100% + 8px);background:#fff;color:var(--ink);border-radius:14px;box-shadow:0 12px 32px rgba(0,0,0,.3);list-style:none;margin:0;padding:6px;max-height:min(60vh,360px);overflow:auto;z-index:20}
+#results li button{width:100%;text-align:left;border:0;background:none;padding:10px 12px;border-radius:10px;display:flex;flex-direction:column}
+#results li button:hover,#results li button:focus-visible{background:#eef4ff}
+#results small{color:var(--mut)}
+#results .none{padding:12px;color:var(--mut)}
+.strip{display:flex;align-items:center;gap:14px;margin-top:22px;padding:12px 16px;border:1px solid rgba(60,140,255,.6);border-radius:16px;background:rgba(6,19,48,.78)}
+.strip .pl{width:54px;flex:none}
+.strip .tx{flex:1;min-width:0}
+.strip b{display:block;font-size:18px}
+.strip small{color:#b9cdf5;font-size:13px}
+.strip .mx{font-size:30px;font-weight:700;color:#7cc0ff;font-variant-numeric:tabular-nums}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid transparent;border-radius:999px;padding:11px 20px;font-weight:600;background:var(--blue);color:#fff;min-height:44px}
+.btn:hover{filter:brightness(1.08)}
+.btn:disabled{opacity:.6;cursor:default}
+.btn.line{background:#fff;color:var(--blue);border-color:#b8d2fb}
+.btn.red{background:#fff;color:var(--red);border-color:#f3b8ba}
+.btn.sm{min-height:36px;padding:6px 14px;font-size:14px}
+/* sections */
+main{padding-top:22px}
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:26px}
+.cd{border-radius:var(--r);padding:20px;text-decoration:none;display:block;position:relative;overflow:hidden;min-height:150px}
+.cd h3{margin:0 0 6px;font-size:22px}
+.cd p{margin:0 0 12px;max-width:340px}
+.cd.dark{background:linear-gradient(135deg,#061330,#0e2a63);color:#fff}
+.cd.dark p{color:#c3d4f6}
+.cd.light{background:linear-gradient(135deg,#eaf3ff,#cfe3ff);color:var(--ink);border:1px solid #bcd6fb}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{padding:6px 14px;border-radius:999px;font-weight:700;font-size:13px}
+.sec{margin:0 0 28px}
+.sec-h{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.sec-h h2{margin:0;font-size:24px}
+.sec-h p{margin:2px 0 0;color:var(--mut);font-size:14px}
+.pill{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:3px 10px;font-size:12px;font-weight:600;background:#eaf1fc;color:var(--mut);white-space:nowrap}
+.pill.demo{background:#fff1cc;color:#7a5200}.pill.live{background:var(--gbg);color:var(--green)}.pill.ed{background:#e6eeff;color:var(--blue)}
+.st{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:3px 10px;font-size:13px;font-weight:600}
+.st::before{content:"";width:8px;height:8px;border-radius:50%;background:currentColor}
+.st.won,.st.completed{background:var(--gbg);color:var(--green)}
+.st.pending,.st.active{background:var(--ybg);color:var(--yel)}
+.st.lost,.st.failed{background:var(--rbg);color:var(--red)}
+.st.void,.st.future{background:#eef1f6;color:var(--mut)}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:10px}
+.toolbar select,.toolbar input[type=text],.toolbar input[type=number],.toolbar input:not([type]){border:1px solid var(--line);border-radius:10px;padding:8px 10px;background:#fff;min-height:40px}
+.toolbar label{display:flex;gap:6px;align-items:center;font-size:14px;color:var(--mut)}
+.feed{font-size:13px;color:var(--mut);margin:0 0 10px}
+.feed.err{color:var(--red)}
+.empty{background:#fff;border:1px dashed #b9c9e4;border-radius:var(--r);padding:22px;color:var(--mut);text-align:center}
+.arb-list{display:grid;gap:8px}
+.arb-row{display:grid;grid-template-columns:1fr auto auto auto 18px;gap:12px;align-items:center;width:100%;text-align:left;background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.arb-row:hover{border-color:#9cc2fa}
+.arb-row .am b{display:block}
+.arb-row .am small{color:var(--mut)}
+.ab{font-size:13px;font-weight:600;padding:3px 10px;border-radius:999px}
+.ab.ok{background:var(--gbg);color:var(--green)}.ab.no{background:#eef1f6;color:var(--mut)}
+.ap{font-weight:700;min-width:64px;text-align:right}
+.more-btn{margin-top:10px}
+/* packages */
+.pkgs{display:grid;grid-template-columns:repeat(auto-fill,minmax(128px,1fr));gap:10px}
+.pkg{position:relative;text-align:left;background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:grid;grid-template-columns:1fr auto;grid-template-areas:"o d" "r a";gap:2px 6px;align-items:center;min-height:84px}
+.pkg:hover{border-color:#8dbaf8}
+.pkg b{grid-area:o;font-size:24px;letter-spacing:-.5px}
+.pkg span.rl{grid-area:r;color:var(--mut);font-size:14px}
+.pkg .dy{grid-area:d;justify-self:end;font-size:12px;background:#e7efff;color:#3b5db8;border-radius:8px;padding:2px 8px}
+.pkg .dy.two{background:#efe6ff;color:#6b3fc4}
+.pkg i{grid-area:a;justify-self:end;font-style:normal;color:var(--mut);font-size:20px}
+.pkg.off{opacity:.55}
+.pkg .seg{grid-column:1/-1;display:flex;gap:2px;margin-top:6px}
+.pkg .seg u{flex:1;height:4px;border-radius:2px;background:#dfe6f2}
+.pkg .seg u.won{background:var(--green)}.pkg .seg u.lost{background:var(--red)}.pkg .seg u.pending{background:#f5a30a}.pkg .seg u.void{background:#8aa0c5}
+.note{grid-column:span 2;background:#e5f0ff;border:1px solid #c5dcfb;border-radius:12px;padding:14px;display:flex;gap:12px;align-items:center;color:#123a80}
+.note b{display:block}
+.note small{color:var(--mut)}
+.bolt{width:40px;height:40px;border-radius:50%;background:var(--blue);display:grid;place-items:center;flex:none}
+.duo2{display:grid;grid-template-columns:1.2fr 1fr;gap:16px;margin-bottom:26px}
+.ticker{background:linear-gradient(135deg,#061330,#10306e);color:#fff;border-radius:var(--r);padding:20px;display:grid;grid-template-columns:150px 1fr;gap:18px;align-items:center}
+.phone{width:140px;height:200px;border:6px solid #1c3f86;border-radius:22px;background:#e8f0ff;color:var(--ink);padding:12px 8px;position:relative;transform:rotate(-6deg)}
+.phone small{display:block;font-weight:700;font-size:11px}
+.phone .tk{margin-top:12px;background:linear-gradient(135deg,#0a6cff,#0b4fc0);color:#fff;border-radius:10px;padding:10px;text-align:center}
+.phone .tk b{font-size:24px;display:block}
+.ticker h3{margin:0 0 4px;font-size:22px}
+.ticker dl{display:grid;grid-template-columns:auto 1fr;gap:2px 12px;margin:10px 0 14px;font-size:14px;color:#cfe0ff}
+.ticker dd{margin:0;color:#fff;font-weight:600}
+.how{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:20px}
+.how h3{margin:0 0 10px}
+.how ol{margin:0;padding:0;list-style:none;display:grid;gap:8px;counter-reset:s}
+.how li{counter-increment:s;display:flex;gap:10px;align-items:flex-start;color:var(--mut);font-size:15px}
+.how li::before{content:counter(s);flex:none;width:24px;height:24px;border-radius:50%;background:var(--blue);color:#fff;font-size:13px;display:grid;place-items:center;font-weight:700}
+.how .safe{margin-top:14px;background:#eef6ff;border-radius:10px;padding:10px 12px;font-size:13px;color:#33507f}
+footer{text-align:center;color:var(--mut);font-size:14px;padding:12px 16px 40px}
+/* dialogs */
+dialog{border:0;padding:0;background:transparent;max-width:none;max-height:none;width:100%;height:100%;overflow:hidden;color:var(--ink)}
+dialog[open]{display:flex;align-items:center;justify-content:center}
+dialog::backdrop{background:rgba(5,14,36,.68);backdrop-filter:blur(3px)}
+.sheet{background:#fff;border-radius:18px;width:min(880px,calc(100% - 20px));max-height:calc(100dvh - 20px);display:flex;flex-direction:column;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.4)}
+.sheet-h{display:flex;gap:14px;align-items:center;padding:16px 18px;border-bottom:1px solid var(--line)}
+.sheet-h .ic{width:52px;height:52px;border-radius:50%;background:var(--blue);display:grid;place-items:center;flex:none}
+.sheet-h h2{margin:0;font-size:22px}
+.sheet-h p{margin:2px 0 0;color:var(--mut);font-size:14px}
+.sheet-h .x{margin-left:auto;border:0;background:#eef3fb;border-radius:50%;width:44px;height:44px;font-size:22px;flex:none;line-height:1}
+.sheet-b{overflow:auto;overscroll-behavior:contain;padding:14px 18px 18px;-webkit-overflow-scrolling:touch}
+.stakebar{display:flex;gap:10px;align-items:center;padding:10px 18px;border-bottom:1px solid var(--line);background:#f6f9ff;flex-wrap:wrap}
+.stakebar input{border:1px solid var(--line);border-radius:10px;padding:8px 10px;width:140px;min-height:40px;background:#fff}
+.teams{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center;border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:12px}
+.tm{display:flex;gap:10px;align-items:center}
+.tm.r{flex-direction:row-reverse;text-align:right}
+.crest{width:44px;height:44px;border-radius:50%;background:#e6eeff;color:var(--blue);display:grid;place-items:center;font-weight:700;flex:none;overflow:hidden}
+.crest img{width:100%;height:100%;object-fit:contain}
+.vs{text-align:center;font-size:13px;color:var(--mut)}
+.vs b{background:#e6eeff;color:var(--blue);border-radius:8px;padding:2px 10px;display:inline-block;margin-bottom:4px}
+.mk{border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:12px}
+.mk-h{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+.mk-h b{font-size:16px}
+.oc{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
+.o{border:1px solid var(--line);border-radius:10px;padding:10px;background:#fafcff}
+.bk{display:inline-block;border-radius:6px;padding:2px 9px;font-weight:800;font-size:13px;margin-bottom:6px}
+.o .nm{color:var(--mut);font-size:14px}
+.o .od{font-size:22px;font-weight:700}
+.o .sk{font-size:13px;color:var(--green);margin-top:4px}
+.verdict{margin-top:8px;font-size:14px;font-weight:600}
+.verdict.ok{color:var(--green)}.verdict.no{color:var(--mut)}
+.sum3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;border:1px solid var(--line);border-radius:12px;padding:12px;background:#f6f9ff}
+.sum3 small{color:var(--mut);display:block}
+.sum3 b{font-size:20px}
+.disc{margin-top:12px;background:#eef6ff;border-radius:10px;padding:10px 12px;font-size:13px;color:#33507f}
+/* rollover dialog */
+.steps{display:flex;gap:0;margin:2px 0 12px;overflow-x:auto}
+.steps button{flex:1;min-width:54px;border:0;background:none;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:12px;color:var(--mut);position:relative;padding:4px 0}
+.steps button::before{content:"";position:absolute;top:15px;left:-50%;width:100%;height:3px;background:#dfe6f2;z-index:0}
+.steps button:first-child::before{display:none}
+.steps button.won::before,.steps button.void::before{background:var(--green)}
+.steps .dot{width:26px;height:26px;border-radius:50%;background:#fff;border:3px solid #cfd8e8;z-index:1;display:grid;place-items:center;font-size:12px;font-weight:700}
+.steps .won .dot{background:var(--green);border-color:var(--green);color:#fff}
+.steps .lost .dot{background:var(--red);border-color:var(--red);color:#fff}
+.steps .pending .dot{background:#f5a30a;border-color:#f5a30a;color:#fff}
+.steps .void .dot{background:#8aa0c5;border-color:#8aa0c5;color:#fff}
+.steps .sel{color:var(--ink);font-weight:700}
+.tabs{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;margin-bottom:10px}
+.tabs button{flex:none;border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 14px;min-height:40px;font-weight:600}
+.tabs button.on{background:var(--blue);color:#fff;border-color:var(--blue)}
+.dsum{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin-bottom:8px}
+.dsum h3{margin:0;font-size:17px}
+.sel-t{border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.sr1{display:grid;grid-template-columns:34px 1fr 90px 60px 96px;gap:8px;align-items:center;padding:9px 12px;border-top:1px solid var(--line);font-size:14px}
+.sr1:first-child{border-top:0}
+.sr1.hd{background:#f4f8ff;color:var(--mut);font-weight:700;font-size:13px}
+.sr1 .mt b{display:block;font-weight:600}
+.sr1 .mt small{color:var(--mut)}
+.sr1 .od{font-weight:700}
+.legend{margin-top:12px;font-size:13px;color:var(--mut);background:#f4f8ff;border-radius:10px;padding:10px 12px}
+.tgt{font-size:13px;margin:8px 0 0;padding:8px 10px;border-radius:10px}
+.tgt.ok{background:var(--gbg);color:#0b6a35}.tgt.no{background:var(--ybg);color:#6d4800}
+/* aviator dialog */
+.sheet.av{width:min(520px,calc(100% - 20px))}
+.sky{position:relative;height:200px;border-radius:14px;background:linear-gradient(#0b2b66,#123d85);overflow:hidden;container-type:size}
+.sky #avMult{position:absolute;inset:0;display:grid;place-items:center;font-size:56px;font-weight:800;color:#fff;font-variant-numeric:tabular-nums}
+.crashed .sky #avMult{color:#ff8b8f}
+#avPlane{position:absolute;left:8px;bottom:8px;width:44px;transition:transform .1s linear}
+.demo-tag{display:inline-block;background:#ffe9a8;color:#6d4800;border-radius:8px;padding:3px 10px;font-weight:700;font-size:13px}
+.av-actions{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+.toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);background:#0b1b3b;color:#fff;border-radius:10px;padding:10px 16px;z-index:50;font-size:14px;max-width:90vw}
+@media (max-width:900px){.duo2{grid-template-columns:1fr}.note{grid-column:1/-1}}
+@media (min-width:1024px){.pkgs{grid-template-columns:repeat(4,1fr)}}
+@media (max-width:700px){
+  .hero{border-radius:0 0 50% 50%/0 0 30px 30px}
+  .hero-ball{width:46vw;right:-14%;top:90px;opacity:.5}
+  .hero-note{display:none}
+  .duo{grid-template-columns:1fr}
+  .strip{flex-wrap:wrap}.strip .mx{font-size:24px}
+  .strip .btn{flex:1 1 100%}
+  .arb-row{display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center;position:relative;padding-right:30px}
+  .arb-row .am{flex:1 1 100%}
+  .arb-row .ap{min-width:0;margin-left:auto}
+  .arb-row i{position:absolute;right:12px;top:14px}
+  .ticker{grid-template-columns:1fr}.phone{margin:0 auto}
+  .teams{grid-template-columns:1fr;text-align:center}.tm,.tm.r{flex-direction:row;justify-content:center;text-align:left}
+  .sum3{grid-template-columns:1fr}
+  .sr1{grid-template-columns:28px 1fr 56px;grid-template-areas:"n m o" "n b s";row-gap:4px}
+  .sr1>:nth-child(1){grid-area:n}.sr1>:nth-child(2){grid-area:m}.sr1>:nth-child(3){grid-area:b;color:var(--mut);font-size:13px}.sr1>:nth-child(4){grid-area:o;text-align:right}.sr1>:nth-child(5){grid-area:s}
+  .sr1.hd{display:none}
+  .sheet{width:calc(100% - 12px);max-height:calc(100dvh - 12px)}
+  .sheet-h h2{font-size:18px}.sheet-h .ic{width:40px;height:40px}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}#avPlane{transition:none}}
+.pkg{min-width:0}
+@media (max-width:360px){.pkg{padding:10px 9px}.pkg b{font-size:20px}.pkg .dy{font-size:11px;padding:2px 6px}}
+
 </style>
 </head>
 <body>
+<div id="banner" hidden></div>
+<header class="hero" id="top">
+  <div class="wrap">
+    <a class="brand" href="#top"><img id="logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PGNpcmNsZSBjeD0iMzIiIGN5PSIzMiIgcj0iMjkiIGZpbGw9IiMwNjEzMzAiIHN0cm9rZT0iIzFlOTBmZiIgc3Ryb2tlLXdpZHRoPSI0Ii8+PGNpcmNsZSBjeD0iMzIiIGN5PSIzMiIgcj0iMTkiIGZpbGw9IiNmZmYiLz48cG9seWdvbiBwb2ludHM9IjMyLDIyIDQwLDI4IDM3LDM4IDI3LDM4IDI0LDI4IiBmaWxsPSIjMDYxMzMwIi8+PGcgc3Ryb2tlPSIjMDYxMzMwIiBzdHJva2Utd2lkdGg9IjIiPjxwYXRoIGQ9Ik0zMiAyMlYxNE00MCAyOGw3LTNNMzcgMzhsNSA2TTI3IDM4bC01IDZNMjQgMjhsLTctMyIvPjwvZz48L3N2Zz4K" alt="" width="52" height="52"><span><b id="brandName">SureArb</b><small id="brandTag">Arbitrage • Rollovers • Bigger Wins</small></span></a>
+    <img class="hero-ball" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MDAgNDAwIj48ZGVmcz48cmFkaWFsR3JhZGllbnQgaWQ9ImciIGN4PSIzOCUiIGN5PSIzMiUiIHI9Ijc1JSI+PHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjZmZmIi8+PHN0b3Agb2Zmc2V0PSIuNiIgc3RvcC1jb2xvcj0iI2RmZTZmMiIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzdmOGJhMyIvPjwvcmFkaWFsR3JhZGllbnQ+PC9kZWZzPjxjaXJjbGUgY3g9IjIwMCIgY3k9IjIwMCIgcj0iMTkwIiBmaWxsPSJ1cmwoI2cpIi8+PGcgZmlsbD0iIzBjMTQyOCI+PHBvbHlnb24gcG9pbnRzPSIyMDAsMTIwIDI2MiwxNjUgMjM4LDIzOCAxNjIsMjM4IDEzOCwxNjUiLz48cG9seWdvbiBwb2ludHM9IjIwMCwyMCAyNDUsMzggMjMyLDgwIDE2OCw4MCAxNTUsMzgiIG9wYWNpdHk9Ii45Ii8+PHBvbHlnb24gcG9pbnRzPSIzMzAsMTMwIDM3MiwxNzAgMzUwLDIxNSAzMTAsMTk1IDMwNSwxNTAiLz48cG9seWdvbiBwb2ludHM9IjcwLDEzMCAyOCwxNzAgNTAsMjE1IDkwLDE5NSA5NSwxNTAiLz48cG9seWdvbiBwb2ludHM9IjI5MCwzMjAgMjUwLDM2NSAyMDAsMzgwIDIxNSwzMzAgMjYyLDMwMCIvPjxwb2x5Z29uIHBvaW50cz0iMTEwLDMyMCAxNTAsMzY1IDIwMCwzODAgMTg1LDMzMCAxMzgsMzAwIi8+PC9nPjxnIHN0cm9rZT0iIzBjMTQyOCIgc3Ryb2tlLXdpZHRoPSIzIiBmaWxsPSJub25lIiBvcGFjaXR5PSIuNyI+PHBhdGggZD0iTTIwMCAxMjBWODBNMjYyIDE2NWw0OCAzME0yMzggMjM4bDI0IDYyTTE2MiAyMzhsLTI0IDYyTTEzOCAxNjVMOTUgMTUwIi8+PC9nPjwvc3ZnPgo=" alt="" width="380" height="380" fetchpriority="low">
+    <p class="hero-note" id="heroNote"></p>
+    <div class="hero-copy">
+      <h1 id="h1">Find Sure Bets.<br><span>Make More.</span></h1>
+      <p class="lead" id="heroText"></p>
+      <form id="searchForm" role="search" autocomplete="off">
+        <label class="sr" for="q">Search for match, team or league</label>
+        <input id="q" type="search" placeholder="Search for match, team or league…" aria-controls="results" enterkeyhint="search">
+        <button type="submit" aria-label="Search"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg></button>
+        <ul id="results" hidden></ul>
+      </form>
+    </div>
+    <section class="strip" id="aviatorStrip" aria-label="Demo Aviator">
+      <svg class="pl" viewBox="0 0 64 40" aria-hidden="true"><path d="M4 28l40-12 14-8 4 4-10 12 2 8-6 2-8-8-26 6z" fill="#ff3b4e"/></svg>
+      <div class="tx"><b id="avLabel">Demo Aviator</b><small id="avDesc"></small></div>
+      <span class="mx" id="avStripMult" aria-label="Last simulated multiplier">1.00x</span>
+      <button class="btn" id="avOpen" type="button">▶ Play Demo</button>
+    </section>
+  </div>
+</header>
 
-<div class="h">🩺 Sure2OddToday — Complete Clone Code</div>
-<p class="small">All codes inside: OCR + Token + Real Odds + Affiliate. Just copy to GitHub auto.html</p>
+<main class="wrap">
+  <div class="duo" data-section="cards">
+    <a class="cd dark" href="#arbitrage"><h3>Arbitrage Matches</h3><p>Compare odds from several bookmakers and see which matches pass the arbitrage check.</p><div class="chips" id="bkChips"></div></a>
+    <a class="cd light" href="#rollovers"><h3>Rollover Plans</h3><p>Daily combined tickets with progress you can follow.</p><b id="fromTo">Start from 1.30 odds</b></a>
+  </div>
 
-<!-- STEP 1 TOKEN -->
-<div class="card">
-<b>STEP 1: Paste Token (ONCE - save for 1 hour)</b>
-<p class="small">Go docs-marketing-sport.com > SPECIFICATION > Lock icon Authorizations > Paste ID: partners-35afad7ea8aa44418f245b47ad75e19e + Secret > Authorize > Copy eyJ... token</p>
-<textarea id="bearerInput" rows="4" placeholder="Paste eyJ... token here"></textarea>
-<button onclick="saveToken()">💾 Save Token</button>
-<div id="tokenStatus" class="small">No token yet</div>
-</div>
+  <section class="sec" id="arbitrage" data-section="arbitrage">
+    <div class="sec-h">
+      <div><h2 id="arbTitle">Arbitrage Matches</h2><p id="arbSub"></p></div>
+      <button class="btn line sm" id="refreshBtn" type="button">↻ Refresh</button>
+    </div>
+    <div class="toolbar">
+      <label>League <select id="leagueSel"><option value="">All leagues</option></select></label>
+      <label><input type="checkbox" id="onlyArb"> Arbitrage only</label>
+      <label>Stake <input id="stakeMain" inputmode="decimal" size="8" aria-label="Total stake"></label>
+    </div>
+    <p class="feed" id="feedLine"></p>
+    <div class="arb-list" id="arbList" aria-live="polite"></div>
+    <button class="btn line sm more-btn" id="arbMore" type="button" hidden>Show more matches</button>
+  </section>
 
-<!-- STEP 2 UPLOAD -->
-<div class="card">
-<b>STEP 2: Upload Winning Ticket Screenshot</b>
-<input type="file" id="imgFile" accept="image/*">
-<img id="preview" style="display:none">
-<div class="bar"><div id="pbar"></div></div>
-<div id="ocrStatus" class="small"></div>
-<textarea id="ticketText" rows="7" placeholder="OCR result go show here after upload"></textarea>
-<div id="dnaTags"></div>
-</div>
+  <section class="sec" id="rollovers" data-section="rollovers">
+    <div class="sec-h">
+      <div><h2 id="rolTitle">Available Rollover Packages</h2><p id="rolSub"></p></div>
+      <span class="pill" id="rolPill"></span>
+    </div>
+    <div class="pkgs" id="pkgGrid"></div>
+  </section>
 
-<!-- STEP 3 CLONE -->
-<div class="card">
-<b>STEP 3: Clone to TODAY</b>
-<button onclick="cloneToToday()" id="btnClone">🚀 Clone to TODAY with REAL ODDS</button>
-<div id="result"></div>
-</div>
+  <div class="duo2">
+    <section class="ticker" id="tickerBox" data-section="ticker" aria-label="Rollover Ticker"></section>
+    <section class="how" data-section="howItWorks"><h3 id="howTitle">How It Works</h3><ol id="howList"></ol><div class="safe" id="notice"></div></section>
+  </div>
+</main>
+<footer id="footer"></footer>
 
+<dialog id="arbDlg" aria-labelledby="arbT"><div class="sheet">
+  <div class="sheet-h"><span class="ic"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9a8 8 0 0113-3l3 3M20 15a8 8 0 01-13 3l-3-3M20 4v5h-5M4 20v-5h5"/></svg></span><div><h2 id="arbT">Arbitrage check</h2><p>Same match • Different bookmakers • Verified by calculation</p></div><button class="x" data-close type="button" aria-label="Close">×</button></div>
+  <div class="stakebar"><label for="stakeIn">Total stake per market</label><input id="stakeIn" inputmode="decimal" aria-describedby="stakeHelp"><small id="stakeHelp">Stakes are split across outcomes of each qualifying market.</small></div>
+  <div class="sheet-b" id="arbBody"></div>
+</div></dialog>
+
+<dialog id="rolDlg" aria-labelledby="rolT"><div class="sheet">
+  <div class="sheet-h"><span class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="#fff"><path d="M13 2L4 14h6l-1 8 9-12h-6z"/></svg></span><div><h2 id="rolT"></h2><p id="rolMeta"></p></div><button class="x" data-close type="button" aria-label="Close">×</button></div>
+  <div class="sheet-b" id="rolBody"></div>
+</div></dialog>
+
+<dialog id="avDlg" aria-labelledby="avT"><div class="sheet av">
+  <div class="sheet-h"><div><h2 id="avT">Demo Aviator</h2><p><span class="demo-tag">DEMO ONLY</span> Simulated values. No money, no betting account.</p></div><button class="x" data-close type="button" aria-label="Close">×</button></div>
+  <div class="sheet-b">
+    <div class="sky"><div id="avMult">1.00x</div><svg id="avPlane" viewBox="0 0 64 40" aria-hidden="true"><path d="M4 28l40-12 14-8 4 4-10 12 2 8-6 2-8-8-26 6z" fill="#ff3b4e"/></svg></div>
+    <p id="avMsg" aria-live="polite" style="margin:12px 0 0;color:var(--mut)"></p>
+    <div class="av-actions"><button class="btn" id="avStart" type="button">Start round</button><button class="btn line" id="avCash" type="button" hidden>Cash out</button><button class="btn" id="avAgain" type="button" hidden>Play Again</button><button class="btn line" data-close type="button">Close</button></div>
+  </div>
+</div></dialog>
+
+<script>window.SA=window.SA||{};SA.embedded={"site-config":{"brand":{"name":"SureArb","tagline":"Arbitrage • Rollovers • Bigger Wins","logo":""},"theme":{"primary":"#0a6cff","navy":"#061330"},"hero":{"headline1":"Find Sure Bets.","headline2":"Make More.","text":"We compare odds from several bookmakers and flag possible arbitrage opportunities. Also follow our rollover plans and track every daily ticket.","image":"","note":"More Markets\nMore Opportunities"},"aviator":{"label":"Demo Aviator","description":"Simulated game for fun. No real money, no bookmaker account."},"sections":{"aviator":true,"cards":true,"arbitrage":true,"rollovers":true,"ticker":true,"howItWorks":true},"headings":{"arbitrage":{"title":"Arbitrage Matches","sub":"Same match, different bookmakers. Only odds that pass the arbitrage check are flagged."},"rollovers":{"title":"Available Rollover Packages","sub":"Choose your preferred odds. Each day is one combined ticket."},"ticker":{"title":"Rollover Ticker","sub":"Follow the current day, completed days and ticket status."},"how":{"title":"How It Works"}},"rolloverNote":"100.00 odds rollover is only for 2 days.","rolloverNoteSub":"All other rollovers run for 7 days. Packages can be edited in the editor.","ticker":{"packageId":"r10_0"},"howItWorks":["Choose a rollover package.","Review the day's football selections and odds.","Place your bets independently with the bookmaker you use.","Follow match results and daily progress.","Review the outcome of the rollover cycle."],"notice":"Bet responsibly. 18+ only. No selection, arbitrage or rollover is guaranteed to win: odds change, bets can be limited or voided, and results can differ from expectations.","footer":"SureArb • Arbitrage • Rollovers • Bigger Wins","currency":{"code":"NGN","symbol":"₦"},"timezone":"Africa/Lagos","defaultStake":10000,"display":{"backdropClose":true,"initialSelections":10},"integrations":{"fixtures":{"enabled":false,"provider":"football-data","path":"/v4/matches","params":{},"refreshSeconds":300},"odds":{"enabled":false,"provider":"odds-api","path":"/v4/sports/soccer_epl/odds","params":{"regions":"eu","markets":"h2h,totals","oddsFormat":"decimal"},"refreshSeconds":600},"results":{"enabled":false,"provider":"football-data","path":"/v4/matches","params":{"status":"FINISHED"},"refreshSeconds":900}},"github":{"owner":"","repo":"","branch":"main"}},"rollover-packages":{"demo":true,"packages":[{"id":"r1_3","name":"1.30 Odds Rollover","target":1.3,"active":true,"description":"Demo package: one 2-selection ticket per day, aiming for 1.30 combined odds.","days":[{"selections":[{"match":"Juventus vs AC Milan","home":"Juventus","away":"AC Milan","league":"Serie A","market":"Total Goals","pick":"Over 1.5","bookmaker":"1xBet","odds":1.14,"status":"won"},{"match":"Arsenal vs Chelsea","home":"Arsenal","away":"Chelsea","league":"Premier League","market":"Total Goals","pick":"Under 3.5","bookmaker":"Melbet","odds":1.14,"status":"won"}]},{"selections":[{"match":"PSG vs Lyon","home":"PSG","away":"Lyon","league":"Ligue 1","market":"Total Goals","pick":"Under 3.5","bookmaker":"1xBet","odds":1.19,"status":"won"},{"match":"Inter vs Roma","home":"Inter","away":"Roma","league":"Serie A","market":"Both Teams to Score","pick":"BTTS - Yes","bookmaker":"Melbet","odds":1.09,"status":"won"}]},{"selections":[{"match":"Liverpool vs Newcastle","home":"Liverpool","away":"Newcastle","league":"Premier League","market":"Both Teams to Score","pick":"BTTS - Yes","bookmaker":"1xBet","odds":1.19,"status":"won"},{"match":"Real Madrid vs Valencia","home":"Real Madrid","away":"Valencia","league":"La Liga","market":"Match Result","pick":"Real Madrid Win","bookmaker":"Melbet","odds":1.09,"status":"pending"}]},{"selections":[{"match":"Tottenham vs Aston Villa","home":"Tottenham","away":"Aston Villa","league":"Premier League","market":"Match Result","pick":"Tottenham Win","bookmaker":"1xBet","odds":1.15,"status":"pending"},{"match":"Napoli vs Lazio","home":"Napoli","away":"Lazio","league":"Serie A","market":"Double Chance","pick":"1X (Home or Draw)","bookmaker":"Melbet","odds":1.13,"status":"pending"}]},{"selections":[{"match":"Leverkusen vs Leipzig","home":"Leverkusen","away":"Leipzig","league":"Bundesliga","market":"Double Chance","pick":"1X (Home or Draw)","bookmaker":"1xBet","odds":1.1,"status":"pending"},{"match":"Marseille vs Monaco","home":"Marseille","away":"Monaco","league":"Ligue 1","market":"Total Goals","pick":"Over 2.5","bookmaker":"Melbet","odds":1.18,"status":"pending"}]},{"selections":[{"match":"Ajax vs PSV","home":"Ajax","away":"PSV","league":"Eredivisie","market":"Total Goals","pick":"Over 2.5","bookmaker":"1xBet","odds":1.09,"status":"pending"},{"match":"Atalanta vs Fiorentina","home":"Atalanta","away":"Fiorentina","league":"Serie A","market":"Total Goals","pick":"Over 1.5","bookmaker":"Melbet","odds":1.19,"status":"pending"}]},{"selections":[{"match":"Villarreal vs Girona","home":"Villarreal","away":"Girona","league":"La Liga","market":"Total Goals","pick":"Over 1.5","bookmaker":"1xBet","odds":1.12,"status":"pending"},{"match":"Lille vs Nice","home":"Lille","away":"Nice","league":"Ligue 1","market":"Total Goals","pick":"Under 3.5","bookmaker":"Melbet","odds":1.16,"status":"pending"}]}]},{"id":"r1_5","name":"1.50 Odds Rollover","target":1.5,"active":true,"description":"Demo package: one 2-selection ticket per day, aiming for 1.50 combined odds.","days":[{"selections":[{"match":"Juventus vs AC Milan","home":"Juventus","away":"AC Milan","league":"Serie A","market":"Total Goals","pick":"Over 1.5","bookmaker":"Melbet","odds":1.22,"status":"pending"},{"match":"Arsenal vs Chelsea","home":"Arsenal","away":"Chelsea","league":"Premier League","market":"Total Goals","pick":"Under 3.5","bookmaker":"22Bet","odds":1.23,"status":"pending"}]},{"selections":[{"match":"PSG vs Lyon","home":"PSG","away":"Lyon","league":"Ligue 1","market":"Total Goals","pick":"Under 3.5","bookmaker":"Melbet","odds":1.28,"status":"pending"},{"match":"Inter vs Roma","home":"Inter","away":"Roma","league":"Serie A","market":"Both Teams to Score","pick":"BTTS - Yes","bookmaker":"22Bet","odds":1.17,"status":"pending"}]},{"selections":[{"match":"Liverpool vs Newcastle","home":"Liverpool","away":"Newcastle","league":"Premier League","market":"Both Teams to Score","pick":"BTTS - Yes","bookmaker":"Melbet","odds":1.28,"status":"pending"},{"match":"Real Madrid vs Valencia","home":"Real Madrid","away":"Valencia","league":"La Liga","market":"Match Result","pick":"Real Madrid Win","bookmaker":"22Bet","odds":1.17,"status":"pending"}]},{"selections":[{"match":"Tottenham vs Aston Villa","home":"Tottenham","away":"Aston Villa","league":"Premier League","market":"Match Result","pick":"Tottenham Win","bookmaker":"Melbet","odds":1.23,"status":"pending"},{"match":"Napoli vs Lazio","home":"Napoli","away":"Lazio","league":"Serie A","market":"Double Chance","pick":"1X (Home or Draw)","bookmaker":"22Bet","odds":1.22,"status":"pending"}]},{"selections":[{"match":"Leverkusen vs Leipzig","home":"Leverkusen","away":"Leipzig","league":"Bundesliga","market":"Double Chance","pick":"1X (Home or Draw)","bookmaker":"Melbet","odds":1.18,"status":"pending"},{"match":"Marseille vs Monaco","home":"Marseille","away":"Monaco","league":"Ligue 1","market":"Total Goals","pick":"Over 2.5","bookmaker":"22Bet","odds":1.27,"status":"pending"}]},{"selections":[{"match":"Ajax vs PSV","home":"Ajax","away":"PSV","league":"Eredivisie","market":"Total Goals","pick":"Over 2.5","bookmaker":"Melbet","odds":1.17,"status":"pending"},{"match":"Atalanta vs Fiorentina","home":"Atalanta","away":"Fiorentina","league":"Serie A","market":"Total Goals","pick":"Over 1.5","bookmaker":"22Bet","odds":1.28,"status":"pending"}]},{"selections":[{"match":"Villarreal vs Girona","home":"Villarreal","away":"Girona","league":"La Liga","market":"Total Goals","pick":"Over 1.5","bookmaker":"Melbet","odds":1.21,"status":"pending"},{"match":"Lille vs Nice","home":"Lille","away":"Nice","league":"Ligue 1","market":"Total Goals","pick":"Under 3.5","bookmaker":"22Bet","odds":1.24,"status":"pending"}]}]},{"id":"r2_0","name":"2.00 Odds Rollover","target":2.0,"active":true,"description":"Demo package: one 3-selection ticket per day, aiming for 2.00 combined odds.","days":[{"selections":[{"match":"Juventus vs AC Milan","home":"Juventus","away":"AC Milan","league":"Serie A","market":"Total Goals","pick":"Over 1.5","bookmaker":"22Bet","odds":1.26,"status":"won"},{"match":"Arsenal vs Chelsea","home":"Arsenal","away":"Chelsea","league":"Premier League","market":"Total Goals","pick":"Under 3.5","bookmaker":"SportyBet","odds":1.31,"status":"won"},{"match":"Barcelona vs Sevilla","home":"Barcelona","away":"Sevilla","league":"La Liga","market":"Both Teams to Score","pick":"BTTS - Yes","bookmaker":"bet365","odds":1.21,"status":"won"}]},{"selections":[{"match":"PSG vs Lyon","home":"PSG","away":"Lyon","league":"Ligue 1","market":"Total Goals","pick":"Under 3.5","bookmaker":"22Bet","odds":1.31,"status":"pending"},{"match":"Inter vs Roma","home":"Inter","away":"Roma","league":"Serie A","market":"Both Teams to Score","pick":"BTTS - Yes","bookmaker":"SportyBet","odds":1.26,"status":"pending"},{"match":"Man City vs Everton","home":"Man City","away":"Everton","league":"Premier League","market":"Match Result","pick":"Man City Win","bookmaker":"bet365","odds":1.21,"status":"pending"}]},{"selections":[{"match":"Liverpool vs Newcastle","home":"Liverpool","away":"Newcastle","league":"Premier League","market":"Both Teams to Score","pick":"BTTS - Yes","bookmaker":"22Bet","odds":1.32,"status":"pending"},{"match":"Real Madrid vs Valencia","home":"Real Madrid","away":"Valencia","league":"La Liga","market":"Match Result","pick":"Real Madrid Win","bookmaker":"SportyBet","odds":1.21,"status":"pending"},{"match":"Bayern Munich vs Dortmund","home":"Bayern Munich","away":"Dortmund","league":"Bundesliga","market":"Double Chance","pick":"1X (Home or Draw)","bookmaker":"bet365","odds":1.25,"status":"pending"}]},{"selections":[{"match":"Tottenham vs Aston Villa","home":"Tottenham","away":"Aston Villa","league":"Premier League","market":"Match Result","pick":"Tottenham Win","bookmaker":"22Bet","odds":1.27,"status":"pending"},{"match":"Napoli vs Lazio","home":"Napoli","away":"Lazio","league":"Serie A","market":"Double Chance","pick":"1X (Home or Draw)","bookmaker":"SportyBet","odds":1.2,"status":"pending"},{"match":"Atletico Madrid vs Betis","home":"Atletico Madrid","away":"Betis","league":"La Liga","market":"Total Goals","pick":"Over 2.5","bookmaker":"bet365","odds":1.31,"status":"pending"}]},{"selections":[{"match":"Leverkusen vs Leipzig","home":"Leverkusen","away":"Leipzig","league":"Bundesliga","market":"Double Chance","pick":"1X (Home or Draw)","bookmaker":"22Bet","odds":1.21,"status":"pending"},{"match":"Marseille vs Monaco","home":"Marseille","away":"Monaco","league":"Ligue 1","market":"Total Goals","pick":"Over 2.5","bookmaker":"SportyBet","odds":1.25,"status":"pending"},{"match":"Benfica vs Porto","home":"Benfica","away":"Porto","league":"Primeira Liga","market":"Total Goals","pick":"Over 1.5","bookmaker":"bet365","odds":1.32,"status":"pending"}]},{"selections":[{"match":"Ajax vs PSV","home":"Ajax","away":"PSV","league":"Eredivisie","market":"Total Goals","pick":"Over 2.5","bookmaker":"22Bet","odds":1.2,"status":"pending"},{"match":"Atalanta vs Fiorentina","home":"Atalanta","away":"Fiorentina","league":"Serie A","market":"Total Goals","pick":"Over 1.5","bookmaker":"SportyBet","odds":1.31,"status":"pending"},{"match":"Brighton vs West Ham","home":"Brighton","away":"West Ham","league":"Premier League","market":"Total Goals","pick":"Under 3.5","bookmaker":"bet365","odds":1.27,"status":"pending"}]},{"selections":[{"match":"Villarreal vs Girona","home":"Villarreal","away":"Girona","league":"La Liga","market":"Total Goals","pick":"Over 1.5","bookmaker":"22Bet","odds":1.24,"status":"pending"},{"match":"Lille vs Nice","home":"Lille","away":"Nice","league":"Ligue 1","market":"Total Goals","pick":"Under 3.5","bookmaker":"SportyBet","odds":1.32,"status":"pending"},{"match":"Frankfurt vs Stuttgart","home":"Frankfurt","away":"Stuttgart","league":"Bundesliga","market":"Both Teams to Score","pick":"BTTS - Yes","bookmaker":"bet365","odds":1.22,"status":"pending"}]}]},{"id":"r3_0","name":"3.00 Odds Rollover","target":3.0,"active":true,"description":"Demo package: one 3-selection ticket per day, aiming for 3.00 combined odds.","days":[{"selections":[{"match":"Juventus vs AC Milan","home":"Juventus","away":"AC Milan","league":"Serie A","market":"Total Goals","pick":"Over 1.5","bookmaker":"SportyBet","odds":1.44,"status":"won"},{"match":"Arsenal vs Chelsea","home":"Arsenal","away":"Chelsea","league":"Premier League","market":"Total Goals","pick":"Under 3.5","bookmaker":"bet365","odds":1.5,"status":"won"},{"match":"Barcelona vs Sevilla","home":"Barcelona","away":"Sevilla","league":"La Liga","market":"Both Teams to Score","pick":"BTTS - Yes","bookmaker":"1xBet","odds":1.39,"status":"won"}]},{"selections":[{"match":"PSG vs Lyon","home":"PSG","away":"Lyon","league":"Ligue 1","market":"Total Goals","pick":"Under 3.5","bookmaker":"SportyBet","odds":1.5,"status":"won"},{"match":"Inter vs Roma","home":"Inter","away":"Roma","league":"Serie A","market":"Both Teams to Score","pick":"BTTS - Yes","bookmaker":"bet365","odds":1.45,"status":"lost"},{"match":"Man City vs Everton","home":"Man City","away":"Everton","league":"Premier League","market":"Match Result","pick":"Man City Win","bookmaker":"1xBet","odds":1.38,"status":"pending"}]},{"selections":[{"match":"Liverpool vs Newcastle","home":"Liverpool","away":"Newcastle","league":"Premier League","market":"Both Teams to Score","pick":"BTTS - Yes","bookmaker":"SportyBet","odds":1.51,"status":"pending"},{"match":"Real Madrid vs Valencia","home":"Real Madrid","away":"Valencia","league":"La Liga","market":"Match Result","pick":"Real Madrid Win","bookmaker":"bet365","odds":1.38,"status":"pending"},{"match":"Bayern Munich vs Dortmund","home":"Bayern Munich","away":"Dortmund","league":"Bundesliga","market":"Double Chance","pick":"1X (Home or Draw)","bookmaker":"1xBet","odds":1.44,"status":"pending"}]},{"selections":[{"match":"Tottenham vs Aston Villa","home":"Tottenham","away":"Aston Villa","league":"Premier League","market":"Match Result","pick":"Tottenham Win","bookmaker":"SportyBet","odds":1.45,"status":"pending"},{"match":"Napoli vs Lazio","home":"Napoli","away":"Lazio","league":"Serie A","market":"Double Chance","pick":"1X (Home or Draw)","bookmaker":"bet365","odds":1.38,"status":"pending"},{"match":"Atletico Madrid vs Betis","home":"Atletico Madrid","away":"Betis","league":"La Liga","market":"Total Goals","pick":"Over 2.5","bookmaker":"1xBet","odds":1.5,"status":"pending"}]},{"selections":[{"match":"Leverkusen vs Leipzig","home":"Leverkusen","away":"Leipzig","league":"Bundesliga","market":"Double Chance","pick":"1X (Home or Draw)","bookmaker":"SportyBet","odds":1.39,"status":"pending"},{"match":"Marseille vs Monaco","home":"Marseille","away":"Monaco","league":"Ligue 1","market":"Total Goals","pick":"Over 2.5","bookmaker":"bet365","odds":1.43,"status":"pending"},{"match":"Benfica vs Porto","home":"Benfica","away":"Porto","league":"Primeira Liga","market":"Total Goals","pick":"Over 1.5","bookmaker":"1xBet","odds":1.51,"status":"pending"}]},{"selections":[{"match":"Ajax vs PSV","home":"Ajax","away":"PSV","league":"Eredivisie","market":"Total Goals","pick":"Over 2.5","bookmaker":"SportyBet","odds":1.37,"status":"pending"},{"match":"Atalanta vs Fiorentina","home":"Atalanta","away":"Fiorentina","league":"Serie A","market":"Total Goals","pick":"Over 1.5","bookmaker":"bet365","odds":1.49,"status":"pending"},{"match":"Brighton vs West Ham","home":"Brighton","away":"West Ham","league":"Premier League","market":"Total Goals","pick":"Under 3.5","bookmaker":"1xBet","odds":1.47,"status":"pending"}]},{"selections":[{"match":"Villarreal vs Girona","home":"Villarreal","away":"Girona","league":"La Liga","market":"Total Goals","pick":"Over 1.5","bookmaker":"SportyBet","odds":1.42,"status":"pending"},{"match":"Lille vs Nice","home":"Lille","away":"Nice","league":"Ligue 1","market":"Total Goals","pick":"Under 3.5","bookmaker":"bet365","odds":1.51,"status":"pending"},{"match":"Frankfurt vs Stuttgart","home":"Frankfurt","away":"Stuttgart","league":"Bundesliga","market":"Both Teams to Score","pick":"BTTS - Yes","bookmaker":"1xBet","odds":1.4,"status":"pending"}]}]},{"id":"r4_0","name":"4.00 Odds Rollover","target":4.0,"active":true,"description":"Demo package: one 4-selection ticket per day, aiming for 4.00 combined odds.","days":[{"selections":[{"match":"Juventus vs AC Milan","home":"Juventus","away":"AC Milan","league":"Serie A","market":"Total Goals","pick":"Over 1.5","bookmaker":"bet365","odds":1.41,"status":"pending"},{"match":"Arsenal vs Chelsea","home":"Arsenal","away":"Chelsea","league":"Premier League","market":"Total Goals","pick":"Under 3.5","bookmaker":"1xBet","odds":1.48,"status":"pending"},{"match":"Barcelona vs Sevilla","home":"Barcelona","away":"Sevilla","league":"La Liga","market":"Both Teams to Score","pick":"BTTS - Yes","bookmaker":"Melbet","odds":1.35,"status":"pending"},{"match":"PSG vs Lyon","home":"PSG","away":"Lyon","league":"Ligue 1","market":"Match Result","pick":"PSG Win","bookmaker":"22Bet","odds":1.42,"status":"pending"}]},{"selections":[{"match":"PSG vs Lyon","home":"PSG","away":"Lyon","league":"Ligue 1","market":"Total Goals","pick":"Under 3.5","bookmaker":"bet365","odds":1.47,"status":"pending"},{"match":"Inter vs Roma","home":"Inter","away":"Roma","league":"Serie A","market":"Both Teams to Score","pick":"BTTS - Yes","bookmaker":"1xBet","odds":1.42,"status":"pending"},{"match":"Man City vs Everton","home":"Man City","away":"Everton","league":"Premier League","market":"Match Result","pick":"Man City Win","bookmaker":"Melbet","odds":1.35,"status":"pending"},{"match":"Liverpool vs Newcastle","home":"Liverpool","away":"Newcastle","league":"Premier League","market":"Double Chance","pick":"1X (Home or Draw)","bookmaker":"22Bet","odds":1.42,"status":"pending"}]},{"selections":[{"match":"Liverpool vs Newcastle","home":"Liverpool","away":"Newcastle","league":"Premier League","market":"Both Teams to Score","pick":"BTTS - Yes","bookmaker":"bet365","odds":1.48,"status":"pending"},{"match":"Real Madrid vs Valencia","home":"Real Madrid","away":"Valencia","league":"La Liga","market":"Match Result","pick":"Real Madrid Win","bookmaker":"1xBet","odds":1.36,"status":"pending"},{"match":"Bayern Munich vs Dortmund","home":"Bayern Munich","away":"Dortmund","league":"Bundesliga","market":"Double Chance","pick":"1X (Home or Draw)","bookmaker":"Melbet","odds":1.41,"status":"pending"},{"match":"Tottenham vs Aston Villa","home":"Tottenham","away":"Aston Villa","league":"Premier League","market":"Total Goals","pick":"Over 2.5","bookmaker":"22Bet","odds":1.41,"status":"pending"}]},{"selections":[{"match":"Tottenham vs Aston Villa","home":"Tottenham","away":"Aston Villa","league":"Premier League","market":"Match Result","pick":"Tottenham Win","bookmaker":"bet365","odds":1.42,"status":"pending"},{"match":"Napoli vs Lazio","home":"Napoli","away":"Lazio","league":"Serie A","market":"Double Chance","pick":"1X (Home or Draw)","bookmaker":"1xBet","odds":1.35,"status":"pending"},{"match":"Atletico Madrid vs Betis","home":"Atletico Madrid","away":"Betis","league":"La Liga","market":"Total Goals","pick":"Over 2.5","bookmaker":"Melbet","odds":1.47,"status":"pending"},{"match":"Leverkusen vs Leipzig","home":"Leverkusen","away":"Leipzig","league":"Bundesliga","market":"Total Goals","pick":"Over 1.5","bookmaker":"22Bet","odds":1.42,"status":"pending"}]},{"selections":[{"match":"Leverkusen vs Leipzig","home":"Leverkusen","away":"Leipzig","league":"Bundesliga","market":"Double Chance","pick":"1X (Home or Draw)","bookmaker":"bet365","odds":1.36,"status":"pending"},{"match":"Marseille vs Monaco","home":"Marseille","away":"Monaco","league":"Ligue 1","market":"Total Goals","pick":"Over 2.5","bookmaker":"1xBet","odds":1.4,"status":"pending"},{"match":"Benfica vs Porto","home":"Benfica","away":"Porto","league":"Primeira Liga","market":"Total Goals","pick":"Over 1.5","bookmaker":"Melbet","odds":1.48,"status":"pending"},{"match":"Ajax vs PSV","home":"Ajax","away":"PSV","league":"Eredivisie","market":"Total Goals","pick":"Under 3.5","bookmaker":"22Bet","odds":1.42,"status":"pending"}]},{"selections":[{"match":"Ajax vs PSV","home":"Ajax","away":"PSV","league":"Eredivisie","market":"Total Goals","pick":"Over 2.5","bookmaker":"bet365","odds":1.35,"status":"pending"},{"match":"Atalanta vs Fiorentina","home":"Atalanta","away":"Fiorentina","league":"Serie A","market":"Total Goals","pick":"Over 1.5","bookmaker":"1xBet","odds":1.47,"status":"pending"},{"match":"Brighton vs West Ham","home":"Brighton","away":"West Ham","league":"Premier League","market":"Total Goals","pick":"Under 3.5","bookmaker":"Melbet","odds":1.43,"status":"pending"},{"match":"Villarreal vs Girona","home":"Villarreal","away":"Girona","league":"La Liga","market":"Both Teams to Score","pick":"BTTS - Yes","bookmaker":"22Bet","odds":1.41,"status":"pending"}]},{"selections":[{"match":"Villarreal vs Girona","home":"Villarreal","away":"Girona","league":"La Liga","market":"Total Goals","pick":"Over 1.5","bookmaker":"bet365","odds":1.39,"status":"pending"},{"match":"Lille vs Nice","home":"Lille","away":"Nice","league":"Ligue 1","market":"Total Goals","pick":"Under 3.5","bookmaker":"1xBet","odds":1.48,"status":"pending"},{"match":"Frankfurt vs Stuttgart","home":"Frankfurt","away":"Stuttgart","league":"Bundesliga","market":"Both Teams to Score","pick":"BTTS - Yes","bookmaker":"Melbet","odds":1.36,"status":"pending"},{"match":"Sporting CP vs Braga","home":"Sporting CP","away":"Braga","league":"Primeira Liga","market":"Match Result","pick":"Sporting CP Win","bookmaker":"22Bet","odds":1.43,"status":"pending"}]}]},{"id":"r5_0","name":"5.00 Odds Rollover","target":5.0,"active":true,"description":"Demo package: one 4-selection ticket per day, aiming for 5.00 combined odds.","days":[{"selections":[{"match":"Juventus vs AC Milan","home":"Juventus","away":"AC Milan","league":"Serie A","market":"Total Goals","pick":"Over 1.5","bookmaker":"1xBet","odds":1.5,"status":"won"},{"match":"Arsenal vs Chelsea","home":"Arsenal","away":"Chelsea","league":"Premier League","market":"Total Goals","pick":"Under 3.5","bookmaker":"Melbet","odds":1.56,"status":"won"},{"match":"Barcelona vs Sevilla","home":"Barcelona","away":"Sevilla","league":"La Liga","market":"Both Teams to Score","pick":"BTTS - Yes","bookmaker":"22Bet","odds":1.43,"status":"won"},{"match":"PSG vs Lyon","home":"PSG","away":"Lyon","league":"Ligue 1","market":"Match Result","pick":"PSG Win","bookmaker":"SportyBet","odds":1.49,"status":"won"}]},{"selections":[{"match":"PSG vs Lyon","home":"PSG","away":"Lyon","league":"Ligue 1","market":"Total Goals","pick":"Under 3.5","bookmaker":"1xBet","odds":1.56,"status":"pending"},{"match":"Inter vs Roma","home":"Inter","away":"Roma","league":"Serie A","market":"Both Teams to Score","pick":"BTTS - Yes","bookmaker":"Melbet","odds":1.5,"status":"pending"},{"match":"Man City vs Everton","home":"Man City","away":"Everton","league":"Premier League","market":"Match Result","pick":"Man City Win","bookmaker":"22Bet","odds":1.43,"status":"pending"},{"match":"Liverpool vs Newcastle","home":"Liverpool","away":"Newcastle","league":"Premier League","market":"Double Chance","pick":"1X (Home or Draw)","bookmaker":"SportyBet","odds":1.49,"status":"pending"}]},{"selections":[{"match":"Liverpool vs Newcastle","home":"Liverpool","away":"Newcastle","league":"Premier League","market":"Both Teams to Score","pick":"BTTS - Yes","bookmaker":"1xBet","odds":1.56,"status":"pending"},{"match":"Real Madrid vs Valencia","home":"Real Madrid","away":"Valencia","league":"La Liga","market":"Match Result","pick":"Real Madrid Win","bookmaker":"Melbet","odds":1.43,"status":"pending"},{"match":"Bayern Munich vs Dortmund","home":"Bayern Munich","away":"Dortmund","league":"Bundesliga","market":"Double Chance","pick":"1X (Home or Draw)","bookmaker":"22Bet","odds":1.49,"status":"pending"},{"match":"Tottenham vs Aston Villa","home":"Tottenham","away":"Aston Villa","league":"Premier League","market":"Total Goals","pick":"Over 2.5","bookmaker":"SportyBet","odds":1.5,"status":"pending"}]},{"selections":[{"match":"Tottenham vs Aston Villa","home":"Tottenham","away":"Aston Villa","league":"Premier League","market":"Match Result","pick":"Tottenham Win","bookmaker":"1xBet","odds":1.51,"status":"pending"},{"match":"Napoli vs Lazio","home":"Napoli","away":"Lazio","league":"Serie A","market":"Double Chance","pick":"1X (Home or Draw)","bookmaker":"Melbet","odds":1.43,"status":"pending"},{"match":"Atletico Madrid vs Betis","home":"Atletico Madrid","away":"Betis","league":"La Liga","market":"Total Goals","pick":"Over 2.5","bookmaker":"22Bet","odds":1.55,"status":"pending"},{"match":"Leverkusen vs Leipzig","home":"Leverkusen","away":"Leipzig","league":"Bundesliga","market":"Total Goals","pick":"Over 1.5","bookmaker":"SportyBet","odds":1.49,"status":"pending"}]},{"selections":[{"match":"Leverkusen vs Leipzig","home":"Leverkusen","away":"Leipzig","league":"Bundesliga","market":"Double Chance","pick":"1X (Home or Draw)","bookmaker":"1xBet","odds":1.44,"status":"pending"},{"match":"Marseille vs Monaco","home":"Marseille","away":"Monaco","league":"Ligue 1","market":"Total Goals","pick":"Over 2.5","bookmaker":"Melbet","odds":1.48,"status":"pending"},{"match":"Benfica vs Porto","home":"Benfica","away":"Porto","league":"Primeira Liga","market":"Total Goals","pick":"Over 1.5","bookmaker":"22Bet","odds":1.57,"status":"pending"},{"match":"Ajax vs PSV","home":"Ajax","away":"PSV","league":"Eredivisie","market":"Total Goals","pick":"Under 3.5","bookmaker":"SportyBet","odds":1.49,"status":"pending"}]},{"selections":[{"match":"Ajax vs PSV","home":"Ajax","away":"PSV","league":"Eredivisie","market":"Total Goals","pick":"Over 2.5","bookmaker":"1xBet","odds":1.42,"status":"pending"},{"match":"Atalanta vs Fiorentina","home":"Atalanta","away":"Fiorentina","league":"Serie A","market":"Total Goals","pick":"Over 1.5","bookmaker":"Melbet","odds":1.55,"status":"pending"},{"match":"Brighton vs West Ham","home":"Brighton","away":"West Ham","league":"Premier League","market":"Total Goals","pick":"Under 3.5","bookmaker":"22Bet","odds":1.51,"status":"pending"},{"match":"Villarreal vs Girona","home":"Villarreal","away":"Girona","league":"La Liga","market":"Both Teams to Score","pick":"BTTS - Yes","bookmaker":"SportyBet","odds":1.5,"status":"pending"}]},{"selections":[{"match":"Villarreal vs Girona","home":"Villarreal","away":"Girona","league":"La Liga","market":"Total Goals","pick":"Over 1.5","bookmaker":"1xBet","odds":1.47,"status":"pending"},{"match":"Lille vs Nice","home":"Lille","away":"Nice","league":"Ligue 1","market":"Total Goals","pick":"Under 3.5","bookmaker":"Melbet","odds":1.57,"status":"pending"},{"match":"Frankfurt vs Stuttgart","home":"Frankfurt","away":"Stuttgart","league":"Bundesliga","market":"Both Teams to Score","pick":"BTTS - Yes","bookmaker":"22Bet","odds":1.44,"status":"pending"},{"match":"Sporting CP vs Braga","home":"Sporting CP","away":"Braga","league":"Primeira Liga","market":"Match Result","pick":"Sporting CP Win","bookmaker":"SportyBet","odds":1.5,"status":"pending"}]}]},{"id":"r6_0","name":"6.00 Odds Rollover","target":6.0,"active":true,"description":"Demo package: one 5-selection ticket per day, aiming for 6.00 combined odds.","days":[{"selections":[{"match":"Juventus vs AC Milan","home":"Juventus","away":"AC Milan","league":"Serie A","market":"Total Goals","pick":"Over 1.5","bookmaker":"Melbet","odds":1.43,"status":"won"},{"match":"Arsenal vs Chelsea","home":"Arsenal","away":"Chelsea","league":"Premier League","market":"Total Goals","pick":"Under 3.5","bookmaker":"22Bet","odds":1.49,"status":"won"},{"match":"Barcelona vs Sevilla","home":"Barcelona","away":"Sevilla","league":"La Liga","market":"Both Teams to Score","pick":"BTTS - Yes","bookmaker":"SportyBet","odds":1.37,"status":"pending"},{"match":"PSG vs Lyon","home":"PSG","away":"Lyon","league":"Ligue 1","market":"Match Result","pick":"PSG Win","bookmaker":"bet365","odds":1.43,"status":"pending"},{"match":"Inter vs Roma","home":"Inter","away":"Roma","league":"Serie A","market":"Double Chance","pick":"1X (Home or Draw)","bookmaker":"1xBet","odds":1.44,"status":"pending"}]},{"selections":[{"match":"PSG vs Lyon","home":"PSG","away":"Lyon","league":"Ligue 1","market":"Total Goals","pick":"Under 3.5","bookmaker":"Melbet","odds":1.49,"status":"pending"},{"match":"Inter vs Roma","home":"Inter","away":"Roma","league":"Serie A","market":"Both Teams to Score","pick":"BTTS - Yes","bookmaker":"22Bet","odds":1.43,"status":"pending"},{"match":"Man City vs Everton","home":"Man City","away":"Everton","league":"Premier League","market":"Match Result","pick":"Man City Win","bookmaker":"SportyBet","odds":1.37,"status":"pending"},{"match":"Liverpool vs Newcastle","home":"Liverpool","away":"Newcastle","league":"Premier League","market":"Double Chance","pick":"1X (Home or Draw)","bookmaker":"bet365","odds":1.49,"status":"pending"},{"match":"Real Madrid vs Valencia","home":"Real Madrid","away":"Valencia","league":"La Liga","market":"Total Goals","pick":"Over 2.5","bookmaker":"1xBet","odds":1.38,"status":"pending"}]},{"selections":[{"match":"Liverpool vs Newcastle","home":"Liverpool","away":"Newcastle","league":"Premier League","market":"Both Teams to Score","pick":"BTTS - Yes","bookmaker":"Melbet","odds":1.5,"status":"pending"},{"match":"Real Madrid vs Valencia","home":"Real Madrid","away":"Valencia","league":"La Liga","market":"Match Result","pick":"Real Madrid Win","bookmaker":"22Bet","odds":1.37,"status":"pending"},{"match":"Bayern Munich vs Dortmund","home":"Bayern Munich","away":"Dortmund","league":"Bundesliga","market":"Double Chance","pick":"1X (Home or Draw)","bookmaker":"SportyBet","odds":1.43,"status":"pending"},{"match":"Tottenham vs Aston Villa","home":"Tottenham","away":"Aston Villa","league":"Premier League","market":"Total Goals","pick":"Over 2.5","bookmaker":"bet365","odds":1.5,"status":"pending"},{"match":"Napoli vs Lazio","home":"Napoli","away":"Lazio","league":"Serie A","market":"Total Goals","pick":"Over 1.5","bookmaker":"1xBet","odds":1.36,"status":"pending"}]},{"selections":[{"match":"Tottenham vs Aston Villa","home":"Tottenham","away":"Aston Villa","league":"Premier League","market":"Match Result","pick":"Tottenham Win","bookmaker":"Melbet","odds":1.44,"status":"pending"},{"match":"Napoli vs Lazio","home":"Napoli","away":"Lazio","league":"Serie A","market":"Double Chance","pick":"1X (Home or Draw)","bookmaker":"22Bet","odds":1.36,"status":"pending"},{"match":"Atletico Madrid vs Betis","home":"Atletico Madrid","away":"Betis","league":"La Liga","market":"Total Goals","pick":"Over 2.5","bookmaker":"SportyBet","odds":1.49,"status":"pending"},{"match":"Leverkusen vs Leipzig","home":"Leverkusen","away":"Leipzig","league":"Bundesliga","market":"Total Goals","pick":"Over 1.5","bookmaker":"bet365","odds":1.44,"status":"pending"},{"match":"Marseille vs Monaco","home":"Marseille","away":"Monaco","league":"Ligue 1","market":"Total Goals","pick":"Under 3.5","bookmaker":"1xBet","odds":1.43,"status":"pending"}]},{"selections":[{"match":"Leverkusen vs Leipzig","home":"Leverkusen","away":"Leipzig","league":"Bundesliga","market":"Double Chance","pick":"1X (Home or Draw)","bookmaker":"Melbet","odds":1.38,"status":"pending"},{"match":"Marseille vs Monaco","home":"Marseille","away":"Monaco","league":"Ligue 1","market":"Total Goals","pick":"Over 2.5","bookmaker":"22Bet","odds":1.42,"status":"pending"},{"match":"Benfica vs Porto","home":"Benfica","away":"Porto","league":"Primeira Liga","market":"Total Goals","pick":"Over 1.5","bookmaker":"SportyBet","odds":1.5,"status":"pending"},{"match":"Ajax vs PSV","home":"Ajax","away":"PSV","league":"Eredivisie","market":"Total Goals","pick":"Under 3.5","bookmaker":"bet365","odds":1.38,"status":"pending"},{"match":"Atalanta vs Fiorentina","home":"Atalanta","away":"Fiorentina","league":"Serie A","market":"Both Teams to Score","pick":"BTTS - Yes","bookmaker":"1xBet","odds":1.48,"status":"pending"}]},{"selections":[{"match":"Ajax vs PSV","home":"Ajax","away":"PSV","league":"Eredivisie","market":"Total Goals","pick":"Over 2.5","bookmaker":"Melbet","odds":1.36,"status":"pending"},{"match":"Atalanta vs Fiorentina","home":"Atalanta","away":"Fiorentina","league":"Serie A","market":"Total Goals","pick":"Over 1.5","bookmaker":"22Bet","odds":1.48,"status":"pending"},{"match":"Brighton vs West Ham","home":"Brighton","away":"West Ham","league":"Premier League","market":"Total Goals","pick":"Under 3.5","bookmaker":"SportyBet","odds":1.45,"status":"pending"},{"match":"Villarreal vs Girona","home":"Villarreal","away":"Girona","league":"La Liga","market":"Both Teams to Score","pick":"BTTS - Yes","bookmaker":"bet365","odds":1.36,"status":"pending"},{"match":"Lille vs Nice","home":"Lille","away":"Nice","league":"Ligue 1","market":"Match Result","pick":"Lille Win","bookmaker":"1xBet","odds":1.51,"status":"pending"}]},{"selections":[{"match":"Villarreal vs Girona","home":"Villarreal","away":"Girona","league":"La Liga","market":"Total Goals","pick":"Over 1.5","bookmaker":"Melbet","odds":1.41,"status":"pending"},{"match":"Lille vs Nice","home":"Lille","away":"Nice","league":"Ligue 1","market":"Total Goals","pick":"Under 3.5","bookmaker":"22Bet","odds":1.5,"status":"pending"},{"match":"Frankfurt vs Stuttgart","home":"Frankfurt","away":"Stuttgart","league":"Bundesliga","market":"Both Teams to Score","pick":"BTTS - Yes","bookmaker":"SportyBet","odds":1.38,"status":"pending"},{"match":"Sporting CP vs Braga","home":"Sporting CP","away":"Braga","league":"Primeira Liga","market":"Match Result","pick":"Sporting CP Win","bookmaker":"bet365","odds":1.41,"status":"pending"},{"match":"Feyenoord vs AZ","home":"Feyenoord","away":"AZ","league":"Eredivisie","market":"Double Chance","pick":"1X (Home or Draw)","bookmaker":"1xBet","odds":1.46,"status":"pending"}]}]},{"id":"r7_0","name":"7.00 Odds Rollover","target":7.0,"active":true,"description":"Demo package: one 5-selection ticket per day, aiming for 7.00 combined odds.","days":[{"selections":[{"match":"Juventus vs AC Milan","home":"Juventus","away":"AC Milan","league":"Serie A","market":"Total Goals","pick":"Over 1.5","bookmaker":"22Bet","odds":1.48,"status":"pending"},{"match":"Arsenal vs Chelsea","home":"Arsenal","away":"Chelsea","league":"Premier League","market":"Total Goals","pick":"Under 3.5","bookmaker":"SportyBet","odds":1.54,"status":"pending"},{"match":"Barcelona vs Sevilla","home":"Barcelona","away":"Sevilla","league":"La Liga","market":"Both Teams to Score","pick":"BTTS - Yes","bookmaker":"bet365","odds":1.41,"status":"pending"},{"match":"PSG vs Lyon","home":"PSG","away":"Lyon","league":"Ligue 1","market":"Match Result","pick":"PSG Win","bookmaker":"1xBet","odds":1.48,"status":"pending"},{"match":"Inter vs Roma","home":"Inter","away":"Roma","league":"Serie A","market":"Double Chance","pick":"1X (Home or Draw)","bookmaker":"Melbet","odds":1.47,"status":"pending"}]},{"selections":[{"match":"PSG vs Lyon","home":"PSG","away":"Lyon","league":"Ligue 1","market":"Total Goals","pick":"Under 3.5","bookmaker":"22Bet","odds":1.54,"status":"pending"},{"match":"Inter vs Roma","home":"Inter","away":"Roma","league":"Serie A","market":"Both Teams to Score","pick":"BTTS - Yes","bookmaker":"SportyBet","odds":1.48,"status":"pending"},{"match":"Man City vs Everton","home":"Man City","away":"Everton","league":"Premier League","market":"Match Result","pick":"Man City Win","bookmaker":"bet365","odds":1.41,"status":"pending"},{"match":"Liverpool vs Newcastle","home":"Liverpool","away":"Newcastle","league":"Premier League","market":"Double Chance","pick":"1X (Home or Draw)","bookmaker":"1xBet","odds":1.54,"status":"pending"},{"match":"Real Madrid vs Valencia","home":"Real Madrid","away":"Valencia","league":"La Liga","market":"Total Goals","pick":"Over 2.5","bookmaker":"Melbet","odds":1.41,"status":"pending"}]},{"selections":[{"match":"Liverpool vs Newcastle","home":"Liverpool","away":"Newcastle","league":"Premier League","market":"Both Teams to Score","pick":"BTTS - Yes","bookmaker":"22Bet","odds":1.54,"status":"pending"},{"match":"Real Madrid vs Valencia","home":"Real Madrid","away":"Valencia","league":"La Liga","market":"Match Result","pick":"Real Madrid Win","bookmaker":"SportyBet","odds":1.42,"status":"pending"},{"match":"Bayern Munich vs Dortmund","home":"Bayern Munich","away":"Dortmund","league":"Bundesliga","market":"Double Chance","pick":"1X (Home or Draw)","bookmaker":"bet365","odds":1.47,"status":"pending"},{"match":"Tottenham vs Aston Villa","home":"Tottenham","away":"Aston Villa","league":"Premier League","market":"Total Goals","pick":"Over 2.5","bookmaker":"1xBet","odds":1.54,"status":"pending"},{"match":"Napoli vs Lazio","home":"Napoli","away":"Lazio","league":"Serie A","market":"Total Goals","pick":"Over 1.5","bookmaker":"Melbet","odds":1.41,"status":"pending"}]},{"selections":[{"match":"Tottenham vs Aston Villa","home":"Tottenham","away":"Aston Villa","league":"Premier League","market":"Match Result","pick":"Tottenham Win","bookmaker":"22Bet","odds":1.49,"status":"pending"},{"match":"Napoli vs Lazio","home":"Napoli","away":"Lazio","league":"Serie A","market":"Double Chance","pick":"1X (Home or Draw)","bookmaker":"SportyBet","odds":1.41,"status":"pending"},{"match":"Atletico Madrid vs Betis","home":"Atletico Madrid","away":"Betis","league":"La Liga","market":"Total Goals","pick":"Over 2.5","bookmaker":"bet365","odds":1.53,"status":"pending"},{"match":"Leverkusen vs Leipzig","home":"Leverkusen","away":"Leipzig","league":"Bundesliga","market":"Total Goals","pick":"Over 1.5","bookmaker":"1xBet","odds":1.48,"status":"pending"},{"match":"Marseille vs Monaco","home":"Marseille","away":"Monaco","league":"Ligue 1","market":"Total Goals","pick":"Under 3.5","bookmaker":"Melbet","odds":1.47,"status":"pending"}]},{"selections":[{"match":"Leverkusen vs Leipzig","home":"Leverkusen","away":"Leipzig","league":"Bundesliga","market":"Double Chance","pick":"1X (Home or Draw)","bookmaker":"22Bet","odds":1.42,"status":"pending"},{"match":"Marseille vs Monaco","home":"Marseille","away":"Monaco","league":"Ligue 1","market":"Total Goals","pick":"Over 2.5","bookmaker":"SportyBet","odds":1.46,"status":"pending"},{"match":"Benfica vs Porto","home":"Benfica","away":"Porto","league":"Primeira Liga","market":"Total Goals","pick":"Over 1.5","bookmaker":"bet365","odds":1.55,"status":"pending"},{"match":"Ajax vs PSV","home":"Ajax","away":"PSV","league":"Eredivisie","market":"Total Goals","pick":"Under 3.5","bookmaker":"1xBet","odds":1.42,"status":"pending"},{"match":"Atalanta vs Fiorentina","home":"Atalanta","away":"Fiorentina","league":"Serie A","market":"Both Teams to Score","pick":"BTTS - Yes","bookmaker":"Melbet","odds":1.53,"status":"pending"}]},{"selections":[{"match":"Ajax vs PSV","home":"Ajax","away":"PSV","league":"Eredivisie","market":"Total Goals","pick":"Over 2.5","bookmaker":"22Bet","odds":1.41,"status":"pending"},{"match":"Atalanta vs Fiorentina","home":"Atalanta","away":"Fiorentina","league":"Serie A","market":"Total Goals","pick":"Over 1.5","bookmaker":"SportyBet","odds":1.53,"status":"pending"},{"match":"Brighton vs West Ham","home":"Brighton","away":"West Ham","league":"Premier League","market":"Total Goals","pick":"Under 3.5","bookmaker":"bet365","odds":1.49,"status":"pending"},{"match":"Villarreal vs Girona","home":"Villarreal","away":"Girona","league":"La Liga","market":"Both Teams to Score","pick":"BTTS - Yes","bookmaker":"1xBet","odds":1.41,"status":"pending"},{"match":"Lille vs Nice","home":"Lille","away":"Nice","league":"Ligue 1","market":"Match Result","pick":"Lille Win","bookmaker":"Melbet","odds":1.54,"status":"pending"}]},{"selections":[{"match":"Villarreal vs Girona","home":"Villarreal","away":"Girona","league":"La Liga","market":"Total Goals","pick":"Over 1.5","bookmaker":"22Bet","odds":1.46,"status":"pending"},{"match":"Lille vs Nice","home":"Lille","away":"Nice","league":"Ligue 1","market":"Total Goals","pick":"Under 3.5","bookmaker":"SportyBet","odds":1.55,"status":"pending"},{"match":"Frankfurt vs Stuttgart","home":"Frankfurt","away":"Stuttgart","league":"Bundesliga","market":"Both Teams to Score","pick":"BTTS - Yes","bookmaker":"bet365","odds":1.42,"status":"pending"},{"match":"Sporting CP vs Braga","home":"Sporting CP","away":"Braga","league":"Primeira Liga","market":"Match Result","pick":"Sporting CP Win","bookmaker":"1xBet","odds":1.46,"status":"pending"},{"match":"Feyenoord vs AZ","home":"Feyenoord","away":"AZ","league":"Eredivisie","market":"Double Chance","pick":"1X (Home or Draw)","bookmaker":"Melbet","odds":1.49,"status":"pending"}]}]},{"id":"r8_0","name":"8.00 Odds Rollover","target":8.0,"active":true,"description":"Demo package: one 6-selection ticket per day, aiming for 8.00 combined odds.","days":[{"selections":[{"match":"Juventus vs AC Milan","home":"Juventus","away":"AC Milan","league":"Serie A","market":"Total Goals","pick":"Over 1.5","bookmaker":"SportyBet","odds":1.41,"status":"won"},{"match":"Arsenal vs Chelsea","home":"Arsenal","away":"Chelsea","league":"Premier League","market":"Total Goals","pick":"Under 3.5","bookmaker":"bet365","odds":1.48,"status":"won"},{"match":"Barcelona vs Sevilla","home":"Barcelona","away":"Sevilla","league":"La Liga","market":"Both Teams to Score","pick":"BTTS - Yes","bookmaker":"1xBet","odds":1.35,"status":"won"},{"match":"PSG vs Lyon","home":"PSG","away":"Lyon","league":"Ligue 1","market":"Match Result","pick":"PSG Win","bookmaker":"Melbet","odds":1.42,"status":"won"},{"match":"Inter vs Roma","home":"Inter","away":"Roma","league":"Serie A","market":"Double Chance","pick":"1X (Home or Draw)","bookmaker":"22Bet","odds":1.47,"status":"won"},{"match":"Man City vs Everton","home":"Man City","away":"Everton","league":"Premier League","market":"Total Goals","pick":"Over 2.5","bookmaker":"SportyBet","odds":1.36,"status":"won"}]},{"selections":[{"match":"PSG vs Lyon","home":"PSG","away":"Lyon","league":"Ligue 1","market":"Total Goals","pick":"Under 3.5","bookmaker":"SportyBet","odds":1.47,"status":"pending"},{"match":"Inter vs Roma","home":"Inter","away":"Roma","league":"Serie A","market":"Both Teams to Score","pick":"BTTS - Yes","bookmaker":"bet365","odds":1.42,"status":"pending"},{"match":"Man City vs Everton","home":"Man City","away":"Everton","league":"Premier League","market":"Match Result","pick":"Man City Win","bookmaker":"1xBet","odds":1.35,"status":"pending"},{"match":"Liverpool vs Newcastle","home":"Liverpool","away":"Newcastle","league":"Premier League","market":"Double Chance","pick":"1X (Home or Draw)","bookmaker":"Melbet","odds":1.47,"status":"pending"},{"match":"Real Madrid vs Valencia","home":"Real Madrid","away":"Valencia","league":"La Liga","market":"Total Goals","pick":"Over 2.5","bookmaker":"22Bet","odds":1.42,"status":"pending"},{"match":"Bayern Munich vs Dortmund","home":"Bayern Munich","away":"Dortmund","league":"Bundesliga","market":"Total Goals","pick":"Over 1.5","bookmaker":"SportyBet","odds":1.36,"status":"pending"}]},{"selections":[{"match":"Liverpool vs Newcastle","home":"Liverpool","away":"Newcastle","league":"Premier League","market":"Both Teams to Score","pick":"BTTS - Yes","bookmaker":"SportyBet","odds":1.48,"status":"pending"},{"match":"Real Madrid vs Valencia","home":"Real Madrid","away":"Valencia","league":"La Liga","market":"Match Result","pick":"Real Madrid Win","bookmaker":"bet365","odds":1.36,"status":"pending"},{"match":"Bayern Munich vs Dortmund","home":"Bayern Munich","away":"Dortmund","league":"Bundesliga","market":"Double Chance","pick":"1X (Home or Draw)","bookmaker":"1xBet","odds":1.41,"status":"pending"},{"match":"Tottenham vs Aston Villa","home":"Tottenham","away":"Aston Villa","league":"Premier League","market":"Total Goals","pick":"Over 2.5","bookmaker":"Melbet","odds":1.48,"status":"pending"},{"match":"Napoli vs Lazio","home":"Napoli","away":"Lazio","league":"Serie A","market":"Total Goals","pick":"Over 1.5","bookmaker":"22Bet","odds":1.36,"status":"pending"},{"match":"Atletico Madrid vs Betis","home":"Atletico Madrid","away":"Betis","league":"La Liga","market":"Total Goals","pick":"Under 3.5","bookmaker":"SportyBet","odds":1.4,"status":"pending"}]},{"selections":[{"match":"Tottenham vs Aston Villa","home":"Tottenham","away":"Aston Villa","league":"Premier League","market":"Match Result","pick":"Tottenham Win","bookmaker":"SportyBet","odds":1.42,"status":"pending"},{"match":"Napoli vs Lazio","home":"Napoli","away":"Lazio","league":"Serie A","market":"Double Chance","pick":"1X (Home or Draw)","bookmaker":"bet365","odds":1.35,"status":"pending"},{"match":"Atletico Madrid vs Betis","home":"Atletico Madrid","away":"Betis","league":"La Liga","market":"Total Goals","pick":"Over 2.5","bookmaker":"1xBet","odds":1.47,"status":"pending"},{"match":"Leverkusen vs Leipzig","home":"Leverkusen","away":"Leipzig","league":"Bundesliga","market":"Total Goals","pick":"Over 1.5","bookmaker":"Melbet","odds":1.42,"status":"pending"},{"match":"Marseille vs Monaco","home":"Marseille","away":"Monaco","league":"Ligue 1","market":"Total Goals","pick":"Under 3.5","bookmaker":"22Bet","odds":1.35,"status":"pending"},{"match":"Benfica vs Porto","home":"Benfica","away":"Porto","league":"Primeira Liga","market":"Both Teams to Score","pick":"BTTS - Yes","bookmaker":"SportyBet","odds":1.48,"status":"pending"}]},{"selections":[{"match":"Leverkusen vs Leipzig","home":"Leverkusen","away":"Leipzig","league":"Bundesliga","market":"Double Chance","pick":"1X (Home or Draw)","bookmaker":"SportyBet","odds":1.36,"status":"pending"},{"match":"Marseille vs Monaco","home":"Marseille","away":"Monaco","league":"Ligue 1","market":"Total Goals","pick":"Over 2.5","bookmaker":"bet365","odds":1.4,"status":"pending"},{"match":"Benfica vs Porto","home":"Benfica","away":"Porto","league":"Primeira Liga","market":"Total Goals","pick":"Over 1.5","bookmaker":"1xBet","odds":1.48,"status":"pending"},{"match":"Ajax vs PSV","home":"Ajax","away":"PSV","league":"Eredivisie","market":"Total Goals","pick":"Under 3.5","bookmaker":"Melbet","odds":1.36,"status":"pending"},{"match":"Atalanta vs Fiorentina","home":"Atalanta","away":"Fiorentina","league":"Serie A","market":"Both Teams to Score","pick":"BTTS - Yes","bookmaker":"22Bet","odds":1.4,"status":"pending"},{"match":"Brighton vs West Ham","home":"Brighton","away":"West Ham","league":"Premier League","market":"Match Result","pick":"Brighton Win","bookmaker":"SportyBet","odds":1.49,"status":"pending"}]},{"selections":[{"match":"Ajax vs PSV","home":"Ajax","away":"PSV","league":"Eredivisie","market":"Total Goals","pick":"Over 2.5","bookmaker":"SportyBet","odds":1.35,"status":"pending"},{"match":"Atalanta vs Fiorentina","home":"Atalanta","away":"Fiorentina","league":"Serie A","market":"Total Goals","pick":"Over 1.5","bookmaker":"bet365","odds":1.47,"status":"pending"},{"match":"Brighton vs West Ham","home":"Brighton","away":"West Ham","league":"Premier League","market":"Total Goals","pick":"Under 3.5","bookmaker":"1xBet","odds":1.43,"status":"pending"},{"match":"Villarreal vs Girona","home":"Villarreal","away":"Girona","league":"La Liga","market":"Both Teams to Score","pick":"BTTS - Yes","bookmaker":"Melbet","odds":1.35,"status":"pending"},{"match":"Lille vs Nice","home":"Lille","away":"Nice","league":"Ligue 1","market":"Match Result","pick":"Lille Win","bookmaker":"22Bet","odds":1.47,"status":"pending"},{"match":"Frankfurt vs Stuttgart","home":"Frankfurt","away":"Stuttgart","league":"Bundesliga","market":"Double Chance","pick":"1X (Home or Draw)","bookmaker":"SportyBet","odds":1.42,"status":"pending"}]},{"selections":[{"match":"Villarreal vs Girona","home":"Villarreal","away":"Girona","league":"La Liga","market":"Total Goals","pick":"Over 1.5","bookmaker":"SportyBet","odds":1.39,"status":"pending"},{"match":"Lille vs Nice","home":"Lille","away":"Nice","league":"Ligue 1","market":"Total Goals","pick":"Under 3.5","bookmaker":"bet365","odds":1.48,"status":"pending"},{"match":"Frankfurt vs Stuttgart","home":"Frankfurt","away":"Stuttgart","league":"Bundesliga","market":"Both Teams to Score","pick":"BTTS - Yes","bookmaker":"1xBet","odds":1.36,"status":"pending"},{"match":"Sporting CP vs Braga","home":"Sporting CP","away":"Braga","league":"Primeira Liga","market":"Match Result","pick":"Sporting CP Win","bookmaker":"Melbet","odds":1.4,"status":"pending"},{"match":"Feyenoord vs AZ","home":"Feyenoord","away":"AZ","league":"Eredivisie","market":"Double Chance","pick":"1X (Home or Draw)","bookmaker":"22Bet","odds":1.48,"status":"pending"},{"match":"Man United vs Brentford","home":"Man United","away":"Brentford","league":"Premier League","market":"Total Goals","pick":"Over 2.5","bookmaker":"SportyBet","odds":1.38,"status":"pending"}]}]},{"id":"r9_0","name":"9.00 Odds Rollover","target":9.0,"active":true,"description":"Demo package: one 6-selection ticket per day, aiming for 9.00 combined odds.","days":[{"selections":[{"match":"Juventus vs AC Milan","home":"Juventus","away":"AC Milan","league":"Serie A","market":"Total Goals","pick":"Over 1.5","bookmaker":"bet365","odds":1.44,"status":"won"},{"match":"Arsenal vs Chelsea","home":"Arsenal","away":"Chelsea","league":"Premier League","market":"Total Goals","pick":"Under 3.5","bookmaker":"1xBet","odds":1.5,"status":"won"},{"match":"Barcelona vs Sevilla","home":"Barcelona","away":"Sevilla","league":"La Liga","market":"Both Teams to Score","pick":"BTTS - Yes","bookmaker":"Melbet","odds":1.38,"status":"won"},{"match":"PSG vs Lyon","home":"PSG","away":"Lyon","league":"Ligue 1","market":"Match Result","pick":"PSG Win","bookmaker":"22Bet","odds":1.44,"status":"pending"},{"match":"Inter vs Roma","home":"Inter","away":"Roma","league":"Serie A","market":"Double Chance","pick":"1X (Home or Draw)","bookmaker":"SportyBet","odds":1.5,"status":"pending"},{"match":"Man City vs Everton","home":"Man City","away":"Everton","league":"Premier League","market":"Total Goals","pick":"Over 2.5","bookmaker":"bet365","odds":1.4,"status":"pending"}]},{"selections":[{"match":"PSG vs Lyon","home":"PSG","away":"Lyon","league":"Ligue 1","market":"Total Goals","pick":"Under 3.5","bookmaker":"bet365","odds":1.5,"status":"pending"},{"match":"Inter vs Roma","home":"Inter","away":"Roma","league":"Serie A","market":"Both Teams to Score","pick":"BTTS - Yes","bookmaker":"1xBet","odds":1.45,"status":"pending"},{"match":"Man City vs Everton","home":"Man City","away":"Everton","league":"Premier League","market":"Match Result","pick":"Man City Win","bookmaker":"Melbet","odds":1.38,"status":"pending"},{"match":"Liverpool vs Newcastle","home":"Liverpool","away":"Newcastle","league":"Premier League","market":"Double Chance","pick":"1X (Home or Draw)","bookmaker":"22Bet","odds":1.5,"status":"pending"},{"match":"Real Madrid vs Valencia","home":"Real Madrid","away":"Valencia","league":"La Liga","market":"Total Goals","pick":"Over 2.5","bookmaker":"SportyBet","odds":1.44,"status":"pending"},{"match":"Bayern Munich vs Dortmund","home":"Bayern Munich","away":"Dortmund","league":"Bundesliga","market":"Total Goals","pick":"Over 1.5","bookmaker":"bet365","odds":1.39,"status":"pending"}]},{"selections":[{"match":"Liverpool vs Newcastle","home":"Liverpool","away":"Newcastle","league":"Premier League","market":"Both Teams to Score","pick":"BTTS - Yes","bookmaker":"bet365","odds":1.51,"status":"pending"},{"match":"Real Madrid vs Valencia","home":"Real Madrid","away":"Valencia","league":"La Liga","market":"Match Result","pick":"Real Madrid Win","bookmaker":"1xBet","odds":1.38,"status":"pending"},{"match":"Bayern Munich vs Dortmund","home":"Bayern Munich","away":"Dortmund","league":"Bundesliga","market":"Double Chance","pick":"1X (Home or Draw)","bookmaker":"Melbet","odds":1.44,"status":"pending"},{"match":"Tottenham vs Aston Villa","home":"Tottenham","away":"Aston Villa","league":"Premier League","market":"Total Goals","pick":"Over 2.5","bookmaker":"22Bet","odds":1.51,"status":"pending"},{"match":"Napoli vs Lazio","home":"Napoli","away":"Lazio","league":"Serie A","market":"Total Goals","pick":"Over 1.5","bookmaker":"SportyBet","odds":1.38,"status":"pending"},{"match":"Atletico Madrid vs Betis","home":"Atletico Madrid","away":"Betis","league":"La Liga","market":"Total Goals","pick":"Under 3.5","bookmaker":"bet365","odds":1.44,"status":"pending"}]},{"selections":[{"match":"Tottenham vs Aston Villa","home":"Tottenham","away":"Aston Villa","league":"Premier League","market":"Match Result","pick":"Tottenham Win","bookmaker":"bet365","odds":1.45,"status":"pending"},{"match":"Napoli vs Lazio","home":"Napoli","away":"Lazio","league":"Serie A","market":"Double Chance","pick":"1X (Home or Draw)","bookmaker":"1xBet","odds":1.38,"status":"pending"},{"match":"Atletico Madrid vs Betis","home":"Atletico Madrid","away":"Betis","league":"La Liga","market":"Total Goals","pick":"Over 2.5","bookmaker":"Melbet","odds":1.5,"status":"pending"},{"match":"Leverkusen vs Leipzig","home":"Leverkusen","away":"Leipzig","league":"Bundesliga","market":"Total Goals","pick":"Over 1.5","bookmaker":"22Bet","odds":1.45,"status":"pending"},{"match":"Marseille vs Monaco","home":"Marseille","away":"Monaco","league":"Ligue 1","market":"Total Goals","pick":"Under 3.5","bookmaker":"SportyBet","odds":1.38,"status":"pending"},{"match":"Benfica vs Porto","home":"Benfica","away":"Porto","league":"Primeira Liga","market":"Both Teams to Score","pick":"BTTS - Yes","bookmaker":"bet365","odds":1.5,"status":"pending"}]},{"selections":[{"match":"Leverkusen vs Leipzig","home":"Leverkusen","away":"Leipzig","league":"Bundesliga","market":"Double Chance","pick":"1X (Home or Draw)","bookmaker":"bet365","odds":1.39,"status":"pending"},{"match":"Marseille vs Monaco","home":"Marseille","away":"Monaco","league":"Ligue 1","market":"Total Goals","pick":"Over 2.5","bookmaker":"1xBet","odds":1.43,"status":"pending"},{"match":"Benfica vs Porto","home":"Benfica","away":"Porto","league":"Primeira Liga","market":"Total Goals","pick":"Over 1.5","bookmaker":"Melbet","odds":1.51,"status":"pending"},{"match":"Ajax vs PSV","home":"Ajax","away":"PSV","league":"Eredivisie","market":"Total Goals","pick":"Under 3.5","bookmaker":"22Bet","odds":1.39,"status":"pending"},{"match":"Atalanta vs Fiorentina","home":"Atalanta","away":"Fiorentina","league":"Serie A","market":"Both Teams to Score","pick":"BTTS - Yes","bookmaker":"SportyBet","odds":1.43,"status":"pending"},{"match":"Brighton vs West Ham","home":"Brighton","away":"West Ham","league":"Premier League","market":"Match Result","pick":"Brighton Win","bookmaker":"bet365","odds":1.51,"status":"pending"}]},{"selections":[{"match":"Ajax vs PSV","home":"Ajax","away":"PSV","league":"Eredivisie","market":"Total Goals","pick":"Over 2.5","bookmaker":"bet365","odds":1.37,"status":"pending"},{"match":"Atalanta vs Fiorentina","home":"Atalanta","away":"Fiorentina","league":"Serie A","market":"Total Goals","pick":"Over 1.5","bookmaker":"1xBet","odds":1.49,"status":"pending"},{"match":"Brighton vs West Ham","home":"Brighton","away":"West Ham","league":"Premier League","market":"Total Goals","pick":"Under 3.5","bookmaker":"Melbet","odds":1.46,"status":"pending"},{"match":"Villarreal vs Girona","home":"Villarreal","away":"Girona","league":"La Liga","market":"Both Teams to Score","pick":"BTTS - Yes","bookmaker":"22Bet","odds":1.37,"status":"pending"},{"match":"Lille vs Nice","home":"Lille","away":"Nice","league":"Ligue 1","market":"Match Result","pick":"Lille Win","bookmaker":"SportyBet","odds":1.5,"status":"pending"},{"match":"Frankfurt vs Stuttgart","home":"Frankfurt","away":"Stuttgart","league":"Bundesliga","market":"Double Chance","pick":"1X (Home or Draw)","bookmaker":"bet365","odds":1.47,"status":"pending"}]},{"selections":[{"match":"Villarreal vs Girona","home":"Villarreal","away":"Girona","league":"La Liga","market":"Total Goals","pick":"Over 1.5","bookmaker":"bet365","odds":1.42,"status":"pending"},{"match":"Lille vs Nice","home":"Lille","away":"Nice","league":"Ligue 1","market":"Total Goals","pick":"Under 3.5","bookmaker":"1xBet","odds":1.51,"status":"pending"},{"match":"Frankfurt vs Stuttgart","home":"Frankfurt","away":"Stuttgart","league":"Bundesliga","market":"Both Teams to Score","pick":"BTTS - Yes","bookmaker":"Melbet","odds":1.39,"status":"pending"},{"match":"Sporting CP vs Braga","home":"Sporting CP","away":"Braga","league":"Primeira Liga","market":"Match Result","pick":"Sporting CP Win","bookmaker":"22Bet","odds":1.42,"status":"pending"},{"match":"Feyenoord vs AZ","home":"Feyenoord","away":"AZ","league":"Eredivisie","market":"Double Chance","pick":"1X (Home or Draw)","bookmaker":"SportyBet","odds":1.51,"status":"pending"},{"match":"Man United vs Brentford","home":"Man United","away":"Brentford","league":"Premier League","market":"Total Goals","pick":"Over 2.5","bookmaker":"bet365","odds":1.41,"status":"pending"}]}]},{"id":"r10_0","name":"10.00 Odds Rollover","target":10.0,"active":true,"description":"Demo package: one 8-selection ticket per day, aiming for 10.00 combined odds.","days":[{"selections":[{"match":"Juventus vs AC Milan","home":"Juventus","away":"AC Milan","league":"Serie A","market":"Total Goals","pick":"Over 1.5","bookmaker":"1xBet","odds":1.33,"status":"won"},{"match":"Arsenal vs Chelsea","home":"Arsenal","away":"Chelsea","league":"Premier League","market":"Total Goals","pick":"Under 3.5","bookmaker":"Melbet","odds":1.39,"status":"won"},{"match":"Barcelona vs Sevilla","home":"Barcelona","away":"Sevilla","league":"La Liga","market":"Both Teams to Score","pick":"BTTS - Yes","bookmaker":"22Bet","odds":1.28,"status":"won"},{"match":"PSG vs Lyon","home":"PSG","away":"Lyon","league":"Ligue 1","market":"Match Result","pick":"PSG Win","bookmaker":"SportyBet","odds":1.33,"status":"won"},{"match":"Inter vs Roma","home":"Inter","away":"Roma","league":"Serie A","market":"Double Chance","pick":"1X (Home or Draw)","bookmaker":"bet365","odds":1.39,"status":"won"},{"match":"Man City vs Everton","home":"Man City","away":"Everton","league":"Premier League","market":"Total Goals","pick":"Over 2.5","bookmaker":"1xBet","odds":1.27,"status":"pending"},{"match":"Liverpool vs Newcastle","home":"Liverpool","away":"Newcastle","league":"Premier League","market":"Total Goals","pick":"Over 1.5","bookmaker":"Melbet","odds":1.34,"status":"pending"},{"match":"Real Madrid vs Valencia","home":"Real Madrid","away":"Valencia","league":"La Liga","market":"Total Goals","pick":"Under 3.5","bookmaker":"22Bet","odds":1.34,"status":"pending"}]},{"selections":[{"match":"PSG vs Lyon","home":"PSG","away":"Lyon","league":"Ligue 1","market":"Total Goals","pick":"Under 3.5","bookmaker":"1xBet","odds":1.39,"status":"pending"},{"match":"Inter vs Roma","home":"Inter","away":"Roma","league":"Serie A","market":"Both Teams to Score","pick":"BTTS - Yes","bookmaker":"Melbet","odds":1.34,"status":"pending"},{"match":"Man City vs Everton","home":"Man City","away":"Everton","league":"Premier League","market":"Match Result","pick":"Man City Win","bookmaker":"22Bet","odds":1.27,"status":"pending"},{"match":"Liverpool vs Newcastle","home":"Liverpool","away":"Newcastle","league":"Premier League","market":"Double Chance","pick":"1X (Home or Draw)","bookmaker":"SportyBet","odds":1.39,"status":"pending"},{"match":"Real Madrid vs Valencia","home":"Real Madrid","away":"Valencia","league":"La Liga","market":"Total Goals","pick":"Over 2.5","bookmaker":"bet365","odds":1.34,"status":"pending"},{"match":"Bayern Munich vs Dortmund","home":"Bayern Munich","away":"Dortmund","league":"Bundesliga","market":"Total Goals","pick":"Over 1.5","bookmaker":"1xBet","odds":1.28,"status":"pending"},{"match":"Tottenham vs Aston Villa","home":"Tottenham","away":"Aston Villa","league":"Premier League","market":"Total Goals","pick":"Under 3.5","bookmaker":"Melbet","odds":1.39,"status":"pending"},{"match":"Napoli vs Lazio","home":"Napoli","away":"Lazio","league":"Serie A","market":"Both Teams to Score","pick":"BTTS - Yes","bookmaker":"22Bet","odds":1.28,"status":"pending"}]}]},{"id":"r20_0","name":"20.00 Odds Rollover","target":20.0,"active":true,"description":"Demo package: one 12-selection ticket per day, aiming for 20.00 combined odds.","days":[{"selections":[{"match":"Juventus vs AC Milan","home":"Juventus","away":"AC Milan","league":"Serie A","market":"Total Goals","pick":"Over 1.5","bookmaker":"Melbet","odds":1.28,"status":"won"},{"match":"Arsenal vs Chelsea","home":"Arsenal","away":"Chelsea","league":"Premier League","market":"Total Goals","pick":"Under 3.5","bookmaker":"22Bet","odds":1.34,"status":"won"},{"match":"Barcelona vs Sevilla","home":"Barcelona","away":"Sevilla","league":"La Liga","market":"Both Teams to Score","pick":"BTTS - Yes","bookmaker":"SportyBet","odds":1.23,"status":"won"},{"match":"PSG vs Lyon","home":"PSG","away":"Lyon","league":"Ligue 1","market":"Match Result","pick":"PSG Win","bookmaker":"bet365","odds":1.28,"status":"won"},{"match":"Inter vs Roma","home":"Inter","away":"Roma","league":"Serie A","market":"Double Chance","pick":"1X (Home or Draw)","bookmaker":"1xBet","odds":1.34,"status":"won"},{"match":"Man City vs Everton","home":"Man City","away":"Everton","league":"Premier League","market":"Total Goals","pick":"Over 2.5","bookmaker":"Melbet","odds":1.23,"status":"won"},{"match":"Liverpool vs Newcastle","home":"Liverpool","away":"Newcastle","league":"Premier League","market":"Total Goals","pick":"Over 1.5","bookmaker":"22Bet","odds":1.29,"status":"won"},{"match":"Real Madrid vs Valencia","home":"Real Madrid","away":"Valencia","league":"La Liga","market":"Total Goals","pick":"Under 3.5","bookmaker":"SportyBet","odds":1.34,"status":"won"},{"match":"Bayern Munich vs Dortmund","home":"Bayern Munich","away":"Dortmund","league":"Bundesliga","market":"Both Teams to Score","pick":"BTTS - Yes","bookmaker":"bet365","odds":1.23,"status":"won"},{"match":"Tottenham vs Aston Villa","home":"Tottenham","away":"Aston Villa","league":"Premier League","market":"Match Result","pick":"Tottenham Win","bookmaker":"1xBet","odds":1.29,"status":"won"},{"match":"Napoli vs Lazio","home":"Napoli","away":"Lazio","league":"Serie A","market":"Double Chance","pick":"1X (Home or Draw)","bookmaker":"Melbet","odds":1.34,"status":"won"},{"match":"Atletico Madrid vs Betis","home":"Atletico Madrid","away":"Betis","league":"La Liga","market":"Total Goals","pick":"Over 2.5","bookmaker":"22Bet","odds":1.22,"status":"won"}]},{"selections":[{"match":"PSG vs Lyon","home":"PSG","away":"Lyon","league":"Ligue 1","market":"Total Goals","pick":"Under 3.5","bookmaker":"Melbet","odds":1.34,"status":"pending"},{"match":"Inter vs Roma","home":"Inter","away":"Roma","league":"Serie A","market":"Both Teams to Score","pick":"BTTS - Yes","bookmaker":"22Bet","odds":1.29,"status":"pending"},{"match":"Man City vs Everton","home":"Man City","away":"Everton","league":"Premier League","market":"Match Result","pick":"Man City Win","bookmaker":"SportyBet","odds":1.23,"status":"pending"},{"match":"Liverpool vs Newcastle","home":"Liverpool","away":"Newcastle","league":"Premier League","market":"Double Chance","pick":"1X (Home or Draw)","bookmaker":"bet365","odds":1.34,"status":"pending"},{"match":"Real Madrid vs Valencia","home":"Real Madrid","away":"Valencia","league":"La Liga","market":"Total Goals","pick":"Over 2.5","bookmaker":"1xBet","odds":1.29,"status":"pending"},{"match":"Bayern Munich vs Dortmund","home":"Bayern Munich","away":"Dortmund","league":"Bundesliga","market":"Total Goals","pick":"Over 1.5","bookmaker":"Melbet","odds":1.23,"status":"pending"},{"match":"Tottenham vs Aston Villa","home":"Tottenham","away":"Aston Villa","league":"Premier League","market":"Total Goals","pick":"Under 3.5","bookmaker":"22Bet","odds":1.34,"status":"pending"},{"match":"Napoli vs Lazio","home":"Napoli","away":"Lazio","league":"Serie A","market":"Both Teams to Score","pick":"BTTS - Yes","bookmaker":"SportyBet","odds":1.28,"status":"pending"},{"match":"Atletico Madrid vs Betis","home":"Atletico Madrid","away":"Betis","league":"La Liga","market":"Match Result","pick":"Atletico Madrid Win","bookmaker":"bet365","odds":1.23,"status":"pending"},{"match":"Leverkusen vs Leipzig","home":"Leverkusen","away":"Leipzig","league":"Bundesliga","market":"Double Chance","pick":"1X (Home or Draw)","bookmaker":"1xBet","odds":1.34,"status":"pending"},{"match":"Marseille vs Monaco","home":"Marseille","away":"Monaco","league":"Ligue 1","market":"Total Goals","pick":"Over 2.5","bookmaker":"Melbet","odds":1.28,"status":"pending"},{"match":"Benfica vs Porto","home":"Benfica","away":"Porto","league":"Primeira Liga","market":"Total Goals","pick":"Over 1.5","bookmaker":"22Bet","odds":1.22,"status":"pending"}]}]},{"id":"r50_0","name":"50.00 Odds Rollover","target":50.0,"active":true,"description":"Demo package: one 16-selection ticket per day, aiming for 50.00 combined odds.","days":[{"selections":[{"match":"Juventus vs AC Milan","home":"Juventus","away":"AC Milan","league":"Serie A","market":"Total Goals","pick":"Over 1.5","bookmaker":"22Bet","odds":1.28,"status":"won"},{"match":"Arsenal vs Chelsea","home":"Arsenal","away":"Chelsea","league":"Premier League","market":"Total Goals","pick":"Under 3.5","bookmaker":"SportyBet","odds":1.33,"status":"won"},{"match":"Barcelona vs Sevilla","home":"Barcelona","away":"Sevilla","league":"La Liga","market":"Both Teams to Score","pick":"BTTS - Yes","bookmaker":"bet365","odds":1.22,"status":"won"},{"match":"PSG vs Lyon","home":"PSG","away":"Lyon","league":"Ligue 1","market":"Match Result","pick":"PSG Win","bookmaker":"1xBet","odds":1.28,"status":"won"},{"match":"Inter vs Roma","home":"Inter","away":"Roma","league":"Serie A","market":"Double Chance","pick":"1X (Home or Draw)","bookmaker":"Melbet","odds":1.33,"status":"won"},{"match":"Man City vs Everton","home":"Man City","away":"Everton","league":"Premier League","market":"Total Goals","pick":"Over 2.5","bookmaker":"22Bet","odds":1.22,"status":"won"},{"match":"Liverpool vs Newcastle","home":"Liverpool","away":"Newcastle","league":"Premier League","market":"Total Goals","pick":"Over 1.5","bookmaker":"SportyBet","odds":1.28,"status":"won"},{"match":"Real Madrid vs Valencia","home":"Real Madrid","away":"Valencia","league":"La Liga","market":"Total Goals","pick":"Under 3.5","bookmaker":"bet365","odds":1.33,"status":"won"},{"match":"Bayern Munich vs Dortmund","home":"Bayern Munich","away":"Dortmund","league":"Bundesliga","market":"Both Teams to Score","pick":"BTTS - Yes","bookmaker":"1xBet","odds":1.22,"status":"pending"},{"match":"Tottenham vs Aston Villa","home":"Tottenham","away":"Aston Villa","league":"Premier League","market":"Match Result","pick":"Tottenham Win","bookmaker":"Melbet","odds":1.28,"status":"pending"},{"match":"Napoli vs Lazio","home":"Napoli","away":"Lazio","league":"Serie A","market":"Double Chance","pick":"1X (Home or Draw)","bookmaker":"22Bet","odds":1.33,"status":"pending"},{"match":"Atletico Madrid vs Betis","home":"Atletico Madrid","away":"Betis","league":"La Liga","market":"Total Goals","pick":"Over 2.5","bookmaker":"SportyBet","odds":1.22,"status":"pending"},{"match":"Leverkusen vs Leipzig","home":"Leverkusen","away":"Leipzig","league":"Bundesliga","market":"Total Goals","pick":"Over 1.5","bookmaker":"bet365","odds":1.28,"status":"pending"},{"match":"Marseille vs Monaco","home":"Marseille","away":"Monaco","league":"Ligue 1","market":"Total Goals","pick":"Under 3.5","bookmaker":"1xBet","odds":1.33,"status":"pending"},{"match":"Benfica vs Porto","home":"Benfica","away":"Porto","league":"Primeira Liga","market":"Both Teams to Score","pick":"BTTS - Yes","bookmaker":"Melbet","odds":1.22,"status":"pending"},{"match":"Ajax vs PSV","home":"Ajax","away":"PSV","league":"Eredivisie","market":"Match Result","pick":"Ajax Win","bookmaker":"22Bet","odds":1.29,"status":"pending"}]},{"selections":[{"match":"PSG vs Lyon","home":"PSG","away":"Lyon","league":"Ligue 1","market":"Total Goals","pick":"Under 3.5","bookmaker":"22Bet","odds":1.33,"status":"pending"},{"match":"Inter vs Roma","home":"Inter","away":"Roma","league":"Serie A","market":"Both Teams to Score","pick":"BTTS - Yes","bookmaker":"SportyBet","odds":1.28,"status":"pending"},{"match":"Man City vs Everton","home":"Man City","away":"Everton","league":"Premier League","market":"Match Result","pick":"Man City Win","bookmaker":"bet365","odds":1.22,"status":"pending"},{"match":"Liverpool vs Newcastle","home":"Liverpool","away":"Newcastle","league":"Premier League","market":"Double Chance","pick":"1X (Home or Draw)","bookmaker":"1xBet","odds":1.33,"status":"pending"},{"match":"Real Madrid vs Valencia","home":"Real Madrid","away":"Valencia","league":"La Liga","market":"Total Goals","pick":"Over 2.5","bookmaker":"Melbet","odds":1.28,"status":"pending"},{"match":"Bayern Munich vs Dortmund","home":"Bayern Munich","away":"Dortmund","league":"Bundesliga","market":"Total Goals","pick":"Over 1.5","bookmaker":"22Bet","odds":1.22,"status":"pending"},{"match":"Tottenham vs Aston Villa","home":"Tottenham","away":"Aston Villa","league":"Premier League","market":"Total Goals","pick":"Under 3.5","bookmaker":"SportyBet","odds":1.33,"status":"pending"},{"match":"Napoli vs Lazio","home":"Napoli","away":"Lazio","league":"Serie A","market":"Both Teams to Score","pick":"BTTS - Yes","bookmaker":"bet365","odds":1.28,"status":"pending"},{"match":"Atletico Madrid vs Betis","home":"Atletico Madrid","away":"Betis","league":"La Liga","market":"Match Result","pick":"Atletico Madrid Win","bookmaker":"1xBet","odds":1.22,"status":"pending"},{"match":"Leverkusen vs Leipzig","home":"Leverkusen","away":"Leipzig","league":"Bundesliga","market":"Double Chance","pick":"1X (Home or Draw)","bookmaker":"Melbet","odds":1.33,"status":"pending"},{"match":"Marseille vs Monaco","home":"Marseille","away":"Monaco","league":"Ligue 1","market":"Total Goals","pick":"Over 2.5","bookmaker":"22Bet","odds":1.28,"status":"pending"},{"match":"Benfica vs Porto","home":"Benfica","away":"Porto","league":"Primeira Liga","market":"Total Goals","pick":"Over 1.5","bookmaker":"SportyBet","odds":1.22,"status":"pending"},{"match":"Ajax vs PSV","home":"Ajax","away":"PSV","league":"Eredivisie","market":"Total Goals","pick":"Under 3.5","bookmaker":"bet365","odds":1.33,"status":"pending"},{"match":"Atalanta vs Fiorentina","home":"Atalanta","away":"Fiorentina","league":"Serie A","market":"Both Teams to Score","pick":"BTTS - Yes","bookmaker":"1xBet","odds":1.28,"status":"pending"},{"match":"Brighton vs West Ham","home":"Brighton","away":"West Ham","league":"Premier League","market":"Match Result","pick":"Brighton Win","bookmaker":"Melbet","odds":1.22,"status":"pending"},{"match":"Villarreal vs Girona","home":"Villarreal","away":"Girona","league":"La Liga","market":"Double Chance","pick":"1X (Home or Draw)","bookmaker":"22Bet","odds":1.29,"status":"pending"}]}]},{"id":"r100_0","name":"100.00 Odds Rollover","target":100.0,"active":true,"description":"Demo package: one 20-selection ticket per day, aiming for 100.00 combined odds.","days":[{"selections":[{"match":"Juventus vs AC Milan","home":"Juventus","away":"AC Milan","league":"Serie A","market":"Total Goals","pick":"Over 1.5","bookmaker":"SportyBet","odds":1.26,"status":"won"},{"match":"Arsenal vs Chelsea","home":"Arsenal","away":"Chelsea","league":"Premier League","market":"Total Goals","pick":"Under 3.5","bookmaker":"bet365","odds":1.31,"status":"won"},{"match":"Barcelona vs Sevilla","home":"Barcelona","away":"Sevilla","league":"La Liga","market":"Both Teams to Score","pick":"BTTS - Yes","bookmaker":"1xBet","odds":1.2,"status":"won"},{"match":"PSG vs Lyon","home":"PSG","away":"Lyon","league":"Ligue 1","market":"Match Result","pick":"PSG Win","bookmaker":"Melbet","odds":1.26,"status":"won"},{"match":"Inter vs Roma","home":"Inter","away":"Roma","league":"Serie A","market":"Double Chance","pick":"1X (Home or Draw)","bookmaker":"22Bet","odds":1.31,"status":"won"},{"match":"Man City vs Everton","home":"Man City","away":"Everton","league":"Premier League","market":"Total Goals","pick":"Over 2.5","bookmaker":"SportyBet","odds":1.2,"status":"won"},{"match":"Liverpool vs Newcastle","home":"Liverpool","away":"Newcastle","league":"Premier League","market":"Total Goals","pick":"Over 1.5","bookmaker":"bet365","odds":1.26,"status":"won"},{"match":"Real Madrid vs Valencia","home":"Real Madrid","away":"Valencia","league":"La Liga","market":"Total Goals","pick":"Under 3.5","bookmaker":"1xBet","odds":1.31,"status":"won"},{"match":"Bayern Munich vs Dortmund","home":"Bayern Munich","away":"Dortmund","league":"Bundesliga","market":"Both Teams to Score","pick":"BTTS - Yes","bookmaker":"Melbet","odds":1.2,"status":"won"},{"match":"Tottenham vs Aston Villa","home":"Tottenham","away":"Aston Villa","league":"Premier League","market":"Match Result","pick":"Tottenham Win","bookmaker":"22Bet","odds":1.26,"status":"won"},{"match":"Napoli vs Lazio","home":"Napoli","away":"Lazio","league":"Serie A","market":"Double Chance","pick":"1X (Home or Draw)","bookmaker":"SportyBet","odds":1.31,"status":"won"},{"match":"Atletico Madrid vs Betis","home":"Atletico Madrid","away":"Betis","league":"La Liga","market":"Total Goals","pick":"Over 2.5","bookmaker":"bet365","odds":1.2,"status":"won"},{"match":"Leverkusen vs Leipzig","home":"Leverkusen","away":"Leipzig","league":"Bundesliga","market":"Total Goals","pick":"Over 1.5","bookmaker":"1xBet","odds":1.26,"status":"won"},{"match":"Marseille vs Monaco","home":"Marseille","away":"Monaco","league":"Ligue 1","market":"Total Goals","pick":"Under 3.5","bookmaker":"Melbet","odds":1.31,"status":"won"},{"match":"Benfica vs Porto","home":"Benfica","away":"Porto","league":"Primeira Liga","market":"Both Teams to Score","pick":"BTTS - Yes","bookmaker":"22Bet","odds":1.2,"status":"won"},{"match":"Ajax vs PSV","home":"Ajax","away":"PSV","league":"Eredivisie","market":"Match Result","pick":"Ajax Win","bookmaker":"SportyBet","odds":1.26,"status":"won"},{"match":"Atalanta vs Fiorentina","home":"Atalanta","away":"Fiorentina","league":"Serie A","market":"Double Chance","pick":"1X (Home or Draw)","bookmaker":"bet365","odds":1.31,"status":"won"},{"match":"Brighton vs West Ham","home":"Brighton","away":"West Ham","league":"Premier League","market":"Total Goals","pick":"Over 2.5","bookmaker":"1xBet","odds":1.2,"status":"won"},{"match":"Villarreal vs Girona","home":"Villarreal","away":"Girona","league":"La Liga","market":"Total Goals","pick":"Over 1.5","bookmaker":"Melbet","odds":1.27,"status":"won"},{"match":"Lille vs Nice","home":"Lille","away":"Nice","league":"Ligue 1","market":"Total Goals","pick":"Under 3.5","bookmaker":"22Bet","odds":1.3,"status":"won"}]},{"selections":[{"match":"PSG vs Lyon","home":"PSG","away":"Lyon","league":"Ligue 1","market":"Total Goals","pick":"Under 3.5","bookmaker":"SportyBet","odds":1.31,"status":"pending"},{"match":"Inter vs Roma","home":"Inter","away":"Roma","league":"Serie A","market":"Both Teams to Score","pick":"BTTS - Yes","bookmaker":"bet365","odds":1.26,"status":"pending"},{"match":"Man City vs Everton","home":"Man City","away":"Everton","league":"Premier League","market":"Match Result","pick":"Man City Win","bookmaker":"1xBet","odds":1.2,"status":"pending"},{"match":"Liverpool vs Newcastle","home":"Liverpool","away":"Newcastle","league":"Premier League","market":"Double Chance","pick":"1X (Home or Draw)","bookmaker":"Melbet","odds":1.31,"status":"pending"},{"match":"Real Madrid vs Valencia","home":"Real Madrid","away":"Valencia","league":"La Liga","market":"Total Goals","pick":"Over 2.5","bookmaker":"22Bet","odds":1.26,"status":"pending"},{"match":"Bayern Munich vs Dortmund","home":"Bayern Munich","away":"Dortmund","league":"Bundesliga","market":"Total Goals","pick":"Over 1.5","bookmaker":"SportyBet","odds":1.2,"status":"pending"},{"match":"Tottenham vs Aston Villa","home":"Tottenham","away":"Aston Villa","league":"Premier League","market":"Total Goals","pick":"Under 3.5","bookmaker":"bet365","odds":1.31,"status":"pending"},{"match":"Napoli vs Lazio","home":"Napoli","away":"Lazio","league":"Serie A","market":"Both Teams to Score","pick":"BTTS - Yes","bookmaker":"1xBet","odds":1.26,"status":"pending"},{"match":"Atletico Madrid vs Betis","home":"Atletico Madrid","away":"Betis","league":"La Liga","market":"Match Result","pick":"Atletico Madrid Win","bookmaker":"Melbet","odds":1.2,"status":"pending"},{"match":"Leverkusen vs Leipzig","home":"Leverkusen","away":"Leipzig","league":"Bundesliga","market":"Double Chance","pick":"1X (Home or Draw)","bookmaker":"22Bet","odds":1.31,"status":"pending"},{"match":"Marseille vs Monaco","home":"Marseille","away":"Monaco","league":"Ligue 1","market":"Total Goals","pick":"Over 2.5","bookmaker":"SportyBet","odds":1.26,"status":"pending"},{"match":"Benfica vs Porto","home":"Benfica","away":"Porto","league":"Primeira Liga","market":"Total Goals","pick":"Over 1.5","bookmaker":"bet365","odds":1.2,"status":"pending"},{"match":"Ajax vs PSV","home":"Ajax","away":"PSV","league":"Eredivisie","market":"Total Goals","pick":"Under 3.5","bookmaker":"1xBet","odds":1.31,"status":"pending"},{"match":"Atalanta vs Fiorentina","home":"Atalanta","away":"Fiorentina","league":"Serie A","market":"Both Teams to Score","pick":"BTTS - Yes","bookmaker":"Melbet","odds":1.26,"status":"pending"},{"match":"Brighton vs West Ham","home":"Brighton","away":"West Ham","league":"Premier League","market":"Match Result","pick":"Brighton Win","bookmaker":"22Bet","odds":1.21,"status":"pending"},{"match":"Villarreal vs Girona","home":"Villarreal","away":"Girona","league":"La Liga","market":"Double Chance","pick":"1X (Home or Draw)","bookmaker":"SportyBet","odds":1.31,"status":"pending"},{"match":"Lille vs Nice","home":"Lille","away":"Nice","league":"Ligue 1","market":"Total Goals","pick":"Over 2.5","bookmaker":"bet365","odds":1.26,"status":"pending"},{"match":"Frankfurt vs Stuttgart","home":"Frankfurt","away":"Stuttgart","league":"Bundesliga","market":"Total Goals","pick":"Over 1.5","bookmaker":"1xBet","odds":1.21,"status":"pending"},{"match":"Sporting CP vs Braga","home":"Sporting CP","away":"Braga","league":"Primeira Liga","market":"Total Goals","pick":"Under 3.5","bookmaker":"Melbet","odds":1.32,"status":"pending"},{"match":"Feyenoord vs AZ","home":"Feyenoord","away":"AZ","league":"Eredivisie","market":"Both Teams to Score","pick":"BTTS - Yes","bookmaker":"22Bet","odds":1.23,"status":"pending"}]}]}]},"bookmakers":[{"id":"bet365","name":"bet365","color":"#0b6b3a","textColor":"#ffe000","enabled":true,"feedNote":"No public odds API. Needs an odds provider that licenses bet365 prices."},{"id":"1xbet","name":"1xBet","color":"#0b2a6b","textColor":"#ffffff","enabled":true,"feedNote":"Partner/affiliate feeds vary by region. Needs an authorised feed or aggregator."},{"id":"melbet","name":"Melbet","color":"#111111","textColor":"#f5c400","enabled":true,"feedNote":"Partner/affiliate feeds vary by region. Needs an authorised feed or aggregator."},{"id":"22bet","name":"22Bet","color":"#0a4d8c","textColor":"#ffffff","enabled":true,"feedNote":"Partner/affiliate feeds vary by region. Needs an authorised feed or aggregator."},{"id":"sportybet","name":"SportyBet","color":"#e1251b","textColor":"#ffffff","enabled":true,"feedNote":"No public odds API. Needs an authorised feed or aggregator."}],"arbitrage":{"demo":true,"events":[{"id":"ev1","home":"Arsenal","away":"Chelsea","league":"Premier League","kickoffDay":0,"kickoffTime":"16:30","published":true,"markets":[{"key":"totals","label":"Over / Under 2.5 Goals","point":2.5,"outcomes":[{"name":"Over 2.5","bookmaker":"bet365","odds":2.1},{"name":"Under 2.5","bookmaker":"1xBet","odds":2.06},{"name":"Over 2.5","bookmaker":"Melbet","odds":1.95},{"name":"Under 2.5","bookmaker":"bet365","odds":1.95}]},{"key":"btts","label":"Both Teams to Score","outcomes":[{"name":"Yes","bookmaker":"bet365","odds":1.72},{"name":"No","bookmaker":"Melbet","odds":1.95}]},{"key":"h2h","label":"1X2 (Match Result)","outcomes":[{"name":"Arsenal","bookmaker":"SportyBet","odds":1.85},{"name":"Draw","bookmaker":"1xBet","odds":3.6},{"name":"Chelsea","bookmaker":"bet365","odds":4.2}]}]},{"id":"ev2","home":"Barcelona","away":"Sevilla","league":"La Liga","kickoffDay":1,"kickoffTime":"20:00","published":true,"markets":[{"key":"totals","label":"Over / Under 2.5 Goals","point":2.5,"outcomes":[{"name":"Over 2.5","bookmaker":"22Bet","odds":2.15},{"name":"Under 2.5","bookmaker":"Melbet","odds":1.98},{"name":"Over 2.5","bookmaker":"SportyBet","odds":2.02}]},{"key":"h2h","label":"1X2 (Match Result)","outcomes":[{"name":"Barcelona","bookmaker":"1xBet","odds":1.55},{"name":"Draw","bookmaker":"22Bet","odds":4.3},{"name":"Sevilla","bookmaker":"bet365","odds":6.0}]}]},{"id":"ev3","home":"Juventus","away":"AC Milan","league":"Serie A","kickoffDay":0,"kickoffTime":"19:45","published":true,"markets":[{"key":"totals","label":"Over / Under 2.5 Goals","point":2.5,"outcomes":[{"name":"Over 2.5","bookmaker":"SportyBet","odds":1.92},{"name":"Under 2.5","bookmaker":"22Bet","odds":1.9}]},{"key":"btts","label":"Both Teams to Score","outcomes":[{"name":"Yes","bookmaker":"1xBet","odds":1.8},{"name":"No","bookmaker":"Melbet","odds":1.92}]}]},{"id":"ev4","home":"PSG","away":"Lyon","league":"Ligue 1","kickoffDay":1,"kickoffTime":"21:00","published":true,"markets":[{"key":"totals","label":"Over / Under 3.5 Goals","point":3.5,"outcomes":[{"name":"Over 3.5","bookmaker":"bet365","odds":2.05},{"name":"Under 3.5","bookmaker":"1xBet","odds":1.78}]}]}]}};</script>
 <script>
-// YOUR AFFILIATE LINK
-const AFF_LINK = "https://che.fluxbrox.com/redirect.aspx?pid=199046&lpid=17&bid=1484";
-const API_BASE = "https://cpservm.com/gateway/marketing/datafeed";
-let BEARER = localStorage.getItem('sure2odd_bearer') || "";
-
-// Load saved token
-document.getElementById('bearerInput').value = BEARER;
-if(BEARER){
-  document.getElementById('tokenStatus').innerHTML = `<span class='ok'>✅ Token saved: ${BEARER.substring(0,50)}... You fit upload ticket now!</span>`;
-}
-
-function saveToken(){
-  let t = document.getElementById('bearerInput').value.trim();
-  if(t.toLowerCase().startsWith('bearer ')) t = t.substring(7).trim();
-  if(t.length < 20){ document.getElementById('tokenStatus').innerHTML = `<span class='err'>❌ Paste correct eyJ token</span>`; return; }
-  BEARER = t;
-  localStorage.setItem('sure2odd_bearer', BEARER);
-  localStorage.setItem('sure2odd_bearer_time', Date.now().toString());
-  document.getElementById('tokenStatus').innerHTML = `<span class='ok'>✅ Token saved! Length ${t.length}. Now upload screenshot for Step 2 and click Clone!</span>`;
-}
-
-// FIXED: Use allorigins.win - no API key, no 403 error
-async function apiFetch(path){
-  if(!BEARER) throw new Error("Paste token for Step 1 first");
-  const fullUrl = `${API_BASE}${path}`;
-  const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(fullUrl)}`;
-  const res = await fetch(proxyUrl, {headers:{'Authorization':`Bearer ${BEARER}`}});
-  const txt = await res.text();
-  if(!res.ok) throw new Error(`API ${res.status}: ${txt.substring(0,400)}`);
-  return JSON.parse(txt);
-}
-
-// OCR UPLOAD
-document.getElementById('imgFile').addEventListener('change', async (e)=>{
-  const file = e.target.files[0]; if(!file) return;
-  const preview = document.getElementById('preview');
-  preview.src = URL.createObjectURL(file); preview.style.display='block';
-  const bar = document.getElementById('pbar');
-  const status = document.getElementById('ocrStatus');
-  status.innerText = "📸 Reading image..."; bar.style.width="10%";
-  try{
-    const {data:{text}} = await Tesseract.recognize(file,'eng',{
-      logger:m=>{ if(m.progress) bar.style.width=Math.round(m.progress*90+10)+"%" }
+/* SureArb shared config + helpers. No secrets here: this file is public. */
+(function () {
+  'use strict';
+  var SA = (window.SA = window.SA || {});
+  var inEditor = /\/editor\/?/.test(location.pathname);
+  SA.config = {
+    dataBase: 'data.json',
+    proxyPath: '/api/proxy',          // Cloudflare Pages Function (functions/api/proxy.js)
+    publishPath: '/api/github-publish',
+    files: ['site-config', 'rollover-packages', 'bookmakers', 'arbitrage']
+  };
+  var esc = function (s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
     });
-    bar.style.width="100%";
-    document.getElementById('ticketText').value = text;
-    status.innerHTML = "<span class='ok'>✅ OCR Done! Detected text. Now click Clone button!</span>";
-    updateDNA();
-  }catch(err){
-    status.innerHTML = `<span class='err'>OCR Error: ${err.message}</span>`;
+  };
+  function dayKey(d, tz) {
+    try { return new Intl.DateTimeFormat('en-CA', { timeZone: tz || undefined }).format(d); } catch (e) { return d.toDateString(); }
   }
-});
-
-function updateDNA(){
-  const raw = document.getElementById('ticketText').value;
-  const tags = document.getElementById('dnaTags');
-  const dna = parseSelections(raw);
-  tags.innerHTML = `<div class='small'>Detected ${dna.length} picks (DNA):</div>` + dna.map(d=>`<span class='tag'>${escapeHtml(d)}</span>`).join('');
-}
-function escapeHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
-function parseSelections(raw){
-  if(!raw) return [];
-  const lines = raw.split('\n').map(s=>s.trim()).filter(s=>s.length>4);
-  let picks = [];
-  lines.forEach(l=>{
-    if(l.toLowerCase().match(/(over|under|home|away|win|draw|1x|x2|btts|@| vs )/i) || l.match(/\d+\.\d+/)){
-      picks.push(l.substring(0,120));
+  SA.u = {
+    esc: esc,
+    $: function (s, r) { return (r || document).querySelector(s); },
+    $$: function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); },
+    money: function (n, sym, d) {
+      return (sym || '') + Number(n || 0).toLocaleString('en-US', { minimumFractionDigits: d || 0, maximumFractionDigits: d || 0 });
+    },
+    debounce: function (fn, ms) { var t; return function () { var a = arguments, c = this; clearTimeout(t); t = setTimeout(function () { fn.apply(c, a); }, ms); }; },
+    kickISO: function (ev) {
+      if (ev.kickoff) return ev.kickoff;
+      if (ev.kickoffTime == null) return '';
+      var d = new Date(); d.setDate(d.getDate() + (ev.kickoffDay || 0));
+      var p = String(ev.kickoffTime).split(':'); d.setHours(+p[0] || 0, +p[1] || 0, 0, 0);
+      return d.toISOString();
+    },
+    fmtKick: function (iso, tz) {
+      if (!iso) return '';
+      var d = new Date(iso); if (isNaN(d)) return '';
+      var hm; try { hm = new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: tz || undefined }).format(d); } catch (e) { hm = d.toTimeString().slice(0, 5); }
+      var now = new Date(), tm = new Date(now.getTime() + 864e5);
+      var k = dayKey(d, tz);
+      if (k === dayKey(now, tz)) return 'Today, ' + hm;
+      if (k === dayKey(tm, tz)) return 'Tomorrow, ' + hm;
+      try { return new Intl.DateTimeFormat('en-GB', { day: '2-digit', month: 'short', timeZone: tz || undefined }).format(d) + ', ' + hm; } catch (e) { return d.toLocaleString(); }
+    },
+    fmtClock: function (t, tz) {
+      try { return new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false, timeZone: tz || undefined }).format(new Date(t)); } catch (e) { return new Date(t).toLocaleTimeString(); }
+    },
+    norm: function (s) {
+      return String(s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\b(fc|cf|afc|sc|ac)\b/g, '').replace(/[^a-z0-9]/g, '');
     }
-  });
-  if(picks.length < 2) picks = lines.slice(0,10);
-  return picks.slice(0,12);
-}
+  };
+})();
 
-// CLONE TO TODAY WITH REAL ODDS
-async function cloneToToday(){
-  const raw = document.getElementById('ticketText').value;
-  const dna = parseSelections(raw);
-  const resDiv = document.getElementById('result');
-  if(!dna.length){ resDiv.innerHTML="Upload ticket image first for Step 2"; return; }
-  if(!BEARER){ resDiv.innerHTML="Paste token for Step 1 first"; return; }
-
-  resDiv.innerHTML = `✅ DNA ${dna.length} picks detected:<br>${dna.map(d=>`<span class='tag'>${escapeHtml(d)}</span>`).join('')}<br>⏳ Fetching TODAY real odds via allorigins proxy...<div class='bar'><div id='p2' style='width:20%'></div></div>`;
-
-  try{
-    document.getElementById('p2').style.width="30%";
-    const tours = await apiFetch(`/loadtree/api/v1/tournaments?ref=1&SportId=1`);
-    const tourList = Array.isArray(tours) ? tours : (tours.tournaments||[]);
-    document.getElementById('p2').style.width="55%";
-    
-    let games = [];
-    for(let i=0;i<Math.min(6,tourList.length);i++){
-      const tid = tourList[i].tournamentId || tourList[i].id; if(!tid) continue;
-      await new Promise(r=>setTimeout(r,1100));
-      const ev = await apiFetch(`/loadtree/api/v1/sportEventIds?ref=1&tournamentId=${tid}`);
-      const ids = ev.items || []; if(!ids.length) continue;
-      for(let j=0;j<Math.min(3,ids.length);j++){
-        if(games.length >= dna.length) break;
-        await new Promise(r=>setTimeout(r,1100));
-        const detail = await apiFetch(`/loadtree/api/v1/sporteventDetail?ref=1&sportEventId=${ids[j]}&withSubGames=false&schemeOfGettingOdds=GetAllOdds`);
-        if(detail && detail.opponent1NameLocalization) games.push(detail);
-      }
-      if(games.length >= dna.length) break;
-    }
-    
-    document.getElementById('p2').style.width="100%";
-    if(!games.length) throw new Error("No games today - ask 22Bet manager enable LoadTree API");
-    
-    let html = `<h3>🔥 Cloned TODAY ${new Date().toDateString()} — REAL ODDS</h3><div style='display:grid;gap:8px'>`;
-    let total = 1;
-    games.slice(0,dna.length).forEach((g,idx)=>{
-      let odd = 1.45;
-      try{ if(g.markets && g.markets[0] && g.markets[0].outcomes && g.markets[0].outcomes[0].odd) odd = parseFloat(g.markets[0].outcomes[0].odd); }catch(e){}
-      if(isNaN(odd) || odd < 1.01) odd = 1.45;
-      total *= odd;
-      html += `<div class='card' style='margin:0'><b>${escapeHtml(g.opponent1NameLocalization)} vs ${escapeHtml(g.opponent2NameLocalization)}</b><br><span class='tag'>${escapeHtml(dna[idx].substring(0,60))}</span> <span class='tag' style='border-color:#22c55e'>REAL ODDS: ${odd.toFixed(2)}</span><br><small>${escapeHtml(g.tournamentName||'')}</small></div>`;
-    });
-    html += `</div><br><b>Total Real Odd: ${total.toFixed(2)}</b><br><br><a href='${AFF_LINK}' target='_blank'><button>💰 Play on 22Bet (Your Affiliate Link)</button></a>`;
-    resDiv.innerHTML = html;
-    
-  }catch(e){
-    resDiv.innerHTML = `<span class='err'>Error: ${escapeHtml(e.message)}</span><br><span class='small'>Tip: If token expired, go get new eyJ... from docs site and paste again for Step 1</span>`;
-  }
-}
 </script>
+<script>
+/* Arbitrage engine. Pure functions, no DOM. Works in browser (SA.arbitrage) and Node (tests). */
+(function (root) {
+  'use strict';
+  var AR = {};
+  var EPS = 1e-9;
+  AR.arbSum = function (odds) { return odds.reduce(function (s, o) { return s + 1 / o; }, 0); };
+  AR.expectedOutcomes = function (m) {
+    if (m.outcomeCount) return m.outcomeCount;
+    return (m.key === 'h2h' || m.key === '1x2') ? 3 : 2;
+  };
+  /* Best price per outcome name across bookmakers, then sum of inverse odds. */
+  AR.evaluate = function (market, stake) {
+    stake = Number(stake) > 0 ? Number(stake) : 0;
+    var best = {}, order = [];
+    (market.outcomes || []).forEach(function (o) {
+      var odds = Number(o.odds);
+      if (!(odds > 1) || !o.name) return;
+      if (!best[o.name]) { best[o.name] = o; order.push(o.name); }
+      else if (odds > Number(best[o.name].odds)) best[o.name] = o;
+    });
+    var picks = order.map(function (n) { return best[n]; });
+    var need = AR.expectedOutcomes(market);
+    var res = { status: 'incomplete', sum: null, picks: picks, need: need, found: picks.length, stakes: [], gross: 0, profit: 0, pct: 0 };
+    if (picks.length < need) return res;
+    picks = picks.slice(0, need); res.picks = picks;
+    var sum = AR.arbSum(picks.map(function (p) { return Number(p.odds); }));
+    res.sum = sum;
+    res.pct = (1 / sum - 1) * 100;
+    if (sum < 1 - EPS) {
+      res.status = 'qualifies';
+      var total = 0;
+      res.stakes = picks.map(function (p) {
+        var s = Math.round(stake * (1 / p.odds) / sum * 100) / 100; total += s; return s;
+      });
+      var returns = picks.map(function (p, i) { return res.stakes[i] * p.odds; });
+      res.gross = Math.min.apply(null, returns);        // worst-case return after rounding
+      res.totalStaked = total;
+      res.profit = res.gross - total;
+    } else {
+      res.status = 'no-arb';
+    }
+    return res;
+  };
+  AR.evaluateEvent = function (ev, stake) {
+    var out = { markets: [], best: null, qualifying: 0 };
+    (ev.markets || []).forEach(function (m) {
+      var r = AR.evaluate(m, stake);
+      out.markets.push({ market: m, result: r });
+      if (r.status === 'qualifies') {
+        out.qualifying++;
+        if (!out.best || r.pct > out.best.pct) out.best = r;
+      }
+    });
+    return out;
+  };
+  if (typeof module !== 'undefined' && module.exports) module.exports = AR;
+  else { root.SA = root.SA || {}; root.SA.arbitrage = AR; }
+})(typeof window !== 'undefined' ? window : this);
+
+</script>
+<script>
+/* Rollover logic. Pure functions, no DOM. Browser: SA.rollovers, Node: module.exports. */
+(function (root) {
+  'use strict';
+  var R = {};
+  /* One day = one accumulator. LOST if any lost; WON only if every non-void selection won;
+     VOID if all selections are void (void legs count as 1.00 odds). */
+  R.dayStatus = function (sels) {
+    sels = sels || [];
+    if (!sels.length) return 'pending';
+    var w = 0, l = 0, p = 0;
+    sels.forEach(function (s) {
+      if (s.status === 'lost') l++; else if (s.status === 'won') w++; else if (s.status === 'void') { /* ignored */ } else p++;
+    });
+    if (l) return 'lost';
+    if (p) return 'pending';
+    return w ? 'won' : 'void';
+  };
+  R.combinedOdds = function (sels) {
+    var c = 1;
+    (sels || []).forEach(function (s) { if (s.status !== 'void' && Number(s.odds) > 0) c *= Number(s.odds); });
+    return Math.round(c * 100) / 100;
+  };
+  R.targetCheck = function (target, combined, tol) {
+    tol = tol == null ? 0.02 : tol;
+    return { combined: combined, target: target, reached: Math.abs(combined - target) / target <= tol };
+  };
+  /* Progress segments: one per DAY. won/void/lost/pending (current day)/future. */
+  R.packageState = function (pkg) {
+    var days = pkg.days || [], statuses = days.map(function (d) { return R.dayStatus(d.selections); });
+    var segs = [], open = false, failed = false, done = 0;
+    statuses.forEach(function (st) {
+      if (failed) { segs.push('future'); return; }
+      if (st === 'lost') { segs.push('lost'); failed = true; }
+      else if (st === 'won') { segs.push('won'); done++; }
+      else if (st === 'void') { segs.push('void'); done++; }
+      else if (!open) { segs.push('pending'); open = true; }
+      else segs.push('future');
+    });
+    var cur = segs.findIndex(function (s) { return s === 'pending' || s === 'lost'; });
+    if (cur < 0) cur = Math.max(0, days.length - 1);
+    return {
+      statuses: statuses, segs: segs, failed: failed,
+      overall: failed ? 'failed' : (done === days.length && days.length ? 'completed' : 'active'),
+      currentDay: cur, completed: done, remaining: days.length - done - (failed ? 1 : 0)
+    };
+  };
+  R.splitMatch = function (m) {
+    var p = String(m || '').split(/\s+vs\.?\s+/i);
+    return { home: (p[0] || '').trim(), away: (p[1] || '').trim() };
+  };
+  /* Grade a pick from a final score. Returns 'won' | 'lost' | null (unknown format). */
+  R.gradeSelection = function (sel, score) {
+    if (!score || score.home == null || score.away == null) return null;
+    var h = +score.home, a = +score.away, pick = String(sel.pick || ''), t = h + a, m;
+    var win = function (b) { return b ? 'won' : 'lost'; };
+    if ((m = /^(over|under)\s*([\d.]+)/i.exec(pick))) { var line = parseFloat(m[2]); return win(/over/i.test(m[1]) ? t > line : t < line); }
+    if (/btts|both teams/i.test(pick)) { var both = h > 0 && a > 0; if (/yes/i.test(pick)) return win(both); if (/no/i.test(pick)) return win(!both); return null; }
+    if (/1x|home or draw/i.test(pick)) return win(h >= a);
+    if (/x2|draw or away/i.test(pick)) return win(a >= h);
+    if (/\b12\b|home or away/i.test(pick)) return win(h !== a);
+    if (/draw/i.test(pick)) return win(h === a);
+    if (/win/i.test(pick)) {
+      var p = pick.toLowerCase();
+      if (sel.home && p.indexOf(sel.home.toLowerCase()) === 0) return win(h > a);
+      if (sel.away && p.indexOf(sel.away.toLowerCase()) === 0) return win(a > h);
+      if (/^home/.test(p)) return win(h > a);
+      if (/^away/.test(p)) return win(a > h);
+    }
+    return null;
+  };
+  if (typeof module !== 'undefined' && module.exports) module.exports = R;
+  else { root.SA = root.SA || {}; root.SA.rollovers = R; }
+})(typeof window !== 'undefined' ? window : this);
+
+</script>
+<script>
+/* Data loading, provider adapters, caching, error handling. No secrets: keys live in the serverless proxy. */
+(function () {
+  'use strict';
+  var SA = window.SA, C = SA.config, A = (SA.api = {});
+  var mem = {}, inflight = {};
+  A.status = {};                       // per integration: {state, t, count, error}
+  A.errors = [];
+  try { A.errors = JSON.parse(sessionStorage.getItem('surearb.errors') || '[]'); } catch (e) {}
+  A.log = function (src, msg) {
+    A.errors.unshift({ t: Date.now(), src: src, msg: msg });
+    A.errors = A.errors.slice(0, 30);
+    try { sessionStorage.setItem('surearb.errors', JSON.stringify(A.errors)); } catch (e) {}
+  };
+  function fetchT(url, opt, ms) {
+    var c = new AbortController(), t = setTimeout(function () { c.abort(); }, ms);
+    opt = opt || {}; opt.signal = c.signal;
+    return fetch(url, opt).finally(function () { clearTimeout(t); });
+  }
+  A.fetchT = fetchT;
+  A.isPreview = function () { return new URLSearchParams(location.search).get('preview') === 'draft'; };
+  A.draftKey = function (n) { return 'surearb.draft.' + n; };
+  var bundleP = null;
+  A.bundle = function () {
+    if (!bundleP) bundleP = fetchT(C.dataBase, { cache: 'no-cache' }, 8000).then(function (r) { if (!r.ok) throw 0; return r.json(); }).catch(function () { return {}; });
+    return bundleP.then(function (b) { var o = {}; Object.keys(SA.embedded).forEach(function (k) { o[k] = JSON.parse(JSON.stringify(b[k] !== undefined ? b[k] : SA.embedded[k])); }); return o; });
+  };
+  A.loadJSON = function (name, opt) {
+    opt = opt || {};
+    if (opt.draft || A.isPreview()) {
+      try { var d = localStorage.getItem(A.draftKey(name)); if (d) return Promise.resolve(JSON.parse(d)); } catch (e) {}
+    }
+    return A.bundle().then(function (b) { return b[name]; });
+  };
+
+  /* ---------- Provider adapters: raw provider JSON -> internal format ---------- */
+  var HOME = 'Home', AWAY = 'Away';
+  A.adapters = {
+    'odds-api': {
+      odds: function (body) {
+        return (Array.isArray(body) ? body : []).map(function (ev) {
+          var groups = {}, order = [], upd = '';
+          (ev.bookmakers || []).forEach(function (bk) {
+            if (bk.last_update && bk.last_update > upd) upd = bk.last_update;
+            (bk.markets || []).forEach(function (mk) {
+              (mk.outcomes || []).forEach(function (o) {
+                var key = mk.key, point = o.point != null ? o.point : '', name = o.name;
+                if (key === 'h2h') name = name === ev.home_team ? ev.home_team : name === ev.away_team ? ev.away_team : 'Draw';
+                else if (key === 'totals') name = o.name + ' ' + point;
+                else return;
+                var gk = key + '|' + point;
+                if (!groups[gk]) { groups[gk] = { key: key, point: point === '' ? undefined : point, label: key === 'h2h' ? '1X2 (Match Result)' : 'Over / Under ' + point + ' Goals', outcomes: [] }; order.push(gk); }
+                groups[gk].outcomes.push({ name: name, bookmaker: bk.title, odds: Number(o.price) });
+              });
+            });
+          });
+          return { id: 'oa-' + ev.id, home: ev.home_team, away: ev.away_team, league: ev.sport_title || '', kickoff: ev.commence_time, updated: upd, published: true, _src: 'live',
+            markets: order.map(function (k) { return groups[k]; }) };
+        });
+      }
+    },
+    'football-data': {
+      fixtures: function (b) { return fdMatches(b); },
+      results: function (b) { return fdMatches(b); }
+    },
+    'api-football': {
+      fixtures: function (b) { return afMatches(b); },
+      results: function (b) { return afMatches(b); }
+    }
+  };
+  function fdMatches(b) {
+    return ((b && b.matches) || []).map(function (m) {
+      var ft = (m.score && m.score.fullTime) || {};
+      return { id: 'fd' + m.id, home: m.homeTeam && (m.homeTeam.shortName || m.homeTeam.name), away: m.awayTeam && (m.awayTeam.shortName || m.awayTeam.name),
+        league: m.competition && m.competition.name, kickoff: m.utcDate, status: m.status, finished: m.status === 'FINISHED',
+        score: { home: ft.home, away: ft.away }, homeLogo: m.homeTeam && m.homeTeam.crest, awayLogo: m.awayTeam && m.awayTeam.crest };
+    });
+  }
+  function afMatches(b) {
+    return ((b && b.response) || []).map(function (m) {
+      return { id: 'af' + m.fixture.id, home: m.teams.home.name, away: m.teams.away.name, league: m.league && m.league.name, kickoff: m.fixture.date,
+        status: m.fixture.status && m.fixture.status.short, finished: ['FT', 'AET', 'PEN'].indexOf(m.fixture.status && m.fixture.status.short) >= 0,
+        score: { home: m.goals && m.goals.home, away: m.goals && m.goals.away }, homeLogo: m.teams.home.logo, awayLogo: m.teams.away.logo };
+    });
+  }
+
+  function explain(status, body, provider) {
+    var code = body && body.error;
+    if (code === 'missing_credentials') return 'Not configured: add the secret ' + (body.secret || 'API key') + ' in Cloudflare (' + provider + ').';
+    if (status === 401 || status === 403 || code === 'invalid_credentials') return 'Credentials rejected by ' + provider + '. Check the API key / plan.';
+    if (status === 429 || code === 'rate_limited') return 'Rate limit reached for ' + provider + '. Will retry at the next refresh.';
+    if (status === 504 || code === 'timeout') return provider + ' did not answer in time.';
+    if (status === 404 && !body) return 'API proxy not found. Deploy to Cloudflare Pages (functions/ folder) or run with wrangler.';
+    if (code === 'forbidden_path') return 'That endpoint path is not allowed by the proxy.';
+    return 'Provider error ' + status + (body && body.message ? ': ' + body.message : '');
+  }
+  /* Resolves to normalized data, or null on any failure. Never throws. A.status[name] tells the UI why. */
+  A.fetchIntegration = function (name, cfg, opt) {
+    opt = opt || {};
+    if (!cfg || !cfg.enabled) { A.status[name] = { state: 'off' }; return Promise.resolve(null); }
+    var ad = A.adapters[cfg.provider] && A.adapters[cfg.provider][name];
+    if (!ad) { A.status[name] = { state: 'error', error: cfg.provider + ' has no ' + name + ' adapter' }; return Promise.resolve(null); }
+    var ttl = Math.max(30, cfg.refreshSeconds || 300);
+    var qs = new URLSearchParams({ provider: cfg.provider, path: cfg.path, ttl: String(ttl) });
+    Object.keys(cfg.params || {}).forEach(function (k) { qs.set('q_' + k, cfg.params[k]); });
+    var url = C.proxyPath + '?' + qs.toString();
+    var hit = mem[url];
+    if (hit && !opt.force && Date.now() - hit.t < ttl * 1000) return Promise.resolve(hit.data);
+    if (inflight[url]) return inflight[url];
+    var p = fetchT(url, {}, 10000).then(function (r) {
+      return r.json().catch(function () { return null; }).then(function (body) {
+        if (!r.ok) throw { status: r.status, body: body };
+        var data = ad(body);
+        mem[url] = { t: Date.now(), data: data };
+        A.status[name] = { state: data.length ? 'live' : 'empty', t: Date.now(), count: data.length };
+        return data;
+      });
+    }).catch(function (e) {
+      var msg = e && e.status ? explain(e.status, e.body, cfg.provider) : (e && e.name === 'AbortError' ? 'Request timed out.' : 'Network error: ' + (e && e.message || 'unreachable'));
+      A.status[name] = { state: 'error', error: msg, t: Date.now() };
+      A.log(name, msg);
+      return null;
+    }).finally(function () { delete inflight[url]; });
+    inflight[url] = p;
+    return p;
+  };
+})();
+
+</script>
+<script>
+/* Simulated Aviator-style game. Demo only: no money, no accounts, no network. Timer exists only while a round runs. */
+(function () {
+  'use strict';
+  var SA = window.SA, $ = SA.u.$;
+  var st = { timer: null, t0: 0, crash: 1, mult: 1, running: false };
+  var dlg, els = {};
+  function genCrash() { var r = Math.random(); return Math.max(1, Math.min(100, Math.floor(0.97 / (1 - r) * 100) / 100)); }
+  function show(m) { els.mult.textContent = m.toFixed(2) + 'x'; }
+  function plane(m) {
+    var p = Math.min(1, Math.log(m) / Math.log(12));
+    els.plane.style.transform = 'translate(' + (p * 78) + 'cqw,' + (-p * 62) + 'cqh)';
+  }
+  function stop() { if (st.timer) { clearInterval(st.timer); st.timer = null; } st.running = false; }
+  function end(kind) {
+    stop();
+    dlg.classList.toggle('crashed', kind === 'crash');
+    els.msg.textContent = kind === 'crash' ? 'Crashed at ' + st.mult.toFixed(2) + 'x. Round over (demo).' : 'You cashed out at ' + st.mult.toFixed(2) + 'x (demo).';
+    els.start.hidden = true; els.cash.hidden = true; els.again.hidden = false; els.again.focus();
+    var strip = $('#avStripMult'); if (strip) strip.textContent = st.mult.toFixed(2) + 'x';
+  }
+  function tick() {
+    st.mult = Math.exp(0.12 * (performance.now() - st.t0) / 1000);
+    if (st.mult >= st.crash) { st.mult = st.crash; show(st.mult); plane(st.mult); end('crash'); return; }
+    show(st.mult); plane(st.mult);
+  }
+  function start() {
+    stop();
+    st.crash = genCrash(); st.mult = 1; st.running = true; st.t0 = performance.now();
+    dlg.classList.remove('crashed');
+    els.msg.textContent = 'Round in progress. Cash out before it crashes!';
+    els.start.hidden = true; els.again.hidden = true; els.cash.hidden = false;
+    show(1); plane(1);
+    st.timer = setInterval(tick, 80);
+  }
+  function reset() {
+    stop(); st.mult = 1; show(1); plane(1); dlg.classList.remove('crashed');
+    els.msg.textContent = 'Press Start round. The multiplier climbs until a random crash point.';
+    els.start.hidden = false; els.cash.hidden = true; els.again.hidden = true;
+  }
+  SA.aviator = {
+    mount: function () {
+      dlg = $('#avDlg'); if (!dlg) return;
+      els = { mult: $('#avMult'), plane: $('#avPlane'), msg: $('#avMsg'), start: $('#avStart'), cash: $('#avCash'), again: $('#avAgain') };
+      els.start.addEventListener('click', start);
+      els.again.addEventListener('click', start);
+      els.cash.addEventListener('click', function () { if (st.running) end('cash'); });
+      dlg.addEventListener('close', stop);   // clean up timer when closed
+      $('#avOpen').addEventListener('click', function () { reset(); SA.openDialog(dlg, this); });
+    }
+  };
+})();
+
+</script>
+<script>
+/* SureArb public site. Renders from static JSON (+ optional live data via the secure proxy). */
+(function () {
+  'use strict';
+  var SA = window.SA, R = SA.rollovers, AR = SA.arbitrage, A = SA.api, U = SA.u, $ = U.$, esc = U.esc;
+  var S = (SA.state = { site: {}, pkgs: [], pkgDemo: false, books: [], baseEvents: [], events: [], fxEvents: [], arbDemo: false, stake: 10000,
+    pkg: null, day: 0, expanded: false, arbEv: null, limit: 12 });
+  var lastFocus = null, searchIdx = [];
+
+  /* ---------- dialogs ---------- */
+  SA.openDialog = function (dlg, opener) {
+    lastFocus = opener || document.activeElement;
+    if (!dlg.open) dlg.showModal();
+    document.body.classList.add('noscroll');
+  };
+  function wireDialog(dlg) {
+    dlg.addEventListener('click', function (e) {
+      if (e.target.closest('[data-close]')) return dlg.close();
+      if (e.target === dlg && (S.site.display || {}).backdropClose !== false) dlg.close();
+    });
+    dlg.addEventListener('close', function () {
+      if (!document.querySelector('dialog[open]')) document.body.classList.remove('noscroll');
+      if (lastFocus && lastFocus.focus) try { lastFocus.focus(); } catch (e) {}
+    });
+  }
+
+  /* ---------- helpers ---------- */
+  var sym = function () { return (S.site.currency || {}).symbol || ''; };
+  var tz = function () { return S.site.timezone; };
+  var money = function (n, d) { return U.money(n, sym(), d); };
+  var statusLabel = { won: 'Won', lost: 'Lost', pending: 'Pending', void: 'Void', completed: 'Completed', failed: 'Failed', active: 'Active', future: 'Upcoming' };
+  var stPill = function (s) { return '<span class="st ' + esc(s) + '">' + esc(statusLabel[s] || s) + '</span>'; };
+  function bookPill(name) {
+    var b = S.books.filter(function (x) { return x.name.toLowerCase() === String(name).toLowerCase(); })[0] || {};
+    return '<span class="bk" style="background:' + esc(b.color || '#e6eeff') + ';color:' + esc(b.textColor || '#0a3d8f') + '">' + esc(name) + '</span>';
+  }
+  function toast(msg) {
+    var t = document.createElement('div'); t.className = 'toast'; t.textContent = msg; document.body.appendChild(t);
+    setTimeout(function () { t.remove(); }, 2600);
+  }
+  var evName = function (e) { return e.home + ' vs ' + e.away; };
+
+  /* ---------- static content ---------- */
+  function applySite() {
+    var s = S.site, h = s.hero || {}, b = s.brand || {}, hd = s.headings || {};
+    document.title = (b.name || 'SureArb') + ' | ' + (b.tagline || '');
+    $('#brandName').textContent = b.name || 'SureArb';
+    $('#brandTag').textContent = b.tagline || '';
+    if (b.logo) $('#logo').src = b.logo;
+    if (s.theme && s.theme.primary) document.documentElement.style.setProperty('--blue', s.theme.primary);
+    if (h.image) document.documentElement.style.setProperty('--heroimg', 'url("' + new URL(h.image, location.href).href.replace(/"/g, '') + '")');
+    $('#h1').innerHTML = esc(h.headline1 || '') + '<br><span>' + esc(h.headline2 || '') + '</span>';
+    $('#heroText').textContent = h.text || '';
+    $('#heroNote').textContent = h.note || '';
+    $('#avLabel').textContent = (s.aviator || {}).label || 'Demo Aviator';
+    $('#avDesc').textContent = (s.aviator || {}).description || '';
+    var g = function (k, f) { return (hd[k] && hd[k][f]) || ''; };
+    $('#arbTitle').textContent = g('arbitrage', 'title'); $('#arbSub').textContent = g('arbitrage', 'sub');
+    $('#rolTitle').textContent = g('rollovers', 'title'); $('#rolSub').textContent = g('rollovers', 'sub');
+    $('#howTitle').textContent = g('how', 'title') || 'How It Works';
+    $('#howList').innerHTML = (s.howItWorks || []).map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('');
+    $('#notice').textContent = s.notice || '';
+    $('#footer').textContent = s.footer || '';
+    var sec = s.sections || {};
+    U.$$('[data-section]').forEach(function (el) { el.hidden = sec[el.getAttribute('data-section')] === false; });
+    $('#aviatorStrip').hidden = sec.aviator === false;
+    $('#bkChips').innerHTML = S.books.filter(function (x) { return x.enabled !== false; }).map(function (x) {
+      return '<span class="chip" style="background:' + esc(x.color) + ';color:' + esc(x.textColor) + '">' + esc(x.name) + '</span>';
+    }).join('');
+    var ban = [];
+    if (A.isPreview()) ban.push('PREVIEW: showing your unpublished local draft.');
+    if (S.pkgDemo || S.arbDemo) ban.push('Demo data: odds, selections and results shown are examples, not live.');
+    $('#banner').hidden = !ban.length; $('#banner').textContent = ban.join(' ');
+  }
+
+  /* ---------- arbitrage list ---------- */
+  function allEvents() { return S.events.filter(function (e) { return e.published !== false; }); }
+  function srcBadge(e) { return e._src === 'live' ? '<span class="pill live">LIVE</span>' : (S.arbDemo && e._src === 'base' ? '<span class="pill demo">DEMO</span>' : '<span class="pill ed">PUBLISHED</span>'); }
+  function renderLeagues() {
+    var sel = $('#leagueSel'), cur = sel.value, set = {};
+    allEvents().concat(S.fxEvents).forEach(function (e) { if (e.league) set[e.league] = 1; });
+    sel.innerHTML = '<option value="">All leagues</option>' + Object.keys(set).sort().map(function (l) { return '<option>' + esc(l) + '</option>'; }).join('');
+    sel.value = set[cur] ? cur : '';
+  }
+  function renderArb() {
+    var list = allEvents(), lg = $('#leagueSel').value, only = $('#onlyArb').checked;
+    var rows = list.map(function (e) { return { e: e, ev: AR.evaluateEvent(e, S.stake) }; }).filter(function (x) {
+      return (!lg || x.e.league === lg) && (!only || x.ev.qualifying);
+    }).sort(function (a, b) { return (b.ev.qualifying ? 1 : 0) - (a.ev.qualifying ? 1 : 0) || (b.ev.best ? b.ev.best.pct : -1) - (a.ev.best ? a.ev.best.pct : -1); });
+    var box = $('#arbList');
+    if (!list.length) {
+      box.innerHTML = '<div class="empty"><b>No odds data available right now.</b><br>Connect an odds provider in the editor (Football Data) or publish opportunities there. Nothing is shown until real or clearly labelled demo data exists.</div>';
+      $('#arbMore').hidden = true; return;
+    }
+    if (!rows.length) { box.innerHTML = '<div class="empty">No matches fit these filters.</div>'; $('#arbMore').hidden = true; return; }
+    box.innerHTML = rows.slice(0, S.limit).map(function (x) {
+      var q = x.ev.qualifying, e = x.e;
+      return '<button class="arb-row" type="button" data-arb="' + esc(e.id) + '"><span class="am"><b>' + esc(evName(e)) + '</b><small>' + esc(e.league) + ' · ' + esc(U.fmtKick(e._ko, tz())) + '</small></span>' +
+        srcBadge(e) + '<span class="ab ' + (q ? 'ok' : 'no') + '">' + (q ? q + ' arbitrage' + (q > 1 ? 's' : '') : 'No arbitrage') + '</span>' +
+        '<span class="ap">' + (x.ev.best ? '+' + x.ev.best.pct.toFixed(2) + '%' : '–') + '</span><i aria-hidden="true">›</i></button>';
+    }).join('');
+    $('#arbMore').hidden = rows.length <= S.limit;
+  }
+  function feedLine() {
+    var st = A.status, o = st.odds || { state: 'off' }, line, err = false;
+    if (o.state === 'live') line = 'Odds feed: live, ' + o.count + ' matches, last updated ' + U.fmtClock(o.t, tz());
+    else if (o.state === 'empty') line = 'Odds feed connected but returned no matches (last checked ' + U.fmtClock(o.t, tz()) + ').';
+    else if (o.state === 'error') { line = 'Odds feed unavailable: ' + o.error + ' Showing published data instead.'; err = true; }
+    else line = 'Odds feed not connected. ' + (S.arbDemo ? 'Showing demo data (not live).' : 'Showing editor-published data.');
+    var f = $('#feedLine'); f.textContent = line; f.className = 'feed' + (err ? ' err' : '');
+  }
+
+  /* ---------- arbitrage popup ---------- */
+  function crest(name, logo) { return '<span class="crest">' + (logo ? '<img loading="lazy" alt="" src="' + esc(logo) + '">' : esc(String(name).slice(0, 3).toUpperCase())) + '</span>'; }
+  function renderArbBody() {
+    var e = S.arbEv; if (!e) return;
+    var ev = AR.evaluateEvent(e, S.stake), h = '';
+    h += '<div class="teams"><div class="tm">' + crest(e.home, e.homeLogo) + '<div><b>' + esc(e.home) + '</b></div></div><div class="vs"><b>VS</b><div>' + esc(U.fmtKick(e._ko, tz())) + '</div></div><div class="tm r">' + crest(e.away, e.awayLogo) + '<div><b>' + esc(e.away) + '</b></div></div></div>';
+    if (!(e.markets || []).length) h += '<div class="empty">No odds are available for this match, so no arbitrage can be checked.</div>';
+    ev.markets.forEach(function (x) {
+      var r = x.result, m = x.market;
+      h += '<div class="mk"><div class="mk-h"><b>' + esc(m.label || m.key) + '</b><span class="st ' + (r.status === 'qualifies' ? 'won' : 'void') + '">' + (r.status === 'qualifies' ? 'Qualifies' : r.status === 'no-arb' ? 'Not an arbitrage' : 'Incomplete') + '</span></div><div class="oc">';
+      r.picks.forEach(function (p, i) {
+        h += '<div class="o">' + bookPill(p.bookmaker) + '<div class="nm">' + esc(p.name) + '</div><div class="od">' + Number(p.odds).toFixed(2) + '</div>' +
+          (r.status === 'qualifies' ? '<div class="sk">Stake ' + money(r.stakes[i], 2) + '</div>' : '') + '</div>';
+      });
+      h += '</div><div class="verdict ' + (r.status === 'qualifies' ? 'ok' : 'no') + '">';
+      if (r.status === 'qualifies') h += 'Arbitrage sum ' + r.sum.toFixed(4) + ' (below 1.00). Gross return ' + money(r.gross, 2) + ', net profit ' + money(r.profit, 2) + ' (' + r.pct.toFixed(2) + '%) if all legs are accepted at these odds.';
+      else if (r.status === 'no-arb') h += 'Arbitrage sum ' + r.sum.toFixed(4) + ' (1.00 or above): no arbitrage.';
+      else h += 'Needs odds for all ' + r.need + ' outcomes (found ' + r.found + ').';
+      h += '</div></div>';
+    });
+    var b = ev.best;
+    h += '<div class="sum3"><div><small>Total stake (best market)</small><b>' + money(S.stake) + '</b></div><div><small>Potential net profit</small><b style="color:' + (b ? 'var(--green)' : 'inherit') + '">' + (b ? money(b.profit, 2) + ' (' + b.pct.toFixed(2) + '%)' : '–') + '</b></div><div><small>Arbitrage check</small><b>' + (b ? b.sum.toFixed(4) + ' (< 1.00)' : 'None qualify') + '</b></div></div>';
+    h += '<p class="disc">' + (e.updated ? 'Odds last updated ' + esc(U.fmtClock(e.updated, tz())) + '. ' : (e._src === 'base' && S.arbDemo ? 'Demo data, not live odds. ' : '')) +
+      'Possible arbitrage only, not guaranteed profit. Odds change, bookmakers can limit or void bets, and settlement rules differ. Always confirm the odds on each bookmaker before betting.</p>';
+    $('#arbBody').innerHTML = h;
+  }
+  function openArb(id, opener) {
+    var e = allEvents().concat(S.fxEvents).filter(function (x) { return x.id === id; })[0]; if (!e) return;
+    S.arbEv = e; $('#arbT').textContent = evName(e); $('#stakeIn').value = S.stake;
+    renderArbBody(); SA.openDialog($('#arbDlg'), opener); $('#arbBody').scrollTop = 0;
+  }
+
+  /* ---------- rollovers ---------- */
+  function renderPackages() {
+    var act = 0;
+    $('#pkgGrid').innerHTML = S.pkgs.map(function (p) {
+      var st = R.packageState(p); if (p.active !== false && st.overall === 'active') act++;
+      return '<button class="pkg' + (p.active === false ? ' off' : '') + '" type="button" data-pkg="' + esc(p.id) + '" aria-label="' + esc(p.name) + ', ' + p.days.length + ' days' + (p.active === false ? ', inactive' : '') + '">' +
+        '<b>' + Number(p.target).toFixed(2) + '</b><span class="dy' + (p.days.length <= 2 ? ' two' : '') + '">' + p.days.length + ' Days</span><span class="rl">Rollover' + (p.active === false ? ' · inactive' : '') + '</span><i aria-hidden="true">›</i></button>';
+    }).join('') + '<div class="note"><span class="bolt"><svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M13 2L4 14h6l-1 8 9-12h-6z"/></svg></span><div><b>' + esc(S.site.rolloverNote || '') + '</b><small>' + esc(S.site.rolloverNoteSub || '') + '</small></div></div>';
+    if (!S.pkgs.length) $('#pkgGrid').innerHTML = '<div class="empty" style="grid-column:1/-1">No rollover packages are published yet.</div>';
+    $('#rolPill').textContent = act ? 'Rollover cycles are active' : 'No active rollover cycles';
+    $('#rolPill').className = 'pill ' + (act ? 'live' : '');
+    if (S.pkgDemo) $('#rolPill').textContent += ' · demo data';
+    var ts = S.pkgs.map(function (p) { return p.target; });
+    $('#fromTo').textContent = ts.length ? 'Start from ' + Math.min.apply(null, ts).toFixed(2) + ' odds. Up to ' + Math.max.apply(null, ts).toFixed(2) + ' odds' : '';
+  }
+  function renderTicker() {
+    var box = $('#tickerBox'), id = (S.site.ticker || {}).packageId;
+    var p = S.pkgs.filter(function (x) { return x.id === id; })[0] || S.pkgs.filter(function (x) { return x.active !== false; })[0];
+    var hd = (S.site.headings || {}).ticker || {};
+    if (!p) { box.innerHTML = '<div><h3>' + esc(hd.title || 'Rollover Ticker') + '</h3><p>No active rollover package to show.</p></div>'; return; }
+    var st = R.packageState(p), cur = st.statuses[st.currentDay] || 'pending';
+    box.innerHTML = '<div class="phone" aria-hidden="true"><small>Daily Rollover</small><div class="tk"><b>' + Number(p.target).toFixed(2) + '</b>' + p.days.length + ' Days</div></div>' +
+      '<div><h3>' + esc(hd.title || 'Rollover Ticker') + (S.pkgDemo ? ' <span class="pill demo">DEMO</span>' : '') + '</h3><dl><dt>Package</dt><dd>' + Number(p.target).toFixed(2) + ' odds</dd><dt>Current day</dt><dd>Day ' + (st.currentDay + 1) + ' of ' + p.days.length + '</dd><dt>Days completed</dt><dd>' + st.completed + '</dd><dt>Days remaining</dt><dd>' + st.remaining + '</dd><dt>Ticket status</dt><dd>' + stPill(st.failed ? 'failed' : cur) + '</dd></dl>' +
+      '<a class="btn" href="#rollovers">View All Rollovers →</a></div>';
+  }
+  function dayLabel(d, i) { return d.label || 'Day ' + (i + 1); }
+  function renderRoll() {
+    var p = S.pkg; if (!p) return;
+    var st = R.packageState(p), day = p.days[S.day] || { selections: [] }, sels = day.selections || [];
+    var comb = R.combinedOdds(sels), tc = R.targetCheck(p.target, comb), ds = st.statuses[S.day] || 'pending';
+    $('#rolT').textContent = p.name;
+    $('#rolMeta').textContent = p.days.length + '-Day Plan · ' + sels.length + ' Selections (day ' + (S.day + 1) + ') · Combined Odds: ' + comb.toFixed(2);
+    var h = '';
+    if (p.description) h += '<p style="margin:0 0 10px;color:var(--mut)">' + esc(p.description) + '</p>';
+    h += '<div class="steps" role="group" aria-label="Daily progress">' + p.days.map(function (d, i) {
+      return '<button type="button" data-day="' + i + '" class="' + st.segs[i] + (i === S.day ? ' sel' : '') + '" aria-label="' + esc(dayLabel(d, i)) + ': ' + st.segs[i] + '"><span class="dot">' + (st.segs[i] === 'won' ? '✓' : st.segs[i] === 'lost' ? '×' : i + 1) + '</span>' + esc(dayLabel(d, i)) + '</button>';
+    }).join('') + '</div>';
+    h += '<div class="tabs" role="tablist">' + p.days.map(function (d, i) { return '<button type="button" role="tab" data-day="' + i + '" class="' + (i === S.day ? 'on' : '') + '" aria-selected="' + (i === S.day) + '">' + esc(dayLabel(d, i)) + '</button>'; }).join('') + '</div>';
+    h += '<div class="dsum"><h3>' + esc(dayLabel(day, S.day)) + ' · ' + sels.length + ' selections · Combined odds ' + comb.toFixed(2) + '</h3><span>Ticket ' + stPill(ds) + (st.failed ? ' Rollover ' + stPill('failed') : '') + '</span></div>';
+    if (!sels.length) h += '<div class="empty">No qualifying selections are currently available for this day.</div>';
+    else {
+      var lim = S.expanded ? sels.length : Math.min(sels.length, (S.site.display || {}).initialSelections || 10);
+      h += '<div class="sel-t" role="table"><div class="sr1 hd" role="row"><span>#</span><span>Match &amp; Selection</span><span>Bookmaker</span><span>Odds</span><span>Status</span></div>';
+      sels.slice(0, lim).forEach(function (s, i) {
+        h += '<div class="sr1" role="row"><span>' + (i + 1) + '</span><span class="mt"><b>' + esc(s.match) + '</b><small>' + esc(s.pick || '') + (s.league ? ' · ' + esc(s.league) : '') + (s.market ? ' · ' + esc(s.market) : '') + '</small></span><span>' + esc(s.bookmaker || '') + '</span><span class="od">' + Number(s.odds).toFixed(2) + '</span><span>' + stPill(s.status || 'pending') + (s._auto ? ' <small title="Updated from results API">auto</small>' : '') + '</span></div>';
+      });
+      h += '</div>';
+      if (sels.length > lim) h += '<button class="btn line sm more-btn" type="button" data-expand style="width:100%">View all ' + sels.length + ' selections (' + (sels.length - lim) + ' more)</button>';
+      else if (S.expanded && sels.length > ((S.site.display || {}).initialSelections || 10)) h += '<button class="btn line sm more-btn" type="button" data-expand style="width:100%">Show fewer</button>';
+    }
+    h += '<p class="tgt ' + (tc.reached ? 'ok' : 'no') + '">Calculated combined odds: <b>' + comb.toFixed(2) + '</b>. ' + (tc.reached ? 'Matches the ' + Number(p.target).toFixed(2) + ' target.' : 'Target of ' + Number(p.target).toFixed(2) + ' not reached.') + '</p>';
+    h += '<div class="legend"><span class="st won">Won</span> <span class="st pending">Pending</span> <span class="st lost">Lost</span> · One ticket per day: it is Won only when every selection wins, and Lost as soon as one selection loses. If a day loses, the rollover is marked failed. No outcome is guaranteed. Bet responsibly, 18+.</div>';
+    var body = $('#rolBody'), keep = body.scrollTop; body.innerHTML = h; body.scrollTop = keep;
+  }
+  function openPkg(id, day, opener) {
+    var p = S.pkgs.filter(function (x) { return x.id === id; })[0]; if (!p) return;
+    S.pkg = p; S.expanded = false;
+    S.day = day != null ? day : R.packageState(p).currentDay;
+    renderRoll(); SA.openDialog($('#rolDlg'), opener); $('#rolBody').scrollTop = 0;
+  }
+
+  /* ---------- search ---------- */
+  function buildIndex() {
+    var map = {}, out = [];
+    allEvents().concat(S.fxEvents).forEach(function (e) { var k = U.norm(evName(e)); map[k] = 1; out.push({ t: 'arb', id: e.id, label: evName(e), sub: e.league + ' · ' + U.fmtKick(e._ko, tz()) }); });
+    S.pkgs.forEach(function (p) { p.days.forEach(function (d, di) { (d.selections || []).forEach(function (s) {
+      var k = U.norm(s.match); if (map[k]) return; out.push({ t: 'roll', id: p.id, day: di, label: s.match, sub: s.league + ' · in ' + Number(p.target).toFixed(2) + ' rollover, day ' + (di + 1) }); });
+    }); });
+    var lg = {}; out.forEach(function (o) { var l = (o.sub || '').split(' · ')[0]; if (l) lg[l] = (lg[l] || 0) + 1; });
+    Object.keys(lg).forEach(function (l) { out.push({ t: 'league', id: l, label: l, sub: 'League · ' + lg[l] + ' matches' }); });
+    searchIdx = out;
+  }
+  function doSearch() {
+    var q = U.norm($('#q').value), ul = $('#results');
+    if (!q) { ul.hidden = true; return; }
+    var seen = {}, hits = searchIdx.filter(function (o) { var k = o.t + o.label + (o.id || ''); if (seen[k]) return false; seen[k] = 1; return U.norm(o.label + ' ' + o.sub).indexOf(q) >= 0; }).slice(0, 8);
+    ul.innerHTML = hits.length ? hits.map(function (o, i) { return '<li><button type="button" data-hit="' + searchIdx.indexOf(o) + '"><b>' + esc(o.label) + '</b><small>' + esc(o.sub) + '</small></button></li>'; }).join('') : '<li class="none">No matches found for “' + esc($('#q').value) + '”.</li>';
+    ul.hidden = false;
+  }
+  function pickHit(i) {
+    var o = searchIdx[i]; if (!o) return;
+    $('#results').hidden = true;
+    if (o.t === 'arb') openArb(o.id, $('#q'));
+    else if (o.t === 'roll') openPkg(o.id, o.day, $('#q'));
+    else { $('#leagueSel').value = o.id; renderArb(); $('#arbitrage').scrollIntoView(); }
+  }
+
+  /* ---------- data ---------- */
+  function rebuildEvents() {
+    S.events = S.baseEvents.concat(S._live || []);
+    S.events.forEach(function (e) { e._ko = U.kickISO(e); });
+    var have = {}; S.events.forEach(function (e) { have[U.norm(evName(e))] = 1; });
+    S.fxEvents = (S._fx || []).filter(function (f) { return f.home && f.away && !have[U.norm(f.home + ' vs ' + f.away)]; })
+      .map(function (f) { return { id: f.id, home: f.home, away: f.away, league: f.league, kickoff: f.kickoff, homeLogo: f.homeLogo, awayLogo: f.awayLogo, markets: [], published: true, _src: 'fixture', _ko: f.kickoff }; });
+  }
+  function applyResults(results) {
+    if (!results) return;
+    var fin = results.filter(function (r) { return r.finished && r.score && r.score.home != null; });
+    S.pkgs.forEach(function (p) { p.days.forEach(function (d) { (d.selections || []).forEach(function (s) {
+      if (s.status !== 'pending') return;
+      var h = U.norm(s.home || R.splitMatch(s.match).home), a = U.norm(s.away || R.splitMatch(s.match).away);
+      var m = fin.filter(function (r) { var rh = U.norm(r.home), ra = U.norm(r.away); return h && a && (rh === h || rh.indexOf(h) >= 0 || h.indexOf(rh) >= 0) && (ra === a || ra.indexOf(a) >= 0 || a.indexOf(ra) >= 0); })[0];
+      if (!m) return;
+      var g = R.gradeSelection({ pick: s.pick, home: s.home || R.splitMatch(s.match).home, away: s.away || R.splitMatch(s.match).away }, m.score);
+      if (g) { s.status = g; s._auto = true; }
+    }); }); });
+  }
+  var busy = false;
+  function loadLive(force) {
+    var ig = S.site.integrations || {};
+    if (!ig.odds || !ig.fixtures || !ig.results) return Promise.resolve();
+    if (!(ig.odds.enabled || ig.fixtures.enabled || ig.results.enabled)) { feedLine(); return Promise.resolve(); }
+    if (busy) return Promise.resolve(); busy = true;
+    return Promise.all([A.fetchIntegration('odds', ig.odds, { force: force }), A.fetchIntegration('fixtures', ig.fixtures, { force: force }), A.fetchIntegration('results', ig.results, { force: force })]).then(function (r) {
+      if (r[0]) S._live = r[0];
+      if (r[1]) S._fx = r[1];
+      applyResults(r[2]);
+      rebuildEvents(); renderLeagues(); renderArb(); renderPackages(); renderTicker(); buildIndex(); feedLine();
+      if (S.pkg && $('#rolDlg').open) renderRoll();
+    }).finally(function () { busy = false; });
+  }
+
+  function init() {
+    var names = ['site-config', 'rollover-packages', 'bookmakers', 'arbitrage'];
+    Promise.all(names.map(function (n) { return A.loadJSON(n).catch(function (e) { A.log('data', e.message); return null; }); })).then(function (d) {
+      S.site = d[0] || { brand: { name: 'SureArb' }, headings: {}, integrations: {} };
+      var pk = d[1] || { packages: [] }; S.pkgs = pk.packages || []; S.pkgDemo = !!pk.demo;
+      S.books = d[2] || [];
+      var ar = d[3] || { events: [] }; S.arbDemo = !!ar.demo;
+      S.baseEvents = (ar.events || []).map(function (e) { e._src = 'base'; return e; });
+      S.stake = Number(S.site.defaultStake) > 0 ? Number(S.site.defaultStake) : 10000;
+      $('#stakeMain').value = S.stake;
+      rebuildEvents(); applySite(); renderLeagues(); renderArb(); renderPackages(); renderTicker(); buildIndex(); feedLine();
+      var ig = S.site.integrations || {}, anyOn = ['odds', 'fixtures', 'results'].some(function (k) { return ig[k] && ig[k].enabled; });
+      if (anyOn) { loadLive(false); setInterval(function () { if (!document.hidden) loadLive(false); }, 30000); }
+    });
+  }
+
+  /* ---------- events (delegated, registered once) ---------- */
+  ['#arbDlg', '#rolDlg', '#avDlg'].forEach(function (s) { wireDialog($(s)); });
+  $('#arbList').addEventListener('click', function (e) { var b = e.target.closest('[data-arb]'); if (b) openArb(b.getAttribute('data-arb'), b); });
+  $('#arbMore').addEventListener('click', function () { S.limit += 12; renderArb(); });
+  $('#pkgGrid').addEventListener('click', function (e) { var b = e.target.closest('[data-pkg]'); if (b) openPkg(b.getAttribute('data-pkg'), null, b); });
+  $('#rolDlg').addEventListener('click', function (e) {
+    var d = e.target.closest('[data-day]'); if (d) { S.day = +d.getAttribute('data-day'); S.expanded = false; renderRoll(); return; }
+    if (e.target.closest('[data-expand]')) { S.expanded = !S.expanded; renderRoll(); }
+  });
+  $('#leagueSel').addEventListener('change', function () { S.limit = 12; renderArb(); });
+  $('#onlyArb').addEventListener('change', function () { S.limit = 12; renderArb(); });
+  function stakeInput(el) {
+    return U.debounce(function () { var v = parseFloat(String(el.value).replace(/,/g, '')); if (v > 0) { S.stake = v; $('#stakeMain').value = v; $('#stakeIn').value = el === $('#stakeIn') ? el.value : v; renderArb(); if ($('#arbDlg').open) renderArbBody(); } }, 250);
+  }
+  $('#stakeMain').addEventListener('input', stakeInput($('#stakeMain')));
+  $('#stakeIn').addEventListener('input', stakeInput($('#stakeIn')));
+  $('#refreshBtn').addEventListener('click', function () {
+    var b = this; if (b.disabled) return; b.disabled = true; b.textContent = 'Refreshing…';
+    var ig = S.site.integrations || {};
+    var p = (ig.odds && ig.odds.enabled) || (ig.fixtures && ig.fixtures.enabled) ? loadLive(true) : (init(), Promise.resolve());
+    Promise.resolve(p).finally(function () { b.disabled = false; b.textContent = '↻ Refresh'; toast('Data refreshed'); });
+  });
+  var deb = U.debounce(doSearch, 200);
+  $('#q').addEventListener('input', deb);
+  $('#q').addEventListener('focus', function () { if (this.value) doSearch(); });
+  $('#searchForm').addEventListener('submit', function (e) { e.preventDefault(); doSearch(); var f = $('#results button[data-hit]'); if (f) pickHit(+f.getAttribute('data-hit')); });
+  $('#results').addEventListener('click', function (e) { var b = e.target.closest('[data-hit]'); if (b) pickHit(+b.getAttribute('data-hit')); });
+  document.addEventListener('click', function (e) { if (!e.target.closest('#searchForm')) $('#results').hidden = true; });
+  $('#q').addEventListener('keydown', function (e) { if (e.key === 'Escape') { $('#results').hidden = true; } });
+  SA.aviator.mount();
+  init();
+})();
+
+</script>
+
 </body>
 </html>
