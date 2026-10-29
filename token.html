@@ -1,0 +1,65 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Get Token</title><style>body{background:#060a18;color:#e2e8f0;font-family:system-ui;padding:12px}button{background:#22c55e;color:#000;font-weight:900;border:none;padding:15px;border-radius:14px;width:100%;font-size:16px}textarea{width:100%;background:#0a1228;color:#fff;border:1px solid #233865;border-radius:12px;padding:12px;margin-top:8px;min-height:200px}.card{background:#0f1933;border:1px solid #1f2f5e;border-radius:18px;padding:14px;margin:12px 0}.ok{color:#22c55e}.err{color:#f87171}</style></head><body>
+<h2>🔑 Auto Get eyJ Token</h2>
+<div class="card">
+<b>Your ID & Secret don already put inside</b><br>
+<button onclick="getToken()">🚀 Click to Fetch eyJ Token Now</button>
+<div id="status"></div>
+<textarea id="tokenOut" placeholder="eyJ token go show here..."></textarea>
+<button onclick="copyToken()">📋 Copy Token</button>
+</div>
+<script>
+const CLIENT_ID="partners-35afad7ea8aa44418f245b47ad75e19e";
+const CLIENT_SECRET="n3bepbxtDkvAApksyqc2h4AjrlauMz*vwYGQUiV!1k!xidbjRf9C4GyULua6YJwY";
+async function getToken(){
+  const status=document.getElementById('status');
+  const out=document.getElementById('tokenOut');
+  status.innerHTML="⏳ Fetching token via proxy...";
+  const tokenUrl="https://cpservm.com/gateway/token";
+  // Try 3 proxies wey no need API key
+  const proxies=[
+    (url)=>`https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
+    (url)=>`https://thingproxy.freeboard.io/fetch/${url}`,
+    (url)=>`https://corsproxy.org/?${encodeURIComponent(url)}`
+  ];
+  for(let p of proxies){
+    try{
+      const proxyUrl=p(tokenUrl);
+      const body=`client_id=${encodeURIComponent(CLIENT_ID)}&client_secret=${encodeURIComponent(CLIENT_SECRET)}&grant_type=client_credentials`;
+      const res=await fetch(proxyUrl,{
+        method:"POST",
+        headers:{"Content-Type":"application/x-www-form-urlencoded"},
+        body:body
+      });
+      const txt=await res.text();
+      console.log("Proxy response:",txt.substring(0,500));
+      let data;
+      try{ data=JSON.parse(txt); }catch{ 
+        // allorigins sometimes returns wrapped JSON
+        try{ data=JSON.parse(JSON.parse(txt).contents); }catch{ data=null; }
+      }
+      // Check different response formats
+      let token=data?.access_token || data?.accessToken || data?.token || null;
+      if(!token && txt.includes("access_token")){
+        const m=txt.match(/"access_token"\s*:\s*"([^"]+)"/);
+        if(m) token=m[1];
+      }
+      if(token){
+        out.value=token;
+        status.innerHTML=`<span class='ok'>✅ SUCCESS! Token length ${token.length}. Copy am now and paste for auto.html Step 1!</span>`;
+        localStorage.setItem('sure2odd_bearer',token);
+        return;
+      }
+      status.innerHTML=`Trying next proxy... Response: ${txt.substring(0,200)}`;
+    }catch(e){
+      console.log("Proxy failed",e);
+      status.innerHTML=`Proxy failed, trying next... ${e.message}`;
+    }
+  }
+  status.innerHTML="<span class='err'>❌ All proxies blocked. Try open this page for Desktop Chrome (3 dots > Desktop site) or use laptop. Or I go generate manual fetch code.</span>";
+}
+function copyToken(){
+  const t=document.getElementById('tokenOut').value;
+  if(!t){alert("No token yet, click Fetch first");return;}
+  navigator.clipboard.writeText(t).then(()=>alert("Copied! Now go eec2022.github.io/auto.html and paste for Step 1")).catch(()=>{document.getElementById('tokenOut').select(); document.execCommand('copy'); alert("Copied!");});
+}
+</script></body></html>
